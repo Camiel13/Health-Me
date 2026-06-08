@@ -5,33 +5,63 @@ import { addFood, getTodayTotals, getTodayRecord } from './store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initScanner();
-  const searchBtn = document.getElementById('search-btn');
-  if(searchBtn) {
-    searchBtn.addEventListener('click', async () => {
-      const query = document.getElementById('food-search').value;
-      const results = await searchFood(query);
-      const list = document.getElementById('search-results');
-      list.innerHTML = '';
-      results.forEach(r => {
-        const li = document.createElement('li');
-        li.style.cssText = 'padding: 10px; background: white; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);';
-        
-        const info = document.createElement('div');
-        info.innerHTML = `<strong>${r.name}</strong><br><small>${r.calories} kcal | ${r.protein}g P | ${r.carbs}g C | ${r.fat}g F</small>`;
-        
-        const btn = document.createElement('button');
-        btn.textContent = '+ Add';
-        btn.style.cssText = 'padding: 6px 12px; background: var(--primary); border: none; border-radius: 6px; font-weight: bold; cursor: pointer;';
-        btn.onclick = () => {
-          addFood(r);
-          alert(`Added ${r.name}!`);
-          renderDashboard();
-        };
-        
-        li.appendChild(info);
-        li.appendChild(btn);
-        list.appendChild(li);
-      });
+  const searchInput = document.getElementById('food-search');
+  const searchResults = document.getElementById('search-results');
+  let searchTimeout;
+
+  if(searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      const query = e.target.value.trim();
+      
+      if (!query) {
+        searchResults.innerHTML = '';
+        return;
+      }
+
+      searchResults.innerHTML = '<li style="text-align:center; padding: 15px; color: #666; display: flex; justify-content: center; align-items: center; gap: 10px;">Loading... <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></li>';
+      
+      searchTimeout = setTimeout(async () => {
+        try {
+          const results = await searchFood(query);
+          searchResults.innerHTML = '';
+          if (results.length === 0) {
+            searchResults.innerHTML = '<li style="padding: 15px; color: #666; text-align: center;">No results found</li>';
+            return;
+          }
+          results.forEach(r => {
+            const li = document.createElement('li');
+            li.style.cssText = 'padding: 10px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;';
+            
+            const info = document.createElement('div');
+            info.innerHTML = `<strong>${r.name}</strong><br><small style="color: #666;">${Math.round(r.calories)} kcal | ${Math.round(r.protein)}g P | ${Math.round(r.carbs)}g C | ${Math.round(r.fat)}g F</small>`;
+            
+            const btn = document.createElement('button');
+            btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+            btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;';
+            btn.onclick = () => {
+              addFood(r);
+              alert(`Added ${r.name}!`);
+              renderDashboard();
+              searchInput.value = '';
+              searchResults.innerHTML = '';
+            };
+            
+            li.appendChild(info);
+            li.appendChild(btn);
+            searchResults.appendChild(li);
+          });
+        } catch (err) {
+          searchResults.innerHTML = '<li style="padding: 15px; color: red; text-align: center;">Error fetching results</li>';
+        }
+      }, 500);
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.innerHTML = '';
+      }
     });
   }
   

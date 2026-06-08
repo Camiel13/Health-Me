@@ -1,0 +1,45 @@
+<h2>Dashboard Layout Approaches</h2>
+<p class="subtitle">Select the visual hierarchy that best fits the "Make It Obvious" pillar.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Wheel-Centric (Recommended)</h3>
+      <p>Places the multi-nutrient progress wheel at the center of the screen as the primary focus, with the recipe push card at the bottom. This clearly visualizes the current diet status.</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; background: #f4f6f7;">
+         <div style="height: 120px; width: 120px; border-radius: 50%; border: 10px solid #27ae60; margin: 0 auto;"></div>
+         <div style="margin-top: 10px; background: #fff; padding: 10px; text-align: center; border-radius: 5px;">Nutrient Diffs</div>
+         <div style="margin-top: 10px; background: #1b4f72; color: #fff; padding: 10px; text-align: center; border-radius: 5px;">Recipe Card</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Action-First</h3>
+      <p>Places the recipe push card and immediate actions at the top, moving the progress wheel below. Better for driving immediate corrective action ("Make It Easy").</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; background: #f4f6f7;">
+         <div style="background: #1b4f72; color: #fff; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 10px;">Recipe Card</div>
+         <div style="height: 100px; width: 100px; border-radius: 50%; border: 10px solid #27ae60; margin: 0 auto;"></div>
+         <div style="margin-top: 10px; background: #fff; padding: 10px; text-align: center; border-radius: 5px;">Nutrient Diffs</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Balanced Grid</h3>
+      <p>Shows the progress wheel, nutrient diffs, and recipe card in equal prominence in a grid layout. High information density but less directed focus.</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; background: #f4f6f7;">
+         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+           <div style="flex: 1; height: 80px; border-radius: 50%; border: 8px solid #27ae60;"></div>
+           <div style="flex: 1; background: #fff; padding: 10px; text-align: center; border-radius: 5px;">Diffs</div>
+         </div>
+         <div style="background: #1b4f72; color: #fff; padding: 10px; text-align: center; border-radius: 5px;">Recipe Card</div>
+      </div>
+    </div>
+  </div>
+</div>
