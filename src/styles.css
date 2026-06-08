@@ -8,3 +8,22 @@ body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg-color
 .bottom-nav button { background: none; border: none; cursor: pointer; color: var(--text); transition: color 0.2s; }
 .bottom-nav button:hover { color: var(--primary); }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Dashboard UI Styles */
+.wheel-container { display: flex; justify-content: center; margin: 20px 0; }
+.circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 250px; }
+.circle-bg { fill: none; stroke: #e6e6e6; stroke-width: 3.8; }
+.circle { fill: none; stroke-width: 2.8; stroke-linecap: round; stroke: var(--primary); transition: stroke-dasharray 1s ease-out; }
+.percentage { fill: var(--text); font-family: sans-serif; font-size: 8px; text-anchor: middle; font-weight: bold; }
+.subtext { fill: #888; font-family: sans-serif; font-size: 3px; text-anchor: middle; }
+
+.diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+.diff-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+
+.recipe-card { background: var(--text); color: white; padding: 20px; border-radius: 15px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.recipe-card h3 { margin-top: 0; color: var(--primary); font-size: 18px; }
+.action-btn { background: var(--primary); color: var(--text); border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; transition: opacity 0.2s; }
+.action-btn:hover { opacity: 0.9; }
+
+.view { animation: fadeSlide 0.3s ease-out; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

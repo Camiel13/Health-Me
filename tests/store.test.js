@@ -8,6 +8,5 @@ beforeEach(() => {
 test('Store initializes with default state', () => {
   initStore();
   const state = getState();
-  expect(state.calories).toBe(0);
-  expect(state.steps).toBe(0);
+  expect(state.history).toEqual([]);
 });
