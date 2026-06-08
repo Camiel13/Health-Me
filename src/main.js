@@ -1,12 +1,12 @@
-
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory } from './store.js';
 
 window.getSmartSuggestion = function() {
   const totals = getTodayTotals();
-  const goals = { calories: 2000, carbs: 250, protein: 50, fat: 70 };
+  const state = getState();
+  const goals = state.goals || { calories: 2000, carbs: 250, protein: 50, fat: 70 };
   
   const remaining = {
     calories: Math.max(0, goals.calories - totals.calories),
@@ -121,6 +121,46 @@ window.closeShopModal = function() {
   const backdrop = document.getElementById('shop-backdrop');
   backdrop.style.opacity = '0';
   setTimeout(() => backdrop.style.display = 'none', 300);
+};
+
+window.finishInventoryDay = function() {
+  const newGoals = finishInventory();
+  renderDashboard();
+  
+  const modal = document.getElementById('goals-modal');
+  const goalsContent = document.getElementById('goals-summary-content');
+  if (modal && goalsContent) {
+    goalsContent.innerHTML = `
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div class="glass-card" style="padding: 16px; text-align: center;">
+          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Calories</h4>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.calories}</span>
+        </div>
+        <div class="glass-card" style="padding: 16px; text-align: center;">
+          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Protein</h4>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.protein}g</span>
+        </div>
+        <div class="glass-card" style="padding: 16px; text-align: center;">
+          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Carbs</h4>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.carbs}g</span>
+        </div>
+        <div class="glass-card" style="padding: 16px; text-align: center;">
+          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Fat</h4>
+          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.fat}g</span>
+        </div>
+      </div>
+    `;
+    modal.style.display = 'block';
+    setTimeout(() => modal.style.opacity = '1', 10);
+  } else {
+    alert("Plan Generated!");
+  }
+};
+
+window.closeGoalsModal = function() {
+  const modal = document.getElementById('goals-modal');
+  modal.style.opacity = '0';
+  setTimeout(() => modal.style.display = 'none', 300);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -383,6 +423,8 @@ export function renderScoreboard() {
 
 export function renderDashboard() {
   const totals = getTodayTotals();
+  const state = getState();
+  const goals = state.goals || { calories: 2000, carbs: 250, protein: 50, fat: 70, fiber: 28, sodium: 2300 };
   
   // Update UI Elements if they exist
   const calDisplay = document.getElementById('dash-cal-display');
@@ -391,7 +433,7 @@ export function renderDashboard() {
   // Update Wheel SVG
   const wheelSvg = document.getElementById('dash-wheel-svg');
   if (wheelSvg) {
-    const targetCalories = 2000; // Hardcoded US target for demo
+    const targetCalories = goals.calories || 2000;
     const pct = Math.min((totals.calories / targetCalories) * 100, 100);
     wheelSvg.style.strokeDasharray = `${pct}, 100`;
   }
@@ -399,7 +441,6 @@ export function renderDashboard() {
   // Diffs
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
-    const goals = { carbs: 250, protein: 50, fat: 70, fiber: 28, sodium: 2300 };
     diffsContainer.innerHTML = `
       <div class="macro-card macro-carbs">
         <div class="macro-header">
@@ -459,6 +500,16 @@ export function renderDashboard() {
     `;
   }
   
+  // Inventory Day Banner
+  const inventoryBanner = document.getElementById('inventory-banner');
+  if (inventoryBanner) {
+    if (state.isInventoryMode) {
+      inventoryBanner.style.display = 'block';
+    } else {
+      inventoryBanner.style.display = 'none';
+    }
+  }
+
   // Today's Food List
   const todaysList = document.getElementById('todays-foods-list');
   if (todaysList) {
@@ -468,8 +519,11 @@ export function renderDashboard() {
     } else {
       todaysList.innerHTML = record.foods.map(f => `
         <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <strong style="font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">${f.name}</strong>
-          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px;">${f.calories} kcal</span>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}">${f.healthScore}</span>` : ''}
+            <strong style="font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">${f.name}</strong>
+          </div>
+          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px;">${Math.round(f.calories)} kcal</span>
         </li>
       `).join('');
     }

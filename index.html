@@ -21,6 +21,14 @@
         </button>
       </div>
       
+      <div id="inventory-banner" class="glass-card" style="display: none; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border: 2px solid #ffb74d; margin-bottom: 24px; padding: 20px;">
+        <h3 style="margin: 0 0 8px 0; color: #e65100; font-family: 'Outfit', sans-serif; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+          <span>📋</span> Inventory Day
+        </h3>
+        <p style="margin: 0 0 16px 0; font-size: 14px; color: #e65100; font-weight: 500;">Log your normal diet today so we can build your personalized plan!</p>
+        <button onclick="finishInventoryDay()" class="action-btn" style="background: linear-gradient(135deg, #f57c00, #e65100); margin: 0; box-shadow: 0 4px 10px rgba(230, 81, 0, 0.3);">Finish Inventory Day & Get Plan</button>
+      </div>
+
       <div class="wheel-card glass-card">
         <div class="wheel-container">
           <svg viewBox="0 0 36 36" class="circular-chart dash-pulse">
@@ -233,6 +241,20 @@
       </div>
     </div>
   </main>
+
+  <!-- Goals Modal & Backdrop -->
+  <div id="goals-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; opacity: 0; transition: opacity 0.3s ease;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; background: var(--bg-color); border-radius: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); border: 1px solid var(--card-border); overflow: hidden; font-family: 'Inter', sans-serif;">
+      <div style="padding: 24px; text-align: center; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
+        <h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 24px;">Your New Plan! 🎉</h2>
+        <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">We've calculated optimal goals for you.</p>
+      </div>
+      <div style="padding: 24px;">
+        <div id="goals-summary-content"></div>
+        <button onclick="closeGoalsModal()" class="action-btn" style="width: 100%; padding: 12px; border-radius: 12px;">Awesome, let's go!</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Market Stall Shop Modal & Backdrop -->
   <div id="shop-backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; opacity: 0; transition: opacity 0.3s ease;">

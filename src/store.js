@@ -4,7 +4,9 @@ export function initStore() {
       history: [], // Array of { date: 'YYYY-MM-DD', foods: [], steps: 0 }
       habits: [], // Array of { id, trigger, action, time, frequency, completions: 0 }
       score: 0,
-      avatar: { hat: 'none', item: 'none' }
+      avatar: { hat: 'none', item: 'none' },
+      isInventoryMode: true,
+      goals: null
     };
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
   } else {
@@ -14,6 +16,8 @@ export function initStore() {
     if (typeof state.score !== 'number') state.score = 0;
     if (!state.avatar) state.avatar = { hat: 'none', item: 'none' };
     if (!state.unlockedHats) state.unlockedHats = ['none'];
+    if (typeof state.isInventoryMode === 'undefined') state.isInventoryMode = true;
+    if (typeof state.goals === 'undefined') state.goals = null;
     localStorage.setItem('health_app_state', JSON.stringify(state));
   }
 }
@@ -51,7 +55,23 @@ export function addFood(food) {
     record = { date: today, foods: [], steps: 0 };
     state.history.push(record);
   }
-  record.foods.push({ ...food, timestamp: Date.now() });
+  
+  // Calculate healthScore
+  let scorePoints = 10;
+  if (food.protein > 15) scorePoints += 2;
+  if (food.fiber > 5) scorePoints += 2;
+  if (food.calories > 600) scorePoints -= 3;
+  if (food.fat > 30) scorePoints -= 2;
+  if (food.sodium > 800) scorePoints -= 2;
+  
+  let healthScore = 'C';
+  if (scorePoints >= 12) healthScore = 'A';
+  else if (scorePoints >= 10) healthScore = 'B';
+  else if (scorePoints >= 8) healthScore = 'C';
+  else if (scorePoints >= 6) healthScore = 'D';
+  else healthScore = 'F';
+
+  record.foods.push({ ...food, healthScore, timestamp: Date.now() });
   saveState(state);
 }
 
@@ -82,6 +102,24 @@ export function completeHabit(habitId) {
     state.score += 10; // Award 10 points per completion
     saveState(state);
   }
+}
+
+export function finishInventory() {
+  const state = getState();
+  const totals = getTodayTotals();
+  
+  // Calculate customized goals based on eaten macros
+  const calories = Math.max(1200, Math.round(totals.calories * 0.85)); // 15% deficit
+  const protein = Math.max(50, Math.round((calories * 0.3) / 4)); // 30% protein
+  const fat = Math.max(40, Math.round((calories * 0.25) / 9)); // 25% fat
+  const carbs = Math.max(100, Math.round((calories * 0.45) / 4)); // 45% carbs
+  const fiber = Math.max(25, Math.round(calories / 1000 * 14));
+  const sodium = 2300;
+
+  state.goals = { calories, protein, fat, carbs, fiber, sodium };
+  state.isInventoryMode = false;
+  saveState(state);
+  return state.goals;
 }
 
 export function updateProfile(name, hat) {
