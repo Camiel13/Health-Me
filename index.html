@@ -9,7 +9,12 @@
 <body>
   <main id="app">
     <div id="view-dashboard" class="view">Dashboard</div>
-    <div id="view-logging" class="view" style="display: none;">Logging</div>
+    <div id="view-logging" class="view" style="display: none; padding: 20px;">
+      <h2>Log Food</h2>
+      <input type="text" id="food-search" placeholder="Search food..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
+      <button id="search-btn" style="margin-top: 10px; padding: 10px; width: 100%; background: var(--primary); border: none; border-radius: 8px; font-weight: bold;">Search</button>
+      <ul id="search-results" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
+    </div>
     <div id="view-habits" class="view" style="display: none;">Habits</div>
     <div id="view-privacy" class="view" style="display: none;">Privacy</div>
   </main>
@@ -21,6 +26,7 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
     </button>
   </nav>
+  <script type="module" src="./src/main.js"></script>
   <script type="module">
     import { navigateTo } from './src/router.js';
     window.navigateTo = navigateTo;
