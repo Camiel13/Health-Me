@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('save-habit-btn')?.addEventListener('click', () => {
-    const trigger = document.getElementById('habit-trigger').value;
-    const action = document.getElementById('habit-action').value;
+    const trigger = document.getElementById('habit-trigger').value.trim();
+    const action = document.getElementById('habit-action').value.trim();
     const time = document.getElementById('habit-time').value;
     const freq = document.getElementById('habit-freq').value;
     if(trigger && action) {
@@ -98,7 +98,19 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('habit-action').value = '';
       document.getElementById('habit-time').value = '';
       renderHabits();
+      alert('Habit saved!');
+    } else {
+      alert('Please fill in both Trigger and Action.');
     }
+  });
+
+  document.getElementById('save-profile-btn')?.addEventListener('click', () => {
+    const newName = document.getElementById('profile-name').value.trim();
+    const nameDisplay = document.getElementById('user-name-display');
+    if(nameDisplay) {
+      nameDisplay.textContent = newName || 'You';
+    }
+    alert('Profile saved!');
   });
 
   renderDashboard();
