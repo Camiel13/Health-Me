@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Health SPA</title>
   <link rel="stylesheet" href="src/styles.css">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
   <main id="app">
@@ -13,6 +14,11 @@
       <h2>Log Food</h2>
       <input type="text" id="food-search" placeholder="Search food..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
       <button id="search-btn" style="margin-top: 10px; padding: 10px; width: 100%; background: var(--primary); border: none; border-radius: 8px; font-weight: bold;">Search</button>
+      <button id="start-scan-btn" style="margin-top: 10px; padding: 10px; width: 100%; background: #eee; border: none; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+        Scan Barcode
+      </button>
+      <div id="reader" style="width: 100%; margin-top: 15px; display: none;"></div>
       <ul id="search-results" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
     </div>
     <div id="view-habits" class="view" style="display: none;">Habits</div>

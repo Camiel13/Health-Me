@@ -1,6 +1,8 @@
 import { searchFood } from './api.js';
+import { initScanner } from './scanner.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initScanner();
   const searchBtn = document.getElementById('search-btn');
   if(searchBtn) {
     searchBtn.addEventListener('click', async () => {
