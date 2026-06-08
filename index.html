@@ -8,14 +8,10 @@
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
-    <div id="view-dashboard" class="view" style="padding: 20px;">
-      <div style="background: linear-gradient(135deg, var(--primary), #82cfa0); margin: -20px -20px 20px -20px; padding: 30px 20px; color: #1e362d; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative;">
-        <h1 style="margin: 0; font-size: 28px;">Hello, Achiever</h1>
-        <p style="margin: 5px 0 0 0; opacity: 0.9; font-weight: 500;">Here's your progress for today</p>
-        <button onclick="navigateTo('view-logging')" style="position: absolute; right: 20px; top: 30px; background: white; color: var(--primary); border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        </button>
-      </div>
+    <div id="view-dashboard" class="view" style="padding: 20px; position: relative;">
+      <button onclick="navigateTo('view-logging')" style="position: absolute; right: 20px; top: 20px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; z-index: 10;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
       
       <div class="wheel-container">
         <svg viewBox="0 0 36 36" class="circular-chart">
@@ -61,28 +57,42 @@
       <h3 style="margin-top: 25px; border-top: 1px solid #ccc; padding-top: 15px;">Today's Log</h3>
       <ul id="todays-foods-list" style="list-style: none; padding: 0; margin-top: 10px;"></ul>
     </div>
-    <div id="view-habits" class="view" style="display: none; padding: 20px;">
+    <div id="view-habits" class="view" style="display: none; padding: 20px; position: relative;">
       <h2 style="margin-top: 0;">Habit Architect</h2>
-      <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px;">
-        <h3 style="margin-top: 0;">Stack a New Habit</h3>
-        <p style="color: #666; font-size: 14px;">After I...</p>
-        <input type="text" placeholder="e.g. Wake up" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px;">
-        <p style="color: #666; font-size: 14px;">I will immediately...</p>
-        <input type="text" placeholder="e.g. Drink a glass of water" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px;">
-        <button class="action-btn" onclick="alert('Habit stacked successfully!')">Save Habit Stack</button>
+      <button onclick="document.getElementById('habit-form-modal').style.display='block'" style="position: absolute; right: 20px; top: 20px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; z-index: 10;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+
+      <div id="habit-form-modal" style="display: none; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 20px; border: 1px solid #eee;">
+        <h3 style="margin-top: 0;">Add a New Habit</h3>
+        <p style="color: #666; font-size: 14px; margin-bottom: 5px;">Trigger (After I...)</p>
+        <input type="text" id="habit-trigger" placeholder="e.g. Wake up" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px;">
+        <p style="color: #666; font-size: 14px; margin-bottom: 5px;">Action (I will...)</p>
+        <input type="text" id="habit-action" placeholder="e.g. Drink water" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px;">
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+          <div style="flex: 1;">
+            <p style="color: #666; font-size: 14px; margin-bottom: 5px;">Time</p>
+            <input type="time" id="habit-time" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
+          </div>
+          <div style="flex: 1;">
+            <p style="color: #666; font-size: 14px; margin-bottom: 5px;">Frequency</p>
+            <select id="habit-freq" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;">
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button id="save-habit-btn" class="action-btn" style="flex: 1; margin-top: 0;">Save Habit</button>
+          <button onclick="document.getElementById('habit-form-modal').style.display='none'" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: white; cursor: pointer;">Cancel</button>
+        </div>
       </div>
       
-      <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0;">Environment Priming</h3>
-        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-          <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
-          <span>Move snacks to top shelf</span>
-        </label>
-        <label style="display: flex; align-items: center; gap: 10px; margin-top: 15px; cursor: pointer;">
-          <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
-          <span>Prepare gym clothes</span>
-        </label>
-      </div>
+      <h3 style="margin-top: 20px;">Your Habits</h3>
+      <ul id="habits-list" style="list-style: none; padding: 0; margin: 0;">
+        <!-- Filled by JS -->
+      </ul>
     </div>
     <div id="view-privacy" class="view" style="display: none; padding: 20px;">
       <h2>Privacy & Data</h2>
@@ -103,17 +113,25 @@
         <input type="text" placeholder="e.g. Watch an episode of my favorite show" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; margin-bottom: 10px;">
         <button class="action-btn" onclick="alert('Reward linked! Complete your goals today to unlock it.')">Set Reward</button>
       </div>
-
+    </div>
+    <div id="view-scoreboard" class="view" style="display: none; padding: 20px;">
+      <h2 style="margin-top: 0;">Scoreboard</h2>
       <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Leaderboard
+        <h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px; color: var(--primary);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Friends & Family
         </h3>
         <p style="color: #666; font-size: 14px;">Make healthy eating the norm with your group.</p>
-        <ul style="list-style: none; padding: 0; margin: 0;">
-          <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;"><strong>1. You</strong> <span>100% Goals Met</span></li>
-          <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">2. Sarah A. <span>95% Goals Met</span></li>
-          <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">3. Mark T. <span>80% Goals Met</span></li>
+        <ul style="list-style: none; padding: 0; margin: 0;" id="scoreboard-list">
+          <li style="padding: 15px 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: var(--primary);"><span style="display:inline-block; width: 20px;">1.</span> You</strong> <span id="user-score-display" style="font-weight: bold; background: #e6f4ea; color: var(--primary); padding: 4px 10px; border-radius: 12px;">0 pts</span>
+          </li>
+          <li style="padding: 15px 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+            <span><span style="display:inline-block; width: 20px;">2.</span> Sarah A.</span> <span style="font-weight: bold; color: #666;">240 pts</span>
+          </li>
+          <li style="padding: 15px 10px; display: flex; justify-content: space-between; align-items: center;">
+            <span><span style="display:inline-block; width: 20px;">3.</span> Mark T.</span> <span style="font-weight: bold; color: #666;">180 pts</span>
+          </li>
         </ul>
       </div>
     </div>
@@ -122,8 +140,8 @@
     <button onclick="navigateTo('view-dashboard')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     </button>
-    <button onclick="navigateTo('view-logging')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    <button onclick="navigateTo('view-scoreboard')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     </button>
     <button onclick="navigateTo('view-habits')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>

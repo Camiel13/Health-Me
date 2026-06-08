@@ -1,9 +1,17 @@
 export function initStore() {
   if (!localStorage.getItem('health_app_state')) {
     const defaultState = { 
-      history: [] // Array of { date: 'YYYY-MM-DD', foods: [], steps: 0 }
+      history: [], // Array of { date: 'YYYY-MM-DD', foods: [], steps: 0 }
+      habits: [], // Array of { id, trigger, action, time, frequency, completions: 0 }
+      score: 0
     };
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
+  } else {
+    // Migrate old state
+    const state = JSON.parse(localStorage.getItem('health_app_state'));
+    if (!state.habits) state.habits = [];
+    if (typeof state.score !== 'number') state.score = 0;
+    localStorage.setItem('health_app_state', JSON.stringify(state));
   }
 }
 
@@ -55,4 +63,20 @@ export function getTodayTotals() {
     totals.sodium += (food.sodium || 0);
     return totals;
   }, { calories: 0, carbs: 0, protein: 0, fat: 0, fiber: 0, sodium: 0, steps: record.steps });
+}
+
+export function addHabit(habit) {
+  const state = getState();
+  state.habits.push({ ...habit, id: Date.now(), completions: 0 });
+  saveState(state);
+}
+
+export function completeHabit(habitId) {
+  const state = getState();
+  const habit = state.habits.find(h => h.id === habitId);
+  if (habit) {
+    habit.completions++;
+    state.score += 10; // Award 10 points per completion
+    saveState(state);
+  }
 }

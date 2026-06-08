@@ -1,7 +1,7 @@
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState } from './store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initScanner();
@@ -52,7 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             searchResults.appendChild(li);
           });
         } catch (err) {
-          searchResults.innerHTML = '<li style="padding: 15px; color: red; text-align: center;">Error fetching results</li>';
+          // Graceful error fallback, e.g. when OFC API is down or cors fails
+          searchResults.innerHTML = '<li style="padding: 15px; color: #888; text-align: center;">Unable to connect to food database.</li>';
         }
       }, 500);
     });
@@ -85,8 +86,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  document.getElementById('save-habit-btn')?.addEventListener('click', () => {
+    const trigger = document.getElementById('habit-trigger').value;
+    const action = document.getElementById('habit-action').value;
+    const time = document.getElementById('habit-time').value;
+    const freq = document.getElementById('habit-freq').value;
+    if(trigger && action) {
+      addHabit({ trigger, action, time, frequency: freq });
+      document.getElementById('habit-form-modal').style.display = 'none';
+      document.getElementById('habit-trigger').value = '';
+      document.getElementById('habit-action').value = '';
+      document.getElementById('habit-time').value = '';
+      renderHabits();
+    }
+  });
+
   renderDashboard();
+  renderHabits();
+  renderScoreboard();
 });
+
+window.completeHabitAction = function(id) {
+  completeHabit(id);
+  renderHabits();
+  renderScoreboard();
+};
+
+export function renderHabits() {
+  const list = document.getElementById('habits-list');
+  if(!list) return;
+  const state = getState();
+  if(!state.habits || state.habits.length === 0) {
+    list.innerHTML = '<li><small style="color: #666;">No habits added yet.</small></li>';
+    return;
+  }
+  list.innerHTML = state.habits.map(h => `
+    <li style="background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+      <div>
+        <strong style="display: block;">After ${h.trigger}, I will ${h.action}</strong>
+        <small style="color: #666;">${h.time ? h.time + ' - ' : ''}${h.frequency} | ${h.completions} completions</small>
+      </div>
+      <button onclick="completeHabitAction(${h.id})" style="padding: 8px 12px; background: #e6f4ea; color: var(--primary); border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Done!</button>
+    </li>
+  `).join('');
+}
+
+export function renderScoreboard() {
+  const scoreDisplay = document.getElementById('user-score-display');
+  if(scoreDisplay) {
+    const state = getState();
+    scoreDisplay.textContent = \`\${state.score || 0} pts\`;
+  }
+}
 
 export function renderDashboard() {
   const totals = getTodayTotals();
