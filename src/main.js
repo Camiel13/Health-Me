@@ -1,7 +1,7 @@
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat } from './store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initStore();
@@ -114,6 +114,26 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Profile saved!');
   });
 
+  document.querySelectorAll('.buy-hat-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const hat = e.target.getAttribute('data-hat');
+      const cost = parseInt(e.target.getAttribute('data-cost'));
+      if (buyHat(hat, cost)) {
+        alert('Item unlocked! Go to Profile to equip it.');
+        renderScoreboard();
+        renderProfile();
+        document.getElementById('shop-modal').style.display = 'none';
+      } else {
+        const state = getState();
+        if (state.unlockedHats?.includes(hat)) {
+          alert('You already own this item!');
+        } else {
+          alert('Not enough points!');
+        }
+      }
+    });
+  });
+
   renderDashboard();
   renderHabits();
   renderProfile();
@@ -149,7 +169,21 @@ export function renderProfile() {
   
   if(nameInput) nameInput.value = state.name || 'You';
   if(nameDisplay) nameDisplay.textContent = state.name || 'You';
-  if(hatSelect && state.avatar) hatSelect.value = state.avatar.hat || 'none';
+  
+  if(hatSelect) {
+    const unlocked = state.unlockedHats || ['none'];
+    const options = [
+      { value: 'none', label: 'None' },
+      { value: 'cap', label: 'Red Cap' },
+      { value: 'crown', label: 'Gold Crown' }
+    ];
+    hatSelect.innerHTML = options
+      .filter(opt => unlocked.includes(opt.value) || opt.value === 'none')
+      .map(opt => `<option value="${opt.value}">${opt.label}</option>`)
+      .join('');
+    hatSelect.value = state.avatar ? state.avatar.hat : 'none';
+  }
+
   if(avatarContainer) {
     avatarContainer.innerHTML = getAvatarSvg(state.avatar ? state.avatar.hat : 'none');
     avatarContainer.style.color = 'var(--primary)';
@@ -191,7 +225,7 @@ export function renderScoreboard() {
   const state = getState();
   
   if(scoreDisplay) {
-    scoreDisplay.textContent = \`\${state.score || 0} pts\`;
+    scoreDisplay.textContent = `${state.score || 0} pts`;
   }
   if(nameDisplaySb) {
     nameDisplaySb.textContent = state.name || 'You';
@@ -230,10 +264,61 @@ export function renderDashboard() {
   if (diffsContainer) {
     const goals = { carbs: 250, protein: 50, fat: 70, fiber: 28, sodium: 2300 };
     diffsContainer.innerHTML = `
-      <div class="diff-card"><strong>Carbs</strong><br>${Math.round(totals.carbs)} / ${goals.carbs}g</div>
-      <div class="diff-card"><strong>Protein</strong><br>${Math.round(totals.protein)} / ${goals.protein}g</div>
-      <div class="diff-card"><strong>Fat</strong><br>${Math.round(totals.fat)} / ${goals.fat}g</div>
-      <div class="diff-card"><strong>Fiber</strong><br>${Math.round(totals.fiber)} / ${goals.fiber}g</div>
+      <div class="macro-card macro-carbs">
+        <div class="macro-header">
+          <span>Carbs</span>
+          <div class="macro-icon">🌾</div>
+        </div>
+        <div class="macro-values">
+          <span class="macro-current">${Math.round(totals.carbs)}</span>
+          <span class="macro-target">/ ${goals.carbs}g</span>
+        </div>
+        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.carbs/goals.carbs)*100, 100)}%"></div></div>
+      </div>
+      <div class="macro-card macro-protein">
+        <div class="macro-header">
+          <span>Protein</span>
+          <div class="macro-icon">🥩</div>
+        </div>
+        <div class="macro-values">
+          <span class="macro-current">${Math.round(totals.protein)}</span>
+          <span class="macro-target">/ ${goals.protein}g</span>
+        </div>
+        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.protein/goals.protein)*100, 100)}%"></div></div>
+      </div>
+      <div class="macro-card macro-fat">
+        <div class="macro-header">
+          <span>Fat</span>
+          <div class="macro-icon">🥑</div>
+        </div>
+        <div class="macro-values">
+          <span class="macro-current">${Math.round(totals.fat)}</span>
+          <span class="macro-target">/ ${goals.fat}g</span>
+        </div>
+        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.fat/goals.fat)*100, 100)}%"></div></div>
+      </div>
+      <div class="macro-card macro-fiber">
+        <div class="macro-header">
+          <span>Fiber</span>
+          <div class="macro-icon">🥦</div>
+        </div>
+        <div class="macro-values">
+          <span class="macro-current">${Math.round(totals.fiber)}</span>
+          <span class="macro-target">/ ${goals.fiber}g</span>
+        </div>
+        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.fiber/goals.fiber)*100, 100)}%"></div></div>
+      </div>
+      <div class="macro-card macro-sodium" style="grid-column: span 2;">
+        <div class="macro-header">
+          <span>Sodium</span>
+          <div class="macro-icon">🧂</div>
+        </div>
+        <div class="macro-values">
+          <span class="macro-current">${Math.round(totals.sodium)}</span>
+          <span class="macro-target">/ ${goals.sodium}mg</span>
+        </div>
+        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.sodium/goals.sodium)*100, 100)}%"></div></div>
+      </div>
     `;
   }
   

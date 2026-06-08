@@ -13,6 +13,7 @@ export function initStore() {
     if (!state.habits) state.habits = [];
     if (typeof state.score !== 'number') state.score = 0;
     if (!state.avatar) state.avatar = { hat: 'none', item: 'none' };
+    if (!state.unlockedHats) state.unlockedHats = ['none'];
     localStorage.setItem('health_app_state', JSON.stringify(state));
   }
 }
@@ -89,4 +90,16 @@ export function updateProfile(name, hat) {
   if (!state.avatar) state.avatar = {};
   state.avatar.hat = hat;
   saveState(state);
+}
+
+export function buyHat(hatId, cost) {
+  const state = getState();
+  if (!state.unlockedHats) state.unlockedHats = ['none'];
+  if (state.score >= cost && !state.unlockedHats.includes(hatId)) {
+    state.score -= cost;
+    state.unlockedHats.push(hatId);
+    saveState(state);
+    return true;
+  }
+  return false;
 }
