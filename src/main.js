@@ -1,7 +1,21 @@
+import { getAvatarSvg } from './main.js'; // Ensure we can use it inside if needed
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
 import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat } from './store.js';
+
+window.openShopModal = function() {
+  const backdrop = document.getElementById('shop-backdrop');
+  backdrop.style.display = 'block';
+  // Small timeout to allow display:block to apply before animating opacity
+  setTimeout(() => backdrop.style.opacity = '1', 10);
+};
+
+window.closeShopModal = function() {
+  const backdrop = document.getElementById('shop-backdrop');
+  backdrop.style.opacity = '0';
+  setTimeout(() => backdrop.style.display = 'none', 300);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   initStore();
@@ -122,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Item unlocked! Go to Profile to equip it.');
         renderScoreboard();
         renderProfile();
-        document.getElementById('shop-modal').style.display = 'none';
+        window.closeShopModal();
       } else {
         const state = getState();
         if (state.unlockedHats?.includes(hat)) {
@@ -205,12 +219,12 @@ export function renderHabits() {
     return;
   }
   list.innerHTML = state.habits.map(h => `
-    <li style="background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
       <div>
-        <strong style="display: block;">After ${h.trigger}, I will ${h.action}</strong>
-        <small style="color: #666;">${h.time ? h.time + ' - ' : ''}${h.frequency} | ${h.completions} completions</small>
+        <strong style="display: block; font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">After ${h.trigger}, I will ${h.action}</strong>
+        <small style="color: var(--text-light); font-size: 13px; font-weight: 500;">${h.time ? h.time + ' - ' : ''}${h.frequency} | ${h.completions} completions</small>
       </div>
-      <button onclick="completeHabitAction(${h.id})" style="padding: 8px 12px; background: #e6f4ea; color: var(--primary); border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Done!</button>
+      <button onclick="completeHabitAction(${h.id})" style="padding: 8px 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-family: 'Inter', sans-serif; box-shadow: 0 4px 10px rgba(130,207,160,0.3); transition: transform 0.2s;">Done!</button>
     </li>
   `).join('');
 }
@@ -330,8 +344,9 @@ export function renderDashboard() {
       todaysList.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       todaysList.innerHTML = record.foods.map(f => `
-        <li style="padding: 10px; background: white; margin-bottom: 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-          <strong>${f.name}</strong><span style="float:right; color: var(--primary); font-weight: bold;">${f.calories} kcal</span>
+        <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <strong style="font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">${f.name}</strong>
+          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px;">${f.calories} kcal</span>
         </li>
       `).join('');
     }
