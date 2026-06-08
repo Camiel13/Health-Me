@@ -23,12 +23,30 @@ window.getSmartSuggestion = function() {
   const meals = [
     { name: 'Greek Yogurt & Protein Oats', time: 'morning', macros: { protein: 30, carbs: 45, fat: 8, calories: 370 }, icon: '🥣' },
     { name: 'Avocado Toast & Egg Whites', time: 'morning', macros: { protein: 20, carbs: 30, fat: 12, calories: 308 }, icon: '🥑' },
+    { name: 'Protein Pancakes', time: 'morning', macros: { protein: 35, carbs: 40, fat: 10, calories: 390 }, icon: '🥞' },
+    { name: 'Scrambled Tofu & Spinach', time: 'morning', macros: { protein: 22, carbs: 12, fat: 14, calories: 262 }, icon: '🍳' },
+    { name: 'Smoked Salmon Bagel', time: 'morning', macros: { protein: 24, carbs: 45, fat: 12, calories: 384 }, icon: '🥯' },
+    { name: 'Fruit Smoothie Bowl', time: 'morning', macros: { protein: 15, carbs: 55, fat: 8, calories: 352 }, icon: '🫐' },
+    
     { name: 'Grilled Chicken Salad', time: 'afternoon', macros: { protein: 40, carbs: 15, fat: 10, calories: 310 }, icon: '🥗' },
     { name: 'Turkey & Cheese Wrap', time: 'afternoon', macros: { protein: 35, carbs: 40, fat: 15, calories: 435 }, icon: '🌯' },
+    { name: 'Quinoa & Black Bean Bowl', time: 'afternoon', macros: { protein: 18, carbs: 60, fat: 8, calories: 384 }, icon: '🍲' },
+    { name: 'Tuna Salad Sandwich', time: 'afternoon', macros: { protein: 32, carbs: 38, fat: 12, calories: 388 }, icon: '🥪' },
+    { name: 'Lentil Soup & Sourdough', time: 'afternoon', macros: { protein: 20, carbs: 55, fat: 5, calories: 345 }, icon: '🥣' },
+    { name: 'Chicken Poke Bowl', time: 'afternoon', macros: { protein: 38, carbs: 50, fat: 14, calories: 478 }, icon: '🍱' },
+    
     { name: 'Baked Salmon & Asparagus', time: 'evening', macros: { protein: 35, carbs: 10, fat: 20, calories: 360 }, icon: '🐟' },
     { name: 'Lean Beef Stir-fry', time: 'evening', macros: { protein: 30, carbs: 35, fat: 12, calories: 368 }, icon: '🥩' },
+    { name: 'Vegetarian Chili', time: 'evening', macros: { protein: 22, carbs: 45, fat: 6, calories: 322 }, icon: '🍲' },
+    { name: 'Chicken Parmesan & Zucchini', time: 'evening', macros: { protein: 42, carbs: 20, fat: 18, calories: 410 }, icon: '🍝' },
+    { name: 'Pork Tenderloin & Sweet Potato', time: 'evening', macros: { protein: 36, carbs: 40, fat: 10, calories: 394 }, icon: '🍠' },
+    { name: 'Shrimp Tacos', time: 'evening', macros: { protein: 28, carbs: 35, fat: 12, calories: 360 }, icon: '🌮' },
+    
     { name: 'Protein Shake & Almonds', time: 'any', macros: { protein: 25, carbs: 10, fat: 15, calories: 275 }, icon: '🥤' },
-    { name: 'Cottage Cheese & Berries', time: 'any', macros: { protein: 28, carbs: 15, fat: 5, calories: 217 }, icon: '🍓' }
+    { name: 'Cottage Cheese & Berries', time: 'any', macros: { protein: 28, carbs: 15, fat: 5, calories: 217 }, icon: '🍓' },
+    { name: 'Apple & Peanut Butter', time: 'any', macros: { protein: 8, carbs: 25, fat: 16, calories: 276 }, icon: '🍎' },
+    { name: 'Edamame Beans', time: 'any', macros: { protein: 17, carbs: 15, fat: 8, calories: 188 }, icon: '🌿' },
+    { name: 'Hard Boiled Eggs & Carrots', time: 'any', macros: { protein: 14, carbs: 10, fat: 10, calories: 186 }, icon: '🥚' }
   ];
 
   let candidates = meals.filter(m => m.time === timeOfDay || m.time === 'any');
@@ -42,7 +60,7 @@ window.getSmartSuggestion = function() {
   let bestScore = -Infinity;
 
   candidates.forEach(meal => {
-    let score = (Math.random() * 5); // Add slight randomness for variety
+    let score = (Math.random() * 25); // Increased randomness for high variety
     if (meal.macros.calories <= remaining.calories + 100) {
       score += 10;
     }
@@ -305,6 +323,14 @@ window.completeHabitAction = function(id) {
   completeHabit(id);
   renderHabits();
   renderScoreboard();
+  if (typeof confetti === 'function') {
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ['#82cfa0', '#5b9d74', '#FFD700', '#ffffff']
+    });
+  }
 };
 
 export function renderHabits() {
