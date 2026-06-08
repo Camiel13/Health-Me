@@ -1,8 +1,96 @@
-import { getAvatarSvg } from './main.js'; // Ensure we can use it inside if needed
+
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
 import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat } from './store.js';
+
+window.getSmartSuggestion = function() {
+  const totals = getTodayTotals();
+  const goals = { calories: 2000, carbs: 250, protein: 50, fat: 70 };
+  
+  const remaining = {
+    calories: Math.max(0, goals.calories - totals.calories),
+    carbs: Math.max(0, goals.carbs - totals.carbs),
+    protein: Math.max(0, goals.protein - totals.protein),
+    fat: Math.max(0, goals.fat - totals.fat)
+  };
+
+  const hour = new Date().getHours();
+  let timeOfDay = 'evening';
+  if (hour < 11) timeOfDay = 'morning';
+  else if (hour < 16) timeOfDay = 'afternoon';
+
+  const meals = [
+    { name: 'Greek Yogurt & Protein Oats', time: 'morning', macros: { protein: 30, carbs: 45, fat: 8, calories: 370 }, icon: '🥣' },
+    { name: 'Avocado Toast & Egg Whites', time: 'morning', macros: { protein: 20, carbs: 30, fat: 12, calories: 308 }, icon: '🥑' },
+    { name: 'Grilled Chicken Salad', time: 'afternoon', macros: { protein: 40, carbs: 15, fat: 10, calories: 310 }, icon: '🥗' },
+    { name: 'Turkey & Cheese Wrap', time: 'afternoon', macros: { protein: 35, carbs: 40, fat: 15, calories: 435 }, icon: '🌯' },
+    { name: 'Baked Salmon & Asparagus', time: 'evening', macros: { protein: 35, carbs: 10, fat: 20, calories: 360 }, icon: '🐟' },
+    { name: 'Lean Beef Stir-fry', time: 'evening', macros: { protein: 30, carbs: 35, fat: 12, calories: 368 }, icon: '🥩' },
+    { name: 'Protein Shake & Almonds', time: 'any', macros: { protein: 25, carbs: 10, fat: 15, calories: 275 }, icon: '🥤' },
+    { name: 'Cottage Cheese & Berries', time: 'any', macros: { protein: 28, carbs: 15, fat: 5, calories: 217 }, icon: '🍓' }
+  ];
+
+  let candidates = meals.filter(m => m.time === timeOfDay || m.time === 'any');
+  if (candidates.length === 0) candidates = meals;
+  
+  const needCarbs = goals.carbs > 0 ? remaining.carbs / goals.carbs : 0;
+  const needProtein = goals.protein > 0 ? remaining.protein / goals.protein : 0;
+  const needFat = goals.fat > 0 ? remaining.fat / goals.fat : 0;
+  
+  let bestMeal = candidates[0];
+  let bestScore = -Infinity;
+
+  candidates.forEach(meal => {
+    let score = (Math.random() * 5); // Add slight randomness for variety
+    if (meal.macros.calories <= remaining.calories + 100) {
+      score += 10;
+    }
+    
+    if (needProtein >= needCarbs && needProtein >= needFat) {
+      score += meal.macros.protein;
+    } else if (needCarbs >= needProtein && needCarbs >= needFat) {
+      score += meal.macros.carbs;
+    } else {
+      score += meal.macros.fat;
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMeal = meal;
+    }
+  });
+
+  const nameEl = document.getElementById('smart-meal-name');
+  const macrosEl = document.getElementById('smart-meal-macros');
+  const iconEl = document.getElementById('smart-meal-icon');
+
+  if (nameEl) {
+    nameEl.style.transition = 'opacity 0.2s';
+    nameEl.style.opacity = 0;
+    setTimeout(() => {
+      nameEl.textContent = bestMeal.name;
+      nameEl.style.opacity = 1;
+    }, 200);
+  }
+  
+  if (macrosEl) {
+    macrosEl.style.transition = 'opacity 0.2s';
+    macrosEl.style.opacity = 0;
+    setTimeout(() => {
+      macrosEl.textContent = `${bestMeal.macros.calories} kcal | ${bestMeal.macros.protein}g P | ${bestMeal.macros.carbs}g C | ${bestMeal.macros.fat}g F`;
+      macrosEl.style.opacity = 1;
+    }, 200);
+  }
+  
+  if (iconEl) {
+    iconEl.style.transform = 'scale(0)';
+    setTimeout(() => {
+      iconEl.textContent = bestMeal.icon;
+      iconEl.style.transform = 'scale(1)';
+    }, 200);
+  }
+};
 
 window.openShopModal = function() {
   const backdrop = document.getElementById('shop-backdrop');
@@ -160,6 +248,12 @@ export function getAvatarSvg(hat) {
     hatSvg = '<path d="M 30 25 Q 50 10 70 25 L 85 25 L 70 32 Z" fill="#FF4500" />';
   } else if (hat === 'crown') {
     hatSvg = '<path d="M 30 25 L 35 5 L 50 15 L 65 5 L 70 25 Z" fill="#FFD700" />';
+  } else if (hat === 'glasses') {
+    hatSvg = '<rect x="38" y="30" width="10" height="8" fill="none" stroke="blue" stroke-width="2" rx="2" /><rect x="52" y="30" width="10" height="8" fill="none" stroke="blue" stroke-width="2" rx="2" /><line x1="48" y1="34" x2="52" y2="34" stroke="blue" stroke-width="2" />';
+  } else if (hat === 'scarf') {
+    hatSvg = '<path d="M 42 48 Q 50 55 58 48 L 55 60 Q 50 65 45 60 Z" fill="green" />';
+  } else if (hat === 'chef') {
+    hatSvg = '<path d="M 38 22 L 38 10 Q 38 0 50 0 Q 62 0 62 10 L 62 22 Z" fill="white" stroke="#ccc" stroke-width="2" /><rect x="36" y="22" width="28" height="5" fill="white" stroke="#ccc" stroke-width="2" />';
   }
   return `
     <svg viewBox="0 0 100 100" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg">
@@ -189,7 +283,10 @@ export function renderProfile() {
     const options = [
       { value: 'none', label: 'None' },
       { value: 'cap', label: 'Red Cap' },
-      { value: 'crown', label: 'Gold Crown' }
+      { value: 'crown', label: 'Gold Crown' },
+      { value: 'glasses', label: 'Blue Glasses' },
+      { value: 'scarf', label: 'Green Scarf' },
+      { value: 'chef', label: 'Chef Hat' }
     ];
     hatSelect.innerHTML = options
       .filter(opt => unlocked.includes(opt.value) || opt.value === 'none')

@@ -59,11 +59,12 @@
       
       <div class="recipe-card glass-card">
         <div class="recipe-content">
-          <h3>Recommended Meal</h3>
-          <p>Balanced Chicken & Quinoa Salad</p>
-          <button class="recipe-btn">View Recipe</button>
+          <h3 style="margin-bottom: 4px;">Smart Meal Suggestion</h3>
+          <p id="smart-meal-name" style="margin-bottom: 4px; font-weight: 600;">Balanced Chicken & Quinoa Salad</p>
+          <p id="smart-meal-macros" style="font-size: 13px; color: var(--text-light); margin-top: 0; margin-bottom: 12px; font-weight: 500;">400 kcal | 35g P | 40g C | 12g F</p>
+          <button class="recipe-btn" onclick="getSmartSuggestion()" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border: none; color: white; font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(130, 207, 160, 0.3);">Get Smart Suggestion</button>
         </div>
-        <div class="recipe-image-placeholder">🥗</div>
+        <div id="smart-meal-icon" class="recipe-image-placeholder" style="transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center;">🥗</div>
       </div>
     </div>
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">
@@ -173,6 +174,9 @@
               <option value="none">None</option>
               <option value="cap">Red Cap</option>
               <option value="crown">Gold Crown</option>
+              <option value="glasses">Blue Glasses</option>
+              <option value="scarf">Green Scarf</option>
+              <option value="chef">Chef Hat</option>
             </select>
           </div>
           <button id="save-profile-btn" class="action-btn" style="padding: 16px; border-radius: 16px; font-size: 16px; margin-top: 8px; background: linear-gradient(135deg, var(--primary), var(--primary-dark));">Save & Update</button>
@@ -262,6 +266,33 @@
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.7); border: 1px dashed #c49a6c; border-radius: 8px;">
               <span style="font-weight: 700; color: #5c3317; font-size: 16px;">Gold Crown</span>
               <button class="buy-hat-btn action-btn" data-hat="crown" data-cost="200" style="padding: 8px 16px; margin: 0; font-size: 14px; width: auto; min-width: 90px; background: #5b9d74; box-shadow: 0 4px 0 #3e6d50; text-shadow: 0 1px 1px rgba(0,0,0,0.2);">200 pts</button>
+            </div>
+            <!-- Shelf -->
+            <div style="height: 8px; background: #8b5a2b; width: 100%; border-radius: 4px; margin-top: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"></div>
+          </div>
+          
+          <div style="position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.7); border: 1px dashed #c49a6c; border-radius: 8px;">
+              <span style="font-weight: 700; color: #5c3317; font-size: 16px;">Blue Glasses</span>
+              <button class="buy-hat-btn action-btn" data-hat="glasses" data-cost="100" style="padding: 8px 16px; margin: 0; font-size: 14px; width: auto; min-width: 90px; background: #5b9d74; box-shadow: 0 4px 0 #3e6d50; text-shadow: 0 1px 1px rgba(0,0,0,0.2);">100 pts</button>
+            </div>
+            <!-- Shelf -->
+            <div style="height: 8px; background: #8b5a2b; width: 100%; border-radius: 4px; margin-top: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"></div>
+          </div>
+
+          <div style="position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.7); border: 1px dashed #c49a6c; border-radius: 8px;">
+              <span style="font-weight: 700; color: #5c3317; font-size: 16px;">Green Scarf</span>
+              <button class="buy-hat-btn action-btn" data-hat="scarf" data-cost="150" style="padding: 8px 16px; margin: 0; font-size: 14px; width: auto; min-width: 90px; background: #5b9d74; box-shadow: 0 4px 0 #3e6d50; text-shadow: 0 1px 1px rgba(0,0,0,0.2);">150 pts</button>
+            </div>
+            <!-- Shelf -->
+            <div style="height: 8px; background: #8b5a2b; width: 100%; border-radius: 4px; margin-top: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"></div>
+          </div>
+
+          <div style="position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.7); border: 1px dashed #c49a6c; border-radius: 8px;">
+              <span style="font-weight: 700; color: #5c3317; font-size: 16px;">Chef Hat</span>
+              <button class="buy-hat-btn action-btn" data-hat="chef" data-cost="300" style="padding: 8px 16px; margin: 0; font-size: 14px; width: auto; min-width: 90px; background: #5b9d74; box-shadow: 0 4px 0 #3e6d50; text-shadow: 0 1px 1px rgba(0,0,0,0.2);">300 pts</button>
             </div>
             <!-- Shelf -->
             <div style="height: 8px; background: #8b5a2b; width: 100%; border-radius: 4px; margin-top: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);"></div>
