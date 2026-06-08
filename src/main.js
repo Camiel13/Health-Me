@@ -1,9 +1,10 @@
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile } from './store.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initStore();
   initScanner();
   const searchInput = document.getElementById('food-search');
   const searchResults = document.getElementById('search-results');
@@ -106,17 +107,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('save-profile-btn')?.addEventListener('click', () => {
     const newName = document.getElementById('profile-name').value.trim();
-    const nameDisplay = document.getElementById('user-name-display');
-    if(nameDisplay) {
-      nameDisplay.textContent = newName || 'You';
-    }
+    const hat = document.getElementById('profile-hat').value;
+    updateProfile(newName || 'You', hat);
+    renderScoreboard();
+    renderProfile();
     alert('Profile saved!');
   });
 
   renderDashboard();
   renderHabits();
+  renderProfile();
   renderScoreboard();
 });
+
+export function getAvatarSvg(hat) {
+  let hatSvg = '';
+  if (hat === 'cap') {
+    hatSvg = '<path d="M 30 25 Q 50 10 70 25 L 85 25 L 70 32 Z" fill="#FF4500" />';
+  } else if (hat === 'crown') {
+    hatSvg = '<path d="M 30 25 L 35 5 L 50 15 L 65 5 L 70 25 Z" fill="#FFD700" />';
+  }
+  return `
+    <svg viewBox="0 0 100 100" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="35" r="15" fill="none" stroke="currentColor" stroke-width="4"/>
+      <line x1="50" y1="50" x2="50" y2="80" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="30" y2="45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="60" x2="70" y2="45" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="80" x2="35" y2="95" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="80" x2="65" y2="95" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      ${hatSvg}
+    </svg>
+  `;
+}
+
+export function renderProfile() {
+  const state = getState();
+  const nameInput = document.getElementById('profile-name');
+  const hatSelect = document.getElementById('profile-hat');
+  const avatarContainer = document.getElementById('profile-avatar-container');
+  const nameDisplay = document.getElementById('profile-name-display');
+  
+  if(nameInput) nameInput.value = state.name || 'You';
+  if(nameDisplay) nameDisplay.textContent = state.name || 'You';
+  if(hatSelect && state.avatar) hatSelect.value = state.avatar.hat || 'none';
+  if(avatarContainer) {
+    avatarContainer.innerHTML = getAvatarSvg(state.avatar ? state.avatar.hat : 'none');
+    avatarContainer.style.color = 'var(--primary)';
+  }
+}
 
 window.completeHabitAction = function(id) {
   completeHabit(id);
@@ -145,9 +183,30 @@ export function renderHabits() {
 
 export function renderScoreboard() {
   const scoreDisplay = document.getElementById('user-score-display');
+  const nameDisplaySb = document.getElementById('user-name-display-sb');
+  const avatarYou = document.getElementById('scoreboard-avatar-you');
+  const avatarSarah = document.getElementById('scoreboard-avatar-sarah');
+  const avatarMark = document.getElementById('scoreboard-avatar-mark');
+  
+  const state = getState();
+  
   if(scoreDisplay) {
-    const state = getState();
     scoreDisplay.textContent = \`\${state.score || 0} pts\`;
+  }
+  if(nameDisplaySb) {
+    nameDisplaySb.textContent = state.name || 'You';
+  }
+  if(avatarYou) {
+    avatarYou.innerHTML = getAvatarSvg(state.avatar ? state.avatar.hat : 'none');
+    avatarYou.style.color = 'var(--primary)';
+  }
+  if(avatarSarah) {
+    avatarSarah.innerHTML = getAvatarSvg('crown');
+    avatarSarah.style.color = '#e29578';
+  }
+  if(avatarMark) {
+    avatarMark.innerHTML = getAvatarSvg('cap');
+    avatarMark.style.color = '#83c5be';
   }
 }
 

@@ -3,7 +3,8 @@ export function initStore() {
     const defaultState = { 
       history: [], // Array of { date: 'YYYY-MM-DD', foods: [], steps: 0 }
       habits: [], // Array of { id, trigger, action, time, frequency, completions: 0 }
-      score: 0
+      score: 0,
+      avatar: { hat: 'none', item: 'none' }
     };
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
   } else {
@@ -11,6 +12,7 @@ export function initStore() {
     const state = JSON.parse(localStorage.getItem('health_app_state'));
     if (!state.habits) state.habits = [];
     if (typeof state.score !== 'number') state.score = 0;
+    if (!state.avatar) state.avatar = { hat: 'none', item: 'none' };
     localStorage.setItem('health_app_state', JSON.stringify(state));
   }
 }
@@ -79,4 +81,12 @@ export function completeHabit(habitId) {
     state.score += 10; // Award 10 points per completion
     saveState(state);
   }
+}
+
+export function updateProfile(name, hat) {
+  const state = getState();
+  state.name = name;
+  if (!state.avatar) state.avatar = {};
+  state.avatar.hat = hat;
+  saveState(state);
 }
