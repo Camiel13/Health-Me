@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health SPA</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <main id="app">
+    <div id="view-dashboard" class="view">Dashboard</div>
+    <div id="view-logging" class="view" style="display: none;">Logging</div>
+    <div id="view-habits" class="view" style="display: none;">Habits</div>
+    <div id="view-privacy" class="view" style="display: none;">Privacy</div>
+  </main>
+  <nav class="bottom-nav">
+    <button onclick="navigateTo('view-dashboard')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    </button>
+    <button onclick="navigateTo('view-logging')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </nav>
+  <script type="module">
+    import { navigateTo } from './src/router.js';
+    window.navigateTo = navigateTo;
+  </script>
+</body>
+</html>
