@@ -25,13 +25,102 @@ body {
   font-family: 'Inter', system-ui, sans-serif; 
   background: var(--bg-gradient); 
   color: var(--text); 
-  padding-bottom: 60px; 
-  min-height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-.bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 20px rgba(0,0,0,0.05); z-index: 100; border-top: 1px solid rgba(0,0,0,0.05); }
-.bottom-nav button { background: none; border: none; cursor: pointer; color: var(--text-light); transition: all 0.2s; }
-.bottom-nav button:hover { color: var(--primary); transform: translateY(-2px); }
+.bottom-nav { 
+  position: fixed; 
+  bottom: 0; 
+  width: 100%; 
+  height: 60px; 
+  background: rgba(255,255,255,0.95); 
+  backdrop-filter: blur(10px); 
+  display: flex; 
+  justify-content: space-around; 
+  align-items: center; 
+  box-shadow: 0 -2px 20px rgba(0,0,0,0.05); 
+  z-index: 100; 
+  border-top: 1px solid rgba(0,0,0,0.05); 
+}
+.bottom-nav button { 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: var(--text-light); 
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.bottom-nav button:hover { color: var(--primary); }
+.bottom-nav button.active { color: var(--primary-dark); }
+.bottom-nav button .nav-indicator {
+  position: absolute;
+  bottom: 8px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--primary-dark);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+.bottom-nav button.active .nav-indicator {
+  opacity: 1;
+  transform: scale(1);
+}
+.bottom-nav button svg {
+  transition: transform 0.3s ease;
+  margin-bottom: 4px;
+}
+.bottom-nav button.active svg {
+  transform: translateY(-4px);
+}
+
+.bottom-nav .nav-home-btn {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 8px 24px rgba(130, 207, 160, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid var(--bg-color);
+  z-index: 101;
+  flex: none;
+}
+.bottom-nav .nav-home-btn:hover {
+  color: white;
+  transform: translateX(-50%) translateY(-5px);
+  box-shadow: 0 12px 28px rgba(130, 207, 160, 0.6);
+}
+.bottom-nav .nav-home-btn.active {
+  color: white;
+}
+.bottom-nav .nav-home-btn .nav-indicator {
+  display: none;
+}
+.bottom-nav .nav-home-btn svg {
+  margin-bottom: 0;
+}
+.bottom-nav .nav-home-btn.active svg {
+  transform: scale(1.1);
+}
+
+.bottom-nav .nav-spacer {
+  flex: 0 0 60px;
+}
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -102,7 +191,7 @@ body {
 .action-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; transition: opacity 0.2s; box-shadow: 0 4px 10px rgba(163, 217, 177, 0.4); }
 .action-btn:hover { opacity: 0.9; }
 
-.view { animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1); }
+.view { height: calc(100dvh - 60px); overflow-y: auto; animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1); box-sizing: border-box; }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 .spin { animation: spin 1s linear infinite; }
@@ -152,4 +241,95 @@ body {
   0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
   70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
   100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+/* Dashboard Compact Native Layout */
+.dashboard-view {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px 10px 20px !important;
+  gap: 12px;
+}
+
+.dash-top-section {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.dash-top-section .wheel-card {
+  flex: 0 0 110px;
+  margin-bottom: 0;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diff-grid-compact {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.diff-grid-compact .macro-card {
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+.diff-grid-compact .macro-header {
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+.diff-grid-compact .macro-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  border-radius: 6px;
+}
+.diff-grid-compact .macro-current {
+  font-size: 14px;
+}
+.diff-grid-compact .macro-bar-bg {
+  height: 4px;
+  margin-top: 6px;
+}
+
+.dash-widgets-row {
+  display: flex;
+  gap: 12px;
+  height: 100px;
+}
+
+.compact-widget {
+  flex: 1;
+  padding: 12px !important;
+  margin-bottom: 0 !important;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-log-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Important for flex child scrolling */
+}
+
+#todays-foods-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#todays-foods-list li {
+  padding: 10px 16px !important;
+  margin-bottom: 8px !important;
+  border-radius: 12px !important;
 }

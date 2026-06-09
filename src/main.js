@@ -721,4 +721,17 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateEnvTip, 10000);
   // Initial tip
   setTimeout(updateEnvTip, 500);
+  
+  // Navigation active state toggle logic
+  setTimeout(() => {
+    const originalNav = window.navigateTo;
+    if (originalNav) {
+      window.navigateTo = function(viewId) {
+        originalNav(viewId);
+        document.querySelectorAll('.bottom-nav button').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.querySelector(`.bottom-nav button[onclick*="${viewId}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
+      };
+    }
+  }, 100);
 });
