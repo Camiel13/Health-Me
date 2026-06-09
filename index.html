@@ -78,6 +78,22 @@
         </div>
         <div id="smart-meal-icon" class="recipe-image-placeholder" style="transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center;">🥗</div>
       </div>
+      
+      <!-- New Environment Priming Card -->
+      <div class="env-tips-card glass-card" style="margin-top: 24px; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border: 1px solid rgba(255,255,255,0.8); position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 12px 24px rgba(0,0,0,0.05); transition: transform 0.2s;" onclick="navigateTo('view-environment')" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="position: absolute; right: -10px; top: -10px; font-size: 90px; opacity: 0.05; transform: rotate(15deg);">🏡</div>
+        <h3 style="margin: 0 0 8px 0; color: var(--text); font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">
+          <span style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px;">✨</span> Environment Design
+        </h3>
+        <p id="env-tip-text" style="margin: 0 0 16px 0; font-size: 15px; color: var(--text-light); font-weight: 500; line-height: 1.4; transition: opacity 0.3s ease;">
+          "Put your chips in the basement. Out of sight, out of mind."
+        </p>
+        <button style="background: white; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#fafafa'" onmouseout="this.style.background='white'">
+          Get Groceries & Prep 
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
     </div>
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">
       <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Log Food</h2>
@@ -100,10 +116,30 @@
     </div>
     <div id="view-habits" class="view" style="display: none; padding: 24px 20px; position: relative;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-        <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">Habit Architect</h2>
+        <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">Daily Routine Calendar</h2>
         <button onclick="document.getElementById('habit-form-modal').style.display='block'" class="add-log-btn" style="width: 48px; height: 48px; position: static;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
+      </div>
+
+      <div id="never-miss-twice-banner" class="emergency-banner" style="display: none;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+          <span style="font-size: 24px;">🚨</span>
+          <h3 style="margin: 0; color: #d32f2f; font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase;">Never Miss Twice</h3>
+        </div>
+        <p style="margin: 0; font-size: 14px; color: #c62828; font-weight: 600; line-height: 1.4;">
+          You missed your routine yesterday! Apply the <strong>2-minute rule</strong> today: just do the bare minimum for each habit, but don't break the chain again!
+        </p>
+      </div>
+
+      <div class="glass-card" style="margin-bottom: 24px; padding: 20px;">
+        <h3 style="margin: 0 0 16px 0; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--text); text-align: center;">This Week's Routine</h3>
+        <div id="week-calendar" style="display: flex; justify-content: space-between; align-items: center;">
+          <!-- Filled by JS -->
+        </div>
+        <div style="text-align: center; margin-top: 16px;">
+          <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-light);">Current Streak: <span id="current-streak-display" style="color: var(--primary); font-size: 16px;">0</span> days 🔥</span>
+        </div>
       </div>
 
       <div id="habit-form-modal" class="glass-card" style="display: none; margin-bottom: 24px; padding: 24px; position: relative;">
@@ -114,16 +150,22 @@
         <p style="color: var(--text-light); font-size: 14px; margin-bottom: 8px; font-weight: 600;">Action (I will...)</p>
         <input type="text" id="habit-action" placeholder="e.g. Drink water" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; margin-bottom: 16px; font-family: 'Inter', sans-serif;">
         
-        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
           <div style="flex: 1;">
-            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 8px; font-weight: 600;">Time</p>
-            <input type="time" id="habit-time" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-family: 'Inter', sans-serif;">
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 8px; font-weight: 600;">Routine Slot</p>
+            <select id="habit-slot" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-family: 'Inter', sans-serif;">
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Evening">Evening</option>
+              <option value="Anytime">Anytime</option>
+            </select>
           </div>
           <div style="flex: 1;">
-            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 8px; font-weight: 600;">Frequency</p>
-            <select id="habit-freq" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-family: 'Inter', sans-serif;">
-              <option value="Daily">Daily</option>
-              <option value="Weekly">Weekly</option>
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 8px; font-weight: 600;">Difficulty</p>
+            <select id="habit-difficulty" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-family: 'Inter', sans-serif;">
+              <option value="Easy">Easy (5 pts)</option>
+              <option value="Normal" selected>Normal (10 pts)</option>
+              <option value="Hard">Hard (20 pts)</option>
             </select>
           </div>
         </div>
@@ -369,12 +411,45 @@
     <h2 id="analyzing-text" style="font-family: 'Outfit', sans-serif; font-size: 24px; color: var(--text); margin: 0; transition: opacity 0.3s ease;">Analyzing your macros...</h2>
   </div>
 
+    <!-- Environment & Groceries View -->
+    <div id="view-environment" class="view" style="display: none; padding: 24px 20px; position: relative;">
+      <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Priming & Groceries</h2>
+      <p style="color: var(--text-light); font-weight: 500; margin-bottom: 24px; line-height: 1.4;">Design your environment for success. Good habits start at the grocery store.</p>
+      
+      <div class="glass-card" style="margin-bottom: 24px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: var(--text); border: none; box-shadow: 0 12px 24px rgba(132, 250, 176, 0.3);">
+        <h3 style="margin-top: 0; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px; font-size: 20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Smart Grocery List
+        </h3>
+        <p style="font-size: 14px; opacity: 0.9; margin-bottom: 16px; font-weight: 500;">Based on your macro goals, here is an automated list to keep your kitchen primed.</p>
+        <button id="generate-groceries-btn" class="action-btn" style="background: white; color: #1e362d; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">Generate Smart List</button>
+      </div>
+      
+      <div id="grocery-list-container" style="display: none; animation: fadeSlide 0.4s ease-out;">
+        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
+          <h4 style="margin: 0 0 12px 0; color: #1976d2; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🥩 Proteins</h4>
+          <ul id="grocery-proteins" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
+          <h4 style="margin: 0 0 12px 0; color: #e64a19; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🌾 Carbs & Fibers</h4>
+          <ul id="grocery-carbs" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
+          <h4 style="margin: 0 0 12px 0; color: #f57f17; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🥑 Fats</h4>
+          <ul id="grocery-fats" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+      </div>
+    </div>
+
   <nav class="bottom-nav">
     <button onclick="navigateTo('view-dashboard')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     </button>
     <button onclick="navigateTo('view-scoreboard')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </button>
+    <button onclick="navigateTo('view-environment')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </button>
     <button onclick="navigateTo('view-habits')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>

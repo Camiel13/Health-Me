@@ -1,7 +1,7 @@
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory, checkNeverMissTwice, getHabitStreak, getTodayString } from './store.js';
 
 window.getSmartSuggestion = function() {
   const totals = getTodayTotals();
@@ -295,14 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('save-habit-btn')?.addEventListener('click', () => {
     const trigger = document.getElementById('habit-trigger').value.trim();
     const action = document.getElementById('habit-action').value.trim();
-    const time = document.getElementById('habit-time').value;
-    const freq = document.getElementById('habit-freq').value;
+    const slot = document.getElementById('habit-slot').value;
+    const difficulty = document.getElementById('habit-difficulty').value;
     if(trigger && action) {
-      addHabit({ trigger, action, time, frequency: freq });
+      addHabit({ trigger, action, slot, difficulty });
       document.getElementById('habit-form-modal').style.display = 'none';
       document.getElementById('habit-trigger').value = '';
       document.getElementById('habit-action').value = '';
-      document.getElementById('habit-time').value = '';
       renderHabits();
       alert('Habit saved!');
     } else {
@@ -422,19 +421,70 @@ export function renderHabits() {
   const list = document.getElementById('habits-list');
   if(!list) return;
   const state = getState();
+  
+  const banner = document.getElementById('never-miss-twice-banner');
+  if (banner) {
+    banner.style.display = checkNeverMissTwice() ? 'block' : 'none';
+  }
+  
+  const streakDisplay = document.getElementById('current-streak-display');
+  if (streakDisplay) {
+    streakDisplay.textContent = getHabitStreak();
+  }
+  
+  const weekCalendar = document.getElementById('week-calendar');
+  if (weekCalendar) {
+    let calHTML = '';
+    const today = new Date();
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    // Generate last 7 days
+    for(let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const isToday = i === 0;
+      
+      const didAny = state.habits && state.habits.some(h => h.completedDates && h.completedDates.includes(ds));
+      
+      calHTML += `
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+          <span style="font-size: 11px; font-weight: 700; color: ${isToday ? 'var(--primary-dark)' : 'var(--text-light)'};">${days[d.getDay()]}</span>
+          <div style="width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; ${didAny ? 'background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;' : 'background: rgba(0,0,0,0.05); color: transparent;'}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+        </div>
+      `;
+    }
+    weekCalendar.innerHTML = calHTML;
+  }
+
+  const todayStr = getTodayString();
+
   if(!state.habits || state.habits.length === 0) {
     list.innerHTML = '<li><small style="color: #666;">No habits added yet.</small></li>';
     return;
   }
-  list.innerHTML = state.habits.map(h => `
-    <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <strong style="display: block; font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">After ${h.trigger}, I will ${h.action}</strong>
-        <small style="color: var(--text-light); font-size: 13px; font-weight: 500;">${h.time ? h.time + ' - ' : ''}${h.frequency} | ${h.completions} completions</small>
+  list.innerHTML = state.habits.map(h => {
+    const isCompletedToday = h.completedDates && h.completedDates.includes(todayStr);
+    
+    let difficultyColor = '#4caf50';
+    if (h.difficulty === 'Normal') difficultyColor = '#2196f3';
+    if (h.difficulty === 'Hard') difficultyColor = '#f44336';
+    
+    return `
+    <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; ${isCompletedToday ? 'opacity: 0.7;' : ''}">
+      <div style="flex: 1; padding-right: 12px;">
+        <strong style="display: block; font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text); margin-bottom: 4px; ${isCompletedToday ? 'text-decoration: line-through;' : ''}">After ${h.trigger}, I will ${h.action}</strong>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span style="font-size: 11px; font-weight: 700; background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 12px; color: var(--text-light); text-transform: uppercase;">${h.slot || 'Anytime'}</span>
+          <span style="font-size: 11px; font-weight: 700; background: ${difficultyColor}20; color: ${difficultyColor}; padding: 4px 8px; border-radius: 12px; text-transform: uppercase;">${h.difficulty || 'Normal'}</span>
+        </div>
       </div>
-      <button onclick="completeHabitAction(${h.id})" style="padding: 8px 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-family: 'Inter', sans-serif; box-shadow: 0 4px 10px rgba(130,207,160,0.3); transition: transform 0.2s;">Done!</button>
+      <button onclick="completeHabitAction(${h.id})" ${isCompletedToday ? 'disabled' : ''} style="padding: 8px 16px; background: ${isCompletedToday ? '#ccc' : 'linear-gradient(135deg, var(--primary), var(--primary-dark))'}; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: ${isCompletedToday ? 'default' : 'pointer'}; font-family: 'Inter', sans-serif; box-shadow: ${isCompletedToday ? 'none' : '0 4px 10px rgba(130,207,160,0.3)'}; transition: transform 0.2s; min-width: 80px;">
+        ${isCompletedToday ? 'Done' : 'Complete'}
+      </button>
     </li>
-  `).join('');
+  `}).join('');
 }
 
 export function renderScoreboard() {
@@ -589,3 +639,86 @@ window.resetProgress = function() {
   }
 };
 console.log("🛠️ Dev Tools: Type 'resetProgress()' to completely wipe all data and start over.");
+
+// Environment Priming Tips
+const envTips = [
+  "Put your chips in the basement. Out of sight, out of mind.",
+  "Place a fruit bowl on the kitchen table.",
+  "2-minute rule: chop veggies now so they are ready later.",
+  "Use smaller plates to naturally control portion sizes.",
+  "Keep a water bottle on your desk at all times.",
+  "Hide the junk food in opaque containers, put healthy snacks in clear ones.",
+  "Pre-portion your snacks into small baggies when you get back from the store."
+];
+
+function updateEnvTip() {
+  const tipText = document.getElementById('env-tip-text');
+  if (tipText) {
+    const randomTip = envTips[Math.floor(Math.random() * envTips.length)];
+    tipText.style.opacity = '0';
+    setTimeout(() => {
+      tipText.textContent = '"' + randomTip + '"';
+      tipText.style.opacity = '1';
+    }, 300);
+  }
+}
+
+// Generate Grocery List
+document.addEventListener('DOMContentLoaded', () => {
+  const generateBtn = document.getElementById('generate-groceries-btn');
+  if (generateBtn) {
+    generateBtn.addEventListener('click', () => {
+      const state = getState();
+      const goals = state.goals || { calories: 2000, carbs: 250, protein: 50, fat: 70 };
+      
+      const proteins = [];
+      const carbs = [];
+      const fats = [];
+      
+      // Smart logic based on goals
+      if (goals.protein > 100) {
+        proteins.push('Chicken Breast (High Protein)', 'Greek Yogurt', 'Protein Powder', 'Eggs', 'Lean Ground Beef');
+      } else {
+        proteins.push('Chicken Thighs', 'Tofu', 'Eggs', 'Lentils');
+      }
+      
+      if (goals.carbs < 150) {
+        carbs.push('Zucchini (Low Carb)', 'Cauliflower Rice', 'Berries', 'Broccoli', 'Spinach');
+      } else {
+        carbs.push('Sweet Potatoes', 'Brown Rice', 'Oats', 'Bananas', 'Whole Wheat Bread');
+      }
+      
+      if (goals.fat < 50) {
+        fats.push('Almonds (Portion Controlled)', 'Avocado', 'Olive Oil Spray');
+      } else {
+        fats.push('Peanut Butter', 'Olive Oil', 'Avocado', 'Mixed Nuts', 'Cheese');
+      }
+
+      const proteinList = document.getElementById('grocery-proteins');
+      const carbList = document.getElementById('grocery-carbs');
+      const fatList = document.getElementById('grocery-fats');
+      
+      proteinList.innerHTML = proteins.map(i => `<li><label style="display: flex; align-items: center; gap: 8px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"> ${i}</label></li>`).join('');
+      carbList.innerHTML = carbs.map(i => `<li><label style="display: flex; align-items: center; gap: 8px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"> ${i}</label></li>`).join('');
+      fatList.innerHTML = fats.map(i => `<li><label style="display: flex; align-items: center; gap: 8px; font-size: 15px;"><input type="checkbox" style="width: 18px; height: 18px; accent-color: var(--primary);"> ${i}</label></li>`).join('');
+      
+      const container = document.getElementById('grocery-list-container');
+      container.style.display = 'block';
+      generateBtn.textContent = 'Refresh List';
+      
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.8 },
+          colors: ['#84fab0', '#8fd3f4']
+        });
+      }
+    });
+  }
+  
+  // Rotate tip occasionally
+  setInterval(updateEnvTip, 10000);
+  // Initial tip
+  setTimeout(updateEnvTip, 500);
+});

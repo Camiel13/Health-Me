@@ -137,3 +137,19 @@ body {
   animation: spin 1s linear infinite;
   margin: 0 auto 24px auto;
 }
+
+.emergency-banner {
+  background: #ffebee;
+  border-left: 4px solid #d32f2f;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  animation: pulseEmergency 2s infinite;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+}
+
+@keyframes pulseEmergency {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
