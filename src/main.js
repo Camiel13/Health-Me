@@ -659,25 +659,25 @@ export function renderDashboard() {
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
     diffsContainer.innerHTML = `
-      <div class="macro-item">
-        <span class="macro-icon">🥩</span>
-        <span class="macro-label">Pro</span>
-        <span class="macro-value">${Math.round(totals.protein)}g</span>
+      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <span style="font-size: 18px; margin-bottom: 4px;">🥩</span>
+        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.protein)}g</strong>
+        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Protein</span>
       </div>
-      <div class="macro-item">
-        <span class="macro-icon">🌾</span>
-        <span class="macro-label">Carb</span>
-        <span class="macro-value">${Math.round(totals.carbs)}g</span>
+      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <span style="font-size: 18px; margin-bottom: 4px;">🌾</span>
+        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.carbs)}g</strong>
+        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Carbs</span>
       </div>
-      <div class="macro-item">
-        <span class="macro-icon">🥑</span>
-        <span class="macro-label">Fat</span>
-        <span class="macro-value">${Math.round(totals.fat)}g</span>
+      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <span style="font-size: 18px; margin-bottom: 4px;">🥑</span>
+        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.fat)}g</strong>
+        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Fats</span>
       </div>
-      <div class="macro-item">
-        <span class="macro-icon">🥦</span>
-        <span class="macro-label">Fib</span>
-        <span class="macro-value">${Math.round(totals.fiber)}g</span>
+      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <span style="font-size: 18px; margin-bottom: 4px;">🥦</span>
+        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.fiber)}g</strong>
+        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Fiber</span>
       </div>
     `;
   }

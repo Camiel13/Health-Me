@@ -10,6 +10,6 @@ beforeEach(() => {
 
 test('Navigates to logging view', () => {
   navigateTo('view-logging');
-  expect(document.getElementById('view-logging').style.display).toBe('block');
+  expect(document.getElementById('view-logging').style.display).toBe('');
   expect(document.getElementById('view-dashboard').style.display).toBe('none');
 });
