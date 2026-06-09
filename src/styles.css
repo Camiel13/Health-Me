@@ -125,40 +125,42 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Dashboard UI Styles */
-.dashboard-view { padding: 24px 20px; }
+.dashboard-view { 
+  padding: 16px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px;
+}
 
-.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.dash-greeting { margin: 0; font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.dash-date { margin: 4px 0 0 0; font-size: 13px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; }
+.dash-greeting { margin: 0; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.dash-date { margin: 2px 0 0 0; font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-.add-log-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 16px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4); cursor: pointer; transition: all 0.2s; }
+.add-log-btn { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 14px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4); cursor: pointer; transition: all 0.2s; }
+.add-log-btn svg { width: 20px; height: 20px; }
 .add-log-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(130, 207, 160, 0.5); }
 
 .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 24px; box-shadow: var(--shadow); padding: 24px; }
 
-.wheel-card { margin-bottom: 30px; text-align: center; position: relative; overflow: hidden; }
+.dash-top-section { display: flex; gap: 12px; height: 115px; }
+.wheel-card { flex: 0 0 115px; margin: 0; padding: 12px; display: flex; align-items: center; justify-content: center; border-radius: 20px; position: relative; overflow: hidden; }
 .wheel-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(130, 207, 160, 0.08) 0%, transparent 70%); z-index: 0; }
-.wheel-container { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
+.wheel-container { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; width: 100%; height: 100%; }
 
-.circular-chart { display: block; margin: 0 auto; width: 100%; max-width: 240px; max-height: 240px; }
+.circular-chart { display: block; margin: 0 auto; width: 100%; max-width: 100px; max-height: 100px; }
 .dash-pulse { animation: pulseWheel 4s ease-in-out infinite; }
 @keyframes pulseWheel { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
 .circle-bg { fill: none; stroke: rgba(0,0,0,0.04); stroke-width: 2.5; }
 .circle { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke: url(#wheelGradient); transition: stroke-dasharray 1.5s cubic-bezier(0.1, 0.8, 0.2, 1); }
 .percentage { fill: var(--text); font-family: 'Outfit', sans-serif; font-size: 8px; text-anchor: middle; font-weight: 800; letter-spacing: -0.5px; }
-.subtext { fill: var(--text-light); font-family: 'Inter', sans-serif; font-size: 3px; text-anchor: middle; font-weight: 600; letter-spacing: 0.5px; }
+.subtext { fill: var(--text-light); font-family: 'Inter', sans-serif; font-size: 3.5px; text-anchor: middle; font-weight: 700; letter-spacing: 0.5px; }
 
-.section-title-wrap h3 { font-family: 'Outfit', sans-serif; font-size: 20px; margin: 0 0 16px 0; color: var(--text); font-weight: 700; }
+.diff-grid-compact { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; align-content: flex-start; }
+.macro-card { background: rgba(255,255,255,0.8); border-radius: 14px; padding: 8px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; position: relative; border: 1px solid rgba(255,255,255,0.5); }
 
-.diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
-.diff-card { display: none; }
-
-.macro-card { background: rgba(255,255,255,0.8); border-radius: 20px; padding: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.5); transition: transform 0.2s; }
-.macro-card:hover { transform: translateY(-2px); }
-
-.macro-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; font-weight: 700; color: var(--text); }
-.macro-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.macro-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 11px; font-weight: 700; color: var(--text); }
+.macro-icon { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
 .macro-carbs .macro-icon { background: rgba(255, 171, 145, 0.2); color: #e64a19; }
 .macro-protein .macro-icon { background: rgba(144, 202, 249, 0.2); color: #1976d2; }
@@ -167,11 +169,11 @@ body {
 .macro-sodium .macro-icon { background: rgba(206, 147, 216, 0.2); color: #7b1fa2; }
 
 .macro-values { display: flex; align-items: baseline; gap: 4px; }
-.macro-current { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); }
-.macro-target { font-size: 12px; color: var(--text-light); font-weight: 600; }
+.macro-current { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: var(--text); }
+.macro-target { font-size: 10px; color: var(--text-light); font-weight: 600; }
 
-.macro-bar-bg { height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; margin-top: 12px; overflow: hidden; }
-.macro-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
+.macro-bar-bg { height: 4px; background: rgba(0,0,0,0.05); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.macro-bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease-out; }
 
 .macro-carbs .macro-bar-fill { background: #ff7043; }
 .macro-protein .macro-bar-fill { background: #42a5f5; }
@@ -179,19 +181,29 @@ body {
 .macro-fiber .macro-bar-fill { background: #66bb6a; }
 .macro-sodium .macro-bar-fill { background: #ab47bc; }
 
-.recipe-card { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; background: linear-gradient(135deg, var(--text) 0%, #2a4a3e 100%); color: white; border-radius: 24px; box-shadow: 0 12px 24px rgba(30, 54, 45, 0.2); border: none; }
-.recipe-content h3 { font-family: 'Outfit', sans-serif; margin: 0 0 6px 0; color: var(--primary); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-.recipe-content p { font-family: 'Outfit', sans-serif; margin: 0 0 16px 0; font-size: 18px; font-weight: 700; line-height: 1.3; }
-.recipe-btn { background: white; color: var(--text); padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; width: auto; margin: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border: none; transition: transform 0.2s; }
-.recipe-btn:hover { transform: translateY(-2px); }
-.recipe-image-placeholder { font-size: 48px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2)); animation: float 3s ease-in-out infinite; }
+.dash-widgets-row { display: flex; gap: 12px; height: 80px; }
+.compact-widget { flex: 1; margin: 0; padding: 10px; border-radius: 20px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+.recipe-card { background: linear-gradient(135deg, var(--text) 0%, #2a4a3e 100%); color: white; border: none; flex-direction: row; align-items: center; }
+.recipe-content { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.recipe-btn { background: white; color: var(--text); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.recipe-image-placeholder { font-size: 28px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); animation: float 3s ease-in-out infinite; }
 
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
+.dash-log-section { flex: 1; display: flex; flex-direction: column; background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 20px; padding: 12px; box-shadow: var(--shadow); }
+#todays-foods-list { flex: 1; list-style: none; padding: 0; margin: 0; }
+#todays-foods-list li { background: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.4); padding: 10px 12px; margin-bottom: 6px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
 
 .action-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; transition: opacity 0.2s; box-shadow: 0 4px 10px rgba(163, 217, 177, 0.4); }
 .action-btn:hover { opacity: 0.9; }
 
-.view { height: calc(100dvh - 60px); overflow-y: auto; animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1); box-sizing: border-box; }
+.view { 
+  animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
+  height: 100dvh;
+  box-sizing: border-box;
+  padding-bottom: 60px;
+  overflow-y: auto;
+}
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 .spin { animation: spin 1s linear infinite; }

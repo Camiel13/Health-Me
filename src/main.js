@@ -581,17 +581,6 @@ export function renderDashboard() {
         </div>
         <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.fiber/goals.fiber)*100, 100)}%"></div></div>
       </div>
-      <div class="macro-card macro-sodium" style="grid-column: span 2;">
-        <div class="macro-header">
-          <span>Sodium</span>
-          <div class="macro-icon">🧂</div>
-        </div>
-        <div class="macro-values">
-          <span class="macro-current">${Math.round(totals.sodium)}</span>
-          <span class="macro-target">/ ${goals.sodium}mg</span>
-        </div>
-        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.sodium/goals.sodium)*100, 100)}%"></div></div>
-      </div>
     `;
   }
   
@@ -619,12 +608,12 @@ export function renderDashboard() {
       todaysList.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       todaysList.innerHTML = record.foods.map(f => `
-        <li class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 12px;">
+        <li style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}">${f.healthScore}</span>` : ''}
-            <strong style="font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--text);">${f.name}</strong>
+            <strong style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);">${f.name}</strong>
           </div>
-          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px;">${Math.round(f.calories)} kcal</span>
+          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px;">${Math.round(f.calories)} kcal</span>
         </li>
       `).join('');
     }
