@@ -1,4 +1,4 @@
-import { searchFood } from './api.js';
+import { searchBarcode } from './api.js';
 
 export function initScanner() {
   const scanBtn = document.getElementById('start-scan-btn');
@@ -13,8 +13,15 @@ export function initScanner() {
         html5QrcodeScanner.render(async (decodedText) => {
           html5QrcodeScanner.clear();
           readerDiv.style.display = 'none';
-          document.getElementById('food-search').value = decodedText;
-          alert(`Scanned: ${decodedText}`);
+          document.getElementById('food-search').value = 'Searching barcode...';
+          
+          const food = await searchBarcode(decodedText);
+          if (food && window.promptAndAddFood) {
+            window.promptAndAddFood(food);
+          } else {
+            alert(`Product not found for barcode: ${decodedText}`);
+            document.getElementById('food-search').value = '';
+          }
         }, (err) => { /* ignore */ });
       }
     });

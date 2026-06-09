@@ -3,6 +3,36 @@ import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
 import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory, checkNeverMissTwice, getHabitStreak, getTodayString } from './store.js';
 
+window.promptAndAddFood = function(food) {
+  const portionStr = prompt(`How many grams of ${food.name} did you eat? (Nutritional values are per 100g)`);
+  if (!portionStr) return;
+  const portion = parseFloat(portionStr);
+  if (isNaN(portion) || portion <= 0) {
+    alert('Invalid portion size');
+    return;
+  }
+  
+  const multiplier = portion / 100;
+  
+  addFood({
+    name: food.name,
+    calories: food.calories * multiplier,
+    carbs: food.carbs * multiplier,
+    protein: food.protein * multiplier,
+    fat: food.fat * multiplier,
+    fiber: food.fiber * multiplier,
+    sodium: food.sodium * multiplier
+  });
+  
+  alert(`${food.name} added!`);
+  renderDashboard();
+  
+  const searchInput = document.getElementById('food-search');
+  const searchResults = document.getElementById('search-results');
+  if(searchInput) searchInput.value = '';
+  if(searchResults) searchResults.innerHTML = '';
+};
+
 window.getSmartSuggestion = function() {
   const totals = getTodayTotals();
   const state = getState();
@@ -246,11 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
             btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;';
             btn.onclick = () => {
-              addFood(r);
-              alert(`Added ${r.name}!`);
-              renderDashboard();
-              searchInput.value = '';
-              searchResults.innerHTML = '';
+              window.promptAndAddFood(r);
             };
             
             li.appendChild(info);
@@ -577,13 +603,13 @@ export function renderDashboard() {
   }
 
   // Today's Food List
-  const todaysList = document.getElementById('todays-foods-list');
-  if (todaysList) {
+  const todaysLists = document.querySelectorAll('.todays-foods-list-container');
+  todaysLists.forEach(list => {
     const record = getTodayRecord();
     if (record.foods.length === 0) {
-      todaysList.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
+      list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
-      todaysList.innerHTML = record.foods.map(f => `
+      list.innerHTML = record.foods.map(f => `
         <li style="display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center; gap: 8px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}">${f.healthScore}</span>` : ''}
@@ -593,7 +619,7 @@ export function renderDashboard() {
         </li>
       `).join('');
     }
-  }
+  });
 }
 window.renderDashboard = renderDashboard;
 
