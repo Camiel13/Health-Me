@@ -537,49 +537,25 @@ export function renderDashboard() {
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
     diffsContainer.innerHTML = `
-      <div class="macro-card macro-carbs">
-        <div class="macro-header">
-          <span>Carbs</span>
-          <div class="macro-icon">🌾</div>
-        </div>
-        <div class="macro-values">
-          <span class="macro-current">${Math.round(totals.carbs)}</span>
-          <span class="macro-target">/ ${goals.carbs}g</span>
-        </div>
-        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.carbs/goals.carbs)*100, 100)}%"></div></div>
+      <div class="macro-item">
+        <span class="macro-icon">🥩</span>
+        <span class="macro-label">Pro</span>
+        <span class="macro-value">${Math.round(totals.protein)}g</span>
       </div>
-      <div class="macro-card macro-protein">
-        <div class="macro-header">
-          <span>Protein</span>
-          <div class="macro-icon">🥩</div>
-        </div>
-        <div class="macro-values">
-          <span class="macro-current">${Math.round(totals.protein)}</span>
-          <span class="macro-target">/ ${goals.protein}g</span>
-        </div>
-        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.protein/goals.protein)*100, 100)}%"></div></div>
+      <div class="macro-item">
+        <span class="macro-icon">🌾</span>
+        <span class="macro-label">Carb</span>
+        <span class="macro-value">${Math.round(totals.carbs)}g</span>
       </div>
-      <div class="macro-card macro-fat">
-        <div class="macro-header">
-          <span>Fat</span>
-          <div class="macro-icon">🥑</div>
-        </div>
-        <div class="macro-values">
-          <span class="macro-current">${Math.round(totals.fat)}</span>
-          <span class="macro-target">/ ${goals.fat}g</span>
-        </div>
-        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.fat/goals.fat)*100, 100)}%"></div></div>
+      <div class="macro-item">
+        <span class="macro-icon">🥑</span>
+        <span class="macro-label">Fat</span>
+        <span class="macro-value">${Math.round(totals.fat)}g</span>
       </div>
-      <div class="macro-card macro-fiber">
-        <div class="macro-header">
-          <span>Fiber</span>
-          <div class="macro-icon">🥦</div>
-        </div>
-        <div class="macro-values">
-          <span class="macro-current">${Math.round(totals.fiber)}</span>
-          <span class="macro-target">/ ${goals.fiber}g</span>
-        </div>
-        <div class="macro-bar-bg"><div class="macro-bar-fill" style="width: ${Math.min((totals.fiber/goals.fiber)*100, 100)}%"></div></div>
+      <div class="macro-item">
+        <span class="macro-icon">🥦</span>
+        <span class="macro-label">Fib</span>
+        <span class="macro-value">${Math.round(totals.fiber)}g</span>
       </div>
     `;
   }

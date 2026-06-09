@@ -32,44 +32,54 @@
         <div style="position: absolute; top: -30px; right: -30px; width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
       </div>
 
-      <div class="dash-top-section">
-        <div class="wheel-card glass-card">
-          <div class="wheel-container">
-            <svg viewBox="0 0 36 36" class="circular-chart dash-pulse">
-              <defs>
-                <linearGradient id="wheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#82cfa0" />
-                  <stop offset="100%" stop-color="#5b9d74" />
-                </linearGradient>
-                <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity="0.3" flood-color="#5b9d74"/>
-                </filter>
-              </defs>
-              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path class="circle animated-circle" id="dash-wheel-svg" stroke-dasharray="0, 100" filter="url(#dropShadow)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <text x="18" y="16.5" class="percentage" id="dash-cal-display">0</text>
-              <text x="18" y="21.5" class="subtext">KCAL</text>
-            </svg>
-          </div>
+      <div class="premium-wheel-card">
+        <div class="premium-wheel-container">
+          <svg viewBox="0 0 36 36" class="circular-chart dash-pulse premium-chart">
+            <defs>
+              <linearGradient id="premiumWheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f2fe" />
+                <stop offset="50%" stop-color="#4facfe" />
+                <stop offset="100%" stop-color="#00f2fe" />
+              </linearGradient>
+              <linearGradient id="premiumTrackGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.05)" />
+                <stop offset="100%" stop-color="rgba(0,0,0,0.1)" />
+              </linearGradient>
+              <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur1"/>
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2"/>
+                <feMerge>
+                  <feMergeNode in="blur2"/>
+                  <feMergeNode in="blur1"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            
+            <!-- Thick Track Background -->
+            <path class="premium-circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            
+            <!-- Outer & Inner Decorative Rings -->
+            <path d="M18 0.5 a 17.5 17.5 0 0 1 0 35 a 17.5 17.5 0 0 1 0 -35" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
+            <path d="M18 3.5 a 14.5 14.5 0 0 1 0 29 a 14.5 14.5 0 0 1 0 -29" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
+            
+            <!-- Glowing Progress Ring -->
+            <path class="premium-circle animated-circle" id="dash-wheel-svg" stroke-dasharray="0, 100" filter="url(#premiumGlow)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            
+            <text x="18" y="17" class="premium-percentage" id="dash-cal-display">0</text>
+            <text x="18" y="22.5" class="premium-subtext">KCAL</text>
+          </svg>
         </div>
-        
-        <div id="dash-diffs" class="diff-grid-compact">
+      </div>
+      
+      <div class="dash-top-section">
+        <div id="dash-diffs" class="diff-row-compact">
           <!-- Populated by JS -->
         </div>
       </div>
       
       <div class="dash-widgets-row">
-        <div class="recipe-card glass-card compact-widget">
-          <div class="recipe-content">
-            <h3 style="margin: 0 0 4px 0; font-size: 11px; color: var(--primary);">Smart Meal</h3>
-            <p id="smart-meal-name" style="margin: 0 0 2px 0; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;">Balanced Meal</p>
-            <p id="smart-meal-macros" style="font-size: 10px; color: rgba(255,255,255,0.7); margin: 0 0 8px 0; font-weight: 500;">Macros here</p>
-            <button class="recipe-btn" onclick="getSmartSuggestion()" style="padding: 6px 10px; font-size: 11px;">Suggest</button>
-          </div>
-          <div id="smart-meal-icon" class="recipe-image-placeholder" style="font-size: 32px;">🥗</div>
-        </div>
-        
-        <div class="env-tips-card glass-card compact-widget" onclick="navigateTo('view-environment')">
+        <div class="env-tips-card glass-card compact-widget" onclick="navigateTo('view-environment')" style="flex: 1;">
           <div style="position: absolute; right: -5px; top: -5px; font-size: 50px; opacity: 0.05; transform: rotate(15deg);">🏡</div>
           <h3 style="margin: 0 0 4px 0; font-family: 'Outfit', sans-serif; font-size: 12px; color: var(--text); display: flex; align-items: center; gap: 4px;">
             <span style="font-size: 14px;">✨</span> Env Design
@@ -408,6 +418,16 @@
       <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Priming & Groceries</h2>
       <p style="color: var(--text-light); font-weight: 500; margin-bottom: 24px; line-height: 1.4;">Design your environment for success. Good habits start at the grocery store.</p>
       
+      <div class="recipe-card glass-card" style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; padding: 20px;">
+        <div class="recipe-content">
+          <h3 style="margin: 0 0 4px 0; font-size: 14px; color: var(--primary);">Smart Meal Suggestion</h3>
+          <p id="smart-meal-name" style="margin: 0 0 4px 0; font-size: 18px; font-weight: 700;">Balanced Meal</p>
+          <p id="smart-meal-macros" style="font-size: 12px; color: rgba(255,255,255,0.7); margin: 0 0 12px 0; font-weight: 500;">Macros here</p>
+          <button class="recipe-btn" onclick="getSmartSuggestion()" style="padding: 8px 16px; font-size: 13px;">Suggest New</button>
+        </div>
+        <div id="smart-meal-icon" class="recipe-image-placeholder" style="font-size: 48px;">🥗</div>
+      </div>
+
       <div class="glass-card" style="margin-bottom: 24px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: var(--text); border: none; box-shadow: 0 12px 24px rgba(132, 250, 176, 0.3);">
         <h3 style="margin-top: 0; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px; font-size: 20px;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -444,10 +464,10 @@
     </button>
     <div class="nav-spacer"></div>
     <button class="nav-home-btn active" onclick="navigateTo('view-dashboard')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </button>
     <button onclick="navigateTo('view-environment')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
       <span class="nav-indicator"></span>
     </button>
     <button onclick="navigateTo('view-profile')">
