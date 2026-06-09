@@ -62,22 +62,35 @@ export function addFood(food) {
     state.history.push(record);
   }
   
-  // Calculate healthScore
-  let scorePoints = 10;
-  if (food.protein > 15) scorePoints += 2;
-  if (food.fiber > 5) scorePoints += 2;
-  if (food.calories > 600) scorePoints -= 3;
-  if (food.fat > 30) scorePoints -= 2;
-  if (food.sodium > 800) scorePoints -= 2;
-  
-  let healthScore = 'C';
-  if (scorePoints >= 12) healthScore = 'A';
-  else if (scorePoints >= 10) healthScore = 'B';
-  else if (scorePoints >= 8) healthScore = 'C';
-  else if (scorePoints >= 6) healthScore = 'D';
-  else healthScore = 'F';
+  const existingFood = record.foods.find(f => f.name === food.name);
+  if (existingFood) {
+    existingFood.calories += (food.calories || 0);
+    existingFood.carbs += (food.carbs || 0);
+    existingFood.protein += (food.protein || 0);
+    existingFood.fat += (food.fat || 0);
+    existingFood.fiber += (food.fiber || 0);
+    existingFood.sodium += (food.sodium || 0);
+    existingFood.count = (existingFood.count || 1) + 1;
+    existingFood.timestamp = Date.now();
+  } else {
+    // Calculate healthScore
+    let scorePoints = 10;
+    if (food.protein > 15) scorePoints += 2;
+    if (food.fiber > 5) scorePoints += 2;
+    if (food.calories > 600) scorePoints -= 3;
+    if (food.fat > 30) scorePoints -= 2;
+    if (food.sodium > 800) scorePoints -= 2;
+    
+    let healthScore = 'C';
+    if (scorePoints >= 12) healthScore = 'A';
+    else if (scorePoints >= 10) healthScore = 'B';
+    else if (scorePoints >= 8) healthScore = 'C';
+    else if (scorePoints >= 6) healthScore = 'D';
+    else healthScore = 'F';
 
-  record.foods.push({ ...food, healthScore, timestamp: Date.now() });
+    record.foods.push({ ...food, healthScore, timestamp: Date.now(), count: 1 });
+  }
+
   saveState(state);
 }
 

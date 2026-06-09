@@ -506,7 +506,7 @@ export function renderHabits() {
       const didAny = state.habits && state.habits.some(h => h.completedDates && h.completedDates.includes(ds));
       
       calHTML += `
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <div onclick="window.openDailySummary('${ds}')" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
           <span style="font-size: 11px; font-weight: 700; color: ${isToday ? 'var(--primary-dark)' : 'var(--text-light)'};">${days[d.getDay()]}</span>
           <div style="width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; ${didAny ? 'background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;' : 'background: rgba(0,0,0,0.05); color: transparent;'}">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -514,6 +514,69 @@ export function renderHabits() {
         </div>
       `;
     }
+    
+    window.openDailySummary = function(dateStr) {
+      const state = getState();
+      const record = state.history.find(r => r.date === dateStr);
+      
+      const modal = document.getElementById('daily-summary-modal');
+      const title = document.getElementById('daily-summary-title');
+      const macrosContainer = document.getElementById('daily-summary-macros');
+      const foodsContainer = document.getElementById('daily-summary-foods');
+      
+      if (!modal) return;
+      
+      title.textContent = `Summary: ${dateStr}`;
+      
+      if (!record || record.foods.length === 0) {
+        macrosContainer.innerHTML = '<p style="grid-column: 1 / -1; color: #888; font-size: 14px;">No data logged for this date.</p>';
+        foodsContainer.innerHTML = '';
+      } else {
+        const totals = record.foods.reduce((acc, f) => {
+          acc.cal += f.calories || 0;
+          acc.pro += f.protein || 0;
+          acc.carb += f.carbs || 0;
+          acc.fat += f.fat || 0;
+          return acc;
+        }, { cal: 0, pro: 0, carb: 0, fat: 0 });
+        
+        macrosContainer.innerHTML = `
+          <div style="background: rgba(130, 207, 160, 0.1); padding: 12px; border-radius: 12px; text-align: center;">
+            <strong style="font-size: 18px; color: var(--primary);">${Math.round(totals.cal)}</strong><br>
+            <span style="font-size: 11px; color: #666;">Calories</span>
+          </div>
+          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+            <strong style="font-size: 18px;">${Math.round(totals.pro)}g</strong><br>
+            <span style="font-size: 11px; color: #666;">Protein</span>
+          </div>
+          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+            <strong style="font-size: 18px;">${Math.round(totals.carb)}g</strong><br>
+            <span style="font-size: 11px; color: #666;">Carbs</span>
+          </div>
+          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+            <strong style="font-size: 18px;">${Math.round(totals.fat)}g</strong><br>
+            <span style="font-size: 11px; color: #666;">Fats</span>
+          </div>
+        `;
+        
+        foodsContainer.innerHTML = record.foods.map(f => `
+          <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--card-border);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
+              <div style="display: flex; flex-direction: column;">
+                <strong style="font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text);">${f.name}</strong>
+                ${f.count && f.count > 1 ? `<span style="font-size: 12px; color: #888; font-weight: 600;">${f.count}x Portions</span>` : ''}
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+              <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 15px;">${Math.round(f.calories)} kcal</span>
+            </div>
+          </li>
+        `).join('');
+      }
+      
+      modal.style.display = 'flex';
+    };
     weekCalendar.innerHTML = calHTML;
   }
 
@@ -643,12 +706,18 @@ export function renderDashboard() {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       list.innerHTML = record.foods.map(f => `
-        <li style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}">${f.healthScore}</span>` : ''}
-            <strong style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);">${f.name}</strong>
+        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--card-border);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
+            <div style="display: flex; flex-direction: column;">
+              <strong style="font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text);">${f.name}</strong>
+              ${f.count && f.count > 1 ? `<span style="font-size: 12px; color: #888; font-weight: 600;">${f.count}x Portions</span>` : ''}
+            </div>
           </div>
-          <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px;">${Math.round(f.calories)} kcal</span>
+          <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 15px;">${Math.round(f.calories)} kcal</span>
+            <span style="font-size: 11px; color: #aaa; font-family: 'Inter', sans-serif;">${Math.round(f.protein||0)}g P · ${Math.round(f.carbs||0)}g C · ${Math.round(f.fat||0)}g F</span>
+          </div>
         </li>
       `).join('');
     }
