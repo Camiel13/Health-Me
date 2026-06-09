@@ -4,33 +4,72 @@ import { exportData, importData } from './privacy.js';
 import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory, checkNeverMissTwice, getHabitStreak, getTodayString } from './store.js';
 
 window.promptAndAddFood = function(food) {
-  const portionStr = prompt(`How many grams of ${food.name} did you eat? (Nutritional values are per 100g)`);
-  if (!portionStr) return;
-  const portion = parseFloat(portionStr);
-  if (isNaN(portion) || portion <= 0) {
-    alert('Invalid portion size');
-    return;
+  const modal = document.getElementById('add-food-modal');
+  const title = document.getElementById('add-food-title');
+  const servingInfo = document.getElementById('add-food-serving-info');
+  const amountInput = document.getElementById('add-food-amount');
+  const unitSelect = document.getElementById('add-food-unit');
+  const servingOption = document.getElementById('add-food-unit-serving');
+  const cancelBtn = document.getElementById('add-food-cancel');
+  const confirmBtn = document.getElementById('add-food-confirm');
+  
+  if(!modal) return;
+  
+  title.innerText = `Add ${food.name}`;
+  amountInput.value = 1;
+  unitSelect.value = food.serving_quantity ? 'serving' : 'gram';
+  
+  if(food.serving_quantity) {
+    servingOption.style.display = 'block';
+    servingOption.innerText = `Serving(s) (${food.serving_quantity}g)`;
+    servingInfo.innerText = `1 serving is ${food.serving_quantity}g`;
+    servingInfo.style.display = 'block';
+    if(food.serving_size) {
+      servingInfo.innerText += ` (${food.serving_size})`;
+    }
+  } else {
+    servingOption.style.display = 'none';
+    servingInfo.style.display = 'none';
+    amountInput.value = 100;
   }
   
-  const multiplier = portion / 100;
+  modal.style.display = 'flex';
   
-  addFood({
-    name: food.name,
-    calories: food.calories * multiplier,
-    carbs: food.carbs * multiplier,
-    protein: food.protein * multiplier,
-    fat: food.fat * multiplier,
-    fiber: food.fiber * multiplier,
-    sodium: food.sodium * multiplier
-  });
+  const cleanup = () => {
+    modal.style.display = 'none';
+    cancelBtn.onclick = null;
+    confirmBtn.onclick = null;
+  };
   
-  alert(`${food.name} added!`);
-  renderDashboard();
+  cancelBtn.onclick = cleanup;
   
-  const searchInput = document.getElementById('food-search');
-  const searchResults = document.getElementById('search-results');
-  if(searchInput) searchInput.value = '';
-  if(searchResults) searchResults.innerHTML = '';
+  confirmBtn.onclick = () => {
+    let val = parseFloat(amountInput.value);
+    if(isNaN(val) || val <= 0) return alert('Invalid amount');
+    
+    let multiplier = val / 100;
+    if(unitSelect.value === 'serving' && food.serving_quantity) {
+      multiplier = (val * food.serving_quantity) / 100;
+    }
+    
+    addFood({
+      name: food.name,
+      calories: food.calories * multiplier,
+      carbs: food.carbs * multiplier,
+      protein: food.protein * multiplier,
+      fat: food.fat * multiplier,
+      fiber: food.fiber * multiplier,
+      sodium: food.sodium * multiplier
+    });
+    
+    cleanup();
+    renderDashboard();
+    
+    const searchInput = document.getElementById('food-search');
+    const searchResults = document.getElementById('search-results');
+    if(searchInput) searchInput.value = '';
+    if(searchResults) searchResults.innerHTML = '';
+  };
 };
 
 window.getSmartSuggestion = function() {
@@ -243,52 +282,59 @@ document.addEventListener('DOMContentLoaded', () => {
   initScanner();
   const searchInput = document.getElementById('food-search');
   const searchResults = document.getElementById('search-results');
-  let searchTimeout;
+  const searchBtn = document.getElementById('search-btn');
 
-  if(searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(searchTimeout);
-      const query = e.target.value.trim();
-      
-      if (!query) {
-        searchResults.innerHTML = '';
+  const executeSearch = async () => {
+    if (!searchInput || !searchResults) return;
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    searchResults.innerHTML = '<li style="text-align:center; padding: 15px; color: #666; display: flex; justify-content: center; align-items: center; gap: 10px;">Loading... <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></li>';
+    
+    try {
+      const results = await searchFood(query);
+      searchResults.innerHTML = '';
+      if (results.length === 0) {
+        searchResults.innerHTML = '<li style="padding: 15px; color: #666; text-align: center;">No results found</li>';
         return;
       }
+      results.forEach(r => {
+        const li = document.createElement('li');
+        li.style.cssText = 'padding: 10px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;';
+        
+        const info = document.createElement('div');
+        let sizeInfo = r.serving_quantity ? ` (${r.serving_quantity}g)` : '';
+        if (r.serving_size && !r.serving_quantity) sizeInfo = ` (${r.serving_size})`;
+        
+        info.innerHTML = `<strong>${r.name}</strong><span style="color:#888;font-size:12px;">${sizeInfo}</span><br><small style="color: #666;">${Math.round(r.calories)} kcal | ${Math.round(r.protein)}g P | ${Math.round(r.carbs)}g C | ${Math.round(r.fat)}g F <span style="opacity:0.6">(per 100g)</span></small>`;
+        
+        const btn = document.createElement('button');
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+        btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; min-width:30px; min-height:30px;';
+        btn.onclick = () => {
+          window.promptAndAddFood(r);
+        };
+        
+        li.appendChild(info);
+        li.appendChild(btn);
+        searchResults.appendChild(li);
+      });
+    } catch (err) {
+      searchResults.innerHTML = '<li style="padding: 15px; color: #888; text-align: center;">Unable to connect to food database.</li>';
+    }
+  };
 
-      searchResults.innerHTML = '<li style="text-align:center; padding: 15px; color: #666; display: flex; justify-content: center; align-items: center; gap: 10px;">Loading... <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></li>';
-      
-      searchTimeout = setTimeout(async () => {
-        try {
-          const results = await searchFood(query);
-          searchResults.innerHTML = '';
-          if (results.length === 0) {
-            searchResults.innerHTML = '<li style="padding: 15px; color: #666; text-align: center;">No results found</li>';
-            return;
-          }
-          results.forEach(r => {
-            const li = document.createElement('li');
-            li.style.cssText = 'padding: 10px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;';
-            
-            const info = document.createElement('div');
-            info.innerHTML = `<strong>${r.name}</strong><br><small style="color: #666;">${Math.round(r.calories)} kcal | ${Math.round(r.protein)}g P | ${Math.round(r.carbs)}g C | ${Math.round(r.fat)}g F</small>`;
-            
-            const btn = document.createElement('button');
-            btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
-            btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;';
-            btn.onclick = () => {
-              window.promptAndAddFood(r);
-            };
-            
-            li.appendChild(info);
-            li.appendChild(btn);
-            searchResults.appendChild(li);
-          });
-        } catch (err) {
-          // Graceful error fallback, e.g. when OFC API is down or cors fails
-          searchResults.innerHTML = '<li style="padding: 15px; color: #888; text-align: center;">Unable to connect to food database.</li>';
-        }
-      }, 500);
+  if(searchBtn) {
+    searchBtn.addEventListener('click', executeSearch);
+  }
+  if(searchInput) {
+    searchInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter') {
+        e.preventDefault();
+        executeSearch();
+      }
     });
+  }
     
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {

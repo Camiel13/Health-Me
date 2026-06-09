@@ -100,15 +100,19 @@
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">
       <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Log Food</h2>
       <div class="glass-card" style="padding: 20px; border-radius: 20px;">
-        <div style="position: relative;">
-          <input type="text" id="food-search" placeholder="Type to search food..." style="width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;">
-          <ul id="search-results" style="list-style: none; padding: 0; margin: 0; position: absolute; width: 100%; z-index: 10; background: white; border-radius: 12px; max-height: 300px; overflow-y: auto; top: 60px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);"></ul>
+        <div style="display: flex; gap: 8px; position: relative;">
+          <input type="text" id="food-search" placeholder="Search product..." style="flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;">
+          
+          <button id="search-btn" class="action-btn" style="width: 54px; height: 54px; margin: 0; display: flex; align-items: center; justify-content: center; padding: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+          
+          <button id="start-scan-btn" class="action-btn" style="width: 54px; height: 54px; margin: 0; display: flex; align-items: center; justify-content: center; padding: 0; background: white; color: var(--primary); border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"></line></svg>
+          </button>
         </div>
-        <button id="start-scan-btn" class="action-btn" style="margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
-          Scan Barcode
-        </button>
         <div id="reader" style="width: 100%; margin-top: 15px; display: none; border-radius: 12px; overflow: hidden;"></div>
+        <ul id="search-results" style="list-style: none; padding: 0; margin: 12px 0 0 0; width: 100%; border-radius: 12px; max-height: 300px; overflow-y: auto;"></ul>
       </div>
       
       <div class="section-title-wrap" style="margin-top: 30px;">
@@ -452,6 +456,30 @@
         </div>
       </div>
     </div>
+
+  <div id="add-food-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="glass-card" style="width: 90%; max-width: 400px; padding: 24px; position: relative; background: white; margin: auto;">
+      <h3 id="add-food-title" style="margin-top: 0;">Add Food</h3>
+      <p id="add-food-serving-info" style="font-size: 12px; color: #666; margin-bottom: 15px; display: none;"></p>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold; color: var(--text);">Amount</label>
+          <input type="number" id="add-food-amount" value="1" min="0" step="0.1" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; margin-top: 4px;">
+        </div>
+        <div style="flex: 1;">
+          <label style="font-size: 12px; font-weight: bold; color: var(--text);">Unit</label>
+          <select id="add-food-unit" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; margin-top: 4px;">
+            <option value="gram">Gram(s)</option>
+            <option value="serving" id="add-food-unit-serving" style="display: none;">Serving(s)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button id="add-food-cancel" class="action-btn" style="flex: 1; background: #eee; color: #333; margin: 0;">Cancel</button>
+        <button id="add-food-confirm" class="action-btn" style="flex: 1; margin: 0;">Add to Log</button>
+      </div>
+    </div>
+  </div>
 
   <nav class="bottom-nav">
     <button onclick="navigateTo('view-habits')">
