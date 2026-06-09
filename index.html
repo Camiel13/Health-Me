@@ -101,9 +101,9 @@
       <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Log Food</h2>
       <div class="glass-card" style="padding: 20px; border-radius: 20px;">
         <div style="display: flex; gap: 8px; position: relative;">
-          <input type="text" id="food-search" placeholder="Search product..." style="flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;">
+          <input type="text" id="food-search" placeholder="Search product..." style="flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); box-sizing: border-box; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); font-family: 'Inter', sans-serif;" onkeydown="if(event.key==='Enter') window.executeSearch()">
           
-          <button id="search-btn" class="action-btn" style="width: 54px; height: 54px; margin: 0; display: flex; align-items: center; justify-content: center; padding: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4);">
+          <button id="search-btn" class="action-btn" onclick="window.executeSearch()" style="width: 54px; height: 54px; margin: 0; display: flex; align-items: center; justify-content: center; padding: 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </button>
           

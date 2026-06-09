@@ -277,72 +277,60 @@ window.startAnalyzing = function() {
   }, 4500);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  initStore();
-  initScanner();
+initStore();
+initScanner();
+window.executeSearch = async () => {
   const searchInput = document.getElementById('food-search');
   const searchResults = document.getElementById('search-results');
-  const searchBtn = document.getElementById('search-btn');
+  if (!searchInput || !searchResults) return;
+  const query = searchInput.value.trim();
+  if (!query) return;
 
-  const executeSearch = async () => {
-    if (!searchInput || !searchResults) return;
-    const query = searchInput.value.trim();
-    if (!query) return;
-
-    searchResults.innerHTML = '<li style="text-align:center; padding: 15px; color: #666; display: flex; justify-content: center; align-items: center; gap: 10px;">Loading... <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></li>';
-    
-    try {
-      const results = await searchFood(query);
-      searchResults.innerHTML = '';
-      if (results.length === 0) {
-        searchResults.innerHTML = '<li style="padding: 15px; color: #666; text-align: center;">No results found</li>';
-        return;
-      }
-      results.forEach(r => {
-        const li = document.createElement('li');
-        li.style.cssText = 'padding: 10px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;';
-        
-        const info = document.createElement('div');
-        let sizeInfo = r.serving_quantity ? ` (${r.serving_quantity}g)` : '';
-        if (r.serving_size && !r.serving_quantity) sizeInfo = ` (${r.serving_size})`;
-        
-        info.innerHTML = `<strong>${r.name}</strong><span style="color:#888;font-size:12px;">${sizeInfo}</span><br><small style="color: #666;">${Math.round(r.calories)} kcal | ${Math.round(r.protein)}g P | ${Math.round(r.carbs)}g C | ${Math.round(r.fat)}g F <span style="opacity:0.6">(per 100g)</span></small>`;
-        
-        const btn = document.createElement('button');
-        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
-        btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; min-width:30px; min-height:30px;';
-        btn.onclick = () => {
-          window.promptAndAddFood(r);
-        };
-        
-        li.appendChild(info);
-        li.appendChild(btn);
-        searchResults.appendChild(li);
-      });
-    } catch (err) {
-      searchResults.innerHTML = '<li style="padding: 15px; color: #888; text-align: center;">Unable to connect to food database.</li>';
+  searchResults.innerHTML = '<li style="text-align:center; padding: 15px; color: #666; display: flex; justify-content: center; align-items: center; gap: 10px;">Loading... <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></li>';
+  
+  try {
+    const results = await searchFood(query);
+    searchResults.innerHTML = '';
+    if (results.length === 0) {
+      searchResults.innerHTML = '<li style="padding: 15px; color: #666; text-align: center;">No results found</li>';
+      return;
     }
-  };
-
-  if(searchBtn) {
-    searchBtn.addEventListener('click', executeSearch);
-  }
-  if(searchInput) {
-    searchInput.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter') {
-        e.preventDefault();
-        executeSearch();
-      }
+    results.forEach(r => {
+      const li = document.createElement('li');
+      li.style.cssText = 'padding: 10px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;';
+      
+      const info = document.createElement('div');
+      let sizeInfo = r.serving_quantity ? ` (${r.serving_quantity}g)` : '';
+      if (r.serving_size && !r.serving_quantity) sizeInfo = ` (${r.serving_size})`;
+      
+      info.innerHTML = `<strong>${r.name}</strong><span style="color:#888;font-size:12px;">${sizeInfo}</span><br><small style="color: #666;">${Math.round(r.calories)} kcal | ${Math.round(r.protein)}g P | ${Math.round(r.carbs)}g C | ${Math.round(r.fat)}g F <span style="opacity:0.6">(per 100g)</span></small>`;
+      
+      const btn = document.createElement('button');
+      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+      btn.style.cssText = 'padding: 6px; background: var(--primary); color: white; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; min-width:30px; min-height:30px;';
+      btn.onclick = () => {
+        window.promptAndAddFood(r);
+      };
+      
+      li.appendChild(info);
+      li.appendChild(btn);
+      searchResults.appendChild(li);
     });
+  } catch (err) {
+    searchResults.innerHTML = '<li style="padding: 15px; color: #888; text-align: center;">Unable to connect to food database.</li>';
   }
+};
     
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-        searchResults.innerHTML = '';
-      }
-    });
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const sInput = document.getElementById('food-search');
+  const sResults = document.getElementById('search-results');
+  if (sInput && sResults) {
+    if (!sInput.contains(e.target) && !sResults.contains(e.target)) {
+      sResults.innerHTML = '';
+    }
   }
+});
   
   document.getElementById('export-btn')?.addEventListener('click', () => {
     const data = exportData();
@@ -414,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHabits();
   renderProfile();
   renderScoreboard();
-});
 
 export function getAvatarSvg(hat) {
   let hatSvg = '';
