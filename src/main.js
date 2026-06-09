@@ -741,7 +741,23 @@ const envTips = [
   "Use smaller plates to naturally control portion sizes.",
   "Keep a water bottle on your desk at all times.",
   "Hide the junk food in opaque containers, put healthy snacks in clear ones.",
-  "Pre-portion your snacks into small baggies when you get back from the store."
+  "Pre-portion your snacks into small baggies when you get back from the store.",
+  "Every small step counts towards your big goal.",
+  "You are what you eat, so don't be fast, cheap, easy, or fake.",
+  "Take care of your body. It's the only place you have to live.",
+  "Discipline is choosing between what you want now and what you want most.",
+  "It's not a short-term diet. It's a long-term lifestyle change.",
+  "Don't let a stumble in the road be the end of the journey.",
+  "Focus on progress, not perfection.",
+  "The hardest part is starting. You got this.",
+  "Motivation is what gets you started. Habit is what keeps you going.",
+  "Fall in love with taking care of your body.",
+  "Strive for progress, not perfection.",
+  "Your diet is a bank account. Good food choices are good investments.",
+  "Success is the sum of small efforts, repeated day in and day out.",
+  "When you feel like quitting, remember why you started.",
+  "Eat to nourish your body, not to feed your emotions.",
+  "Make time for your health now, or you'll have to make time for illness later."
 ];
 
 function updateEnvTip() {

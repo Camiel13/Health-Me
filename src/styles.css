@@ -129,7 +129,7 @@ body {
   padding: 16px; 
   display: flex; 
   flex-direction: column; 
-  gap: 12px;
+  gap: 20px;
 }
 
 .dashboard-header { display: flex; justify-content: space-between; align-items: center; }
@@ -145,7 +145,7 @@ body {
 .dash-top-section { display: flex; flex-direction: column; gap: 16px; height: auto; }
 
 .premium-wheel-card {
-  margin: 0 auto 24px auto;
+  margin: 0 auto;
   width: 220px;
   height: 220px;
   padding: 24px;
@@ -309,7 +309,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 16px 20px 10px 20px !important;
-  gap: 12px;
+  gap: 20px;
 }
 
 .dash-top-section {
