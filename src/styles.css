@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 :root {
   --bg-color: #f4f8f5;
   --bg-gradient: linear-gradient(135deg, #f4f8f5 0%, #e6f0eb 100%);
@@ -119,3 +127,13 @@ body {
 .score-C { background: linear-gradient(135deg, #ffc107, #ff8f00); }
 .score-D { background: linear-gradient(135deg, #ff9800, #ef6c00); }
 .score-F { background: linear-gradient(135deg, #f44336, #c62828); }
+
+.analyzing-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(130, 207, 160, 0.3);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px auto;
+}

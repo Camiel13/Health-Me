@@ -21,12 +21,15 @@
         </button>
       </div>
       
-      <div id="inventory-banner" class="glass-card" style="display: none; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border: 2px solid #ffb74d; margin-bottom: 24px; padding: 20px;">
-        <h3 style="margin: 0 0 8px 0; color: #e65100; font-family: 'Outfit', sans-serif; font-size: 18px; display: flex; align-items: center; gap: 8px;">
-          <span>📋</span> Inventory Day
-        </h3>
-        <p style="margin: 0 0 16px 0; font-size: 14px; color: #e65100; font-weight: 500;">Log your normal diet today so we can build your personalized plan!</p>
-        <button onclick="finishInventoryDay()" class="action-btn" style="background: linear-gradient(135deg, #f57c00, #e65100); margin: 0; box-shadow: 0 4px 10px rgba(230, 81, 0, 0.3);">Finish Inventory Day & Get Plan</button>
+      <div id="inventory-premium-card" class="glass-card" style="display: none; background: linear-gradient(135deg, #2c3e50, #3498db); border: 2px solid #2980b9; margin-bottom: 24px; padding: 24px; color: white; position: relative; overflow: hidden;">
+        <div style="position: relative; z-index: 1;">
+          <h3 style="margin: 0 0 8px 0; font-family: 'Outfit', sans-serif; font-size: 20px; display: flex; align-items: center; gap: 8px;">
+            <span>✨</span> Inventory Day Active
+          </h3>
+          <p style="margin: 0 0 16px 0; font-size: 14px; font-weight: 500; opacity: 0.9;">Keep logging your normal diet today. When you're ready, we'll build your personalized plan.</p>
+          <button onclick="startAnalyzing()" class="action-btn" style="background: white; color: #2980b9; margin: 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">Finish Inventory</button>
+        </div>
+        <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
       </div>
 
       <div class="wheel-card glass-card">
@@ -326,6 +329,44 @@
         <button onclick="closeShopModal()" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: #d32f2f; color: white; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 0 #9a0000; font-family: 'Outfit', sans-serif; transition: transform 0.1s; letter-spacing: 0.5px;">Close Shop</button>
       </div>
     </div>
+  </div>
+
+  <!-- Inventory Onboarding Modal -->
+  <div id="inventory-onboarding-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-gradient); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; font-family: 'Outfit', sans-serif;">
+    <h1 style="font-size: 36px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; line-height: 1.2;">Welcome to Inventory Day</h1>
+    <p style="font-size: 16px; color: var(--text-light); font-family: 'Inter', sans-serif; margin-bottom: 40px; max-width: 300px; line-height: 1.5;">Before we give you goals, we need to know your baseline. Here is how it works:</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; width: 100%; max-width: 320px; text-align: left;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">1</div>
+        <div>
+          <h3 style="margin: 0; font-size: 18px; color: var(--text);">Log your meals today</h3>
+          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Eat like you normally would.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">2</div>
+        <div>
+          <h3 style="margin: 0; font-size: 18px; color: var(--text);">We analyze your baseline</h3>
+          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Our algorithm calculates your macros.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">3</div>
+        <div>
+          <h3 style="margin: 0; font-size: 18px; color: var(--text);">We generate your personalized plan</h3>
+          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Get optimal targets tailored for you.</p>
+        </div>
+      </div>
+    </div>
+    
+    <button onclick="dismissInventoryOnboarding()" class="action-btn" style="width: 100%; max-width: 320px; padding: 16px; font-size: 18px; border-radius: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 8px 24px rgba(130, 207, 160, 0.4);">Start Tracking</button>
+  </div>
+
+  <!-- Analyzing Modal -->
+  <div id="analyzing-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 248, 245, 0.95); backdrop-filter: blur(10px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="analyzing-spinner"></div>
+    <h2 id="analyzing-text" style="font-family: 'Outfit', sans-serif; font-size: 24px; color: var(--text); margin: 0; transition: opacity 0.3s ease;">Analyzing your macros...</h2>
   </div>
 
   <nav class="bottom-nav">

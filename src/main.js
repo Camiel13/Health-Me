@@ -163,6 +163,51 @@ window.closeGoalsModal = function() {
   setTimeout(() => modal.style.display = 'none', 300);
 };
 
+window.dismissInventoryOnboarding = function() {
+  const modal = document.getElementById('inventory-onboarding-modal');
+  if (modal) {
+    modal.style.opacity = '0';
+    modal.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => modal.style.display = 'none', 300);
+  }
+};
+
+window.startAnalyzing = function() {
+  const analyzingModal = document.getElementById('analyzing-modal');
+  const analyzingText = document.getElementById('analyzing-text');
+  
+  if (!analyzingModal || !analyzingText) return;
+  
+  analyzingModal.style.display = 'flex';
+  setTimeout(() => analyzingModal.style.opacity = '1', 10);
+  
+  analyzingText.textContent = 'Analyzing your macros...';
+  
+  setTimeout(() => {
+    analyzingText.style.opacity = '0';
+    setTimeout(() => {
+      analyzingText.textContent = 'Calculating caloric baseline...';
+      analyzingText.style.opacity = '1';
+    }, 300);
+  }, 1500);
+
+  setTimeout(() => {
+    analyzingText.style.opacity = '0';
+    setTimeout(() => {
+      analyzingText.textContent = 'Generating personalized targets...';
+      analyzingText.style.opacity = '1';
+    }, 300);
+  }, 3000);
+
+  setTimeout(() => {
+    analyzingModal.style.opacity = '0';
+    setTimeout(() => {
+      analyzingModal.style.display = 'none';
+      finishInventoryDay();
+    }, 300);
+  }, 4500);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initStore();
   initScanner();
@@ -500,14 +545,20 @@ export function renderDashboard() {
     `;
   }
   
-  // Inventory Day Banner
-  const inventoryBanner = document.getElementById('inventory-banner');
-  if (inventoryBanner) {
-    if (state.isInventoryMode) {
-      inventoryBanner.style.display = 'block';
-    } else {
-      inventoryBanner.style.display = 'none';
+  // Inventory Day Premium Card & Onboarding
+  const inventoryCard = document.getElementById('inventory-premium-card');
+  const onboardingModal = document.getElementById('inventory-onboarding-modal');
+  
+  if (state.isInventoryMode) {
+    if (inventoryCard) inventoryCard.style.display = 'block';
+    
+    if (onboardingModal && !window.inventoryOnboardingSeen) {
+      onboardingModal.style.display = 'flex';
+      window.inventoryOnboardingSeen = true;
     }
+  } else {
+    if (inventoryCard) inventoryCard.style.display = 'none';
+    if (onboardingModal) onboardingModal.style.display = 'none';
   }
 
   // Today's Food List
@@ -530,3 +581,11 @@ export function renderDashboard() {
   }
 }
 window.renderDashboard = renderDashboard;
+
+window.resetProgress = function() {
+  if (confirm("Are you sure you want to completely reset all your progress, history, and settings? This cannot be undone.")) {
+    localStorage.removeItem('health_app_state');
+    window.location.reload();
+  }
+};
+console.log("🛠️ Dev Tools: Type 'resetProgress()' to completely wipe all data and start over.");
