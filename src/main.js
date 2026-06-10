@@ -325,8 +325,9 @@ window.executeSearch = async () => {
 document.addEventListener('click', (e) => {
   const sInput = document.getElementById('food-search');
   const sResults = document.getElementById('search-results');
+  const sBtn = document.getElementById('search-btn');
   if (sInput && sResults) {
-    if (!sInput.contains(e.target) && !sResults.contains(e.target)) {
+    if (!sInput.contains(e.target) && !sResults.contains(e.target) && (!sBtn || !sBtn.contains(e.target))) {
       sResults.innerHTML = '';
     }
   }
