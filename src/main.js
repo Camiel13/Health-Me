@@ -477,10 +477,22 @@ window.completeHabitAction = function(id) {
   }
 };
 
+window.currentCalendarDate = window.currentCalendarDate || new Date();
+window.selectedCalendarDate = window.selectedCalendarDate || new Date();
+
+window.changeCalendarMonth = function(offset) {
+  window.currentCalendarDate.setMonth(window.currentCalendarDate.getMonth() + offset);
+  renderHabits();
+};
+
+window.selectCalendarDay = function(y, m, d) {
+  window.selectedCalendarDate = new Date(y, m, d);
+  renderHabits();
+};
+
 export function renderHabits() {
-  const list = document.getElementById('habits-list');
-  if(!list) return;
   const state = getState();
+  const list = document.getElementById('habits-list');
   
   const banner = document.getElementById('never-miss-twice-banner');
   if (banner) {
@@ -492,96 +504,155 @@ export function renderHabits() {
     streakDisplay.textContent = getHabitStreak();
   }
   
-  const weekCalendar = document.getElementById('week-calendar');
-  if (weekCalendar) {
-    let calHTML = '';
+  const calGrid = document.getElementById('full-month-calendar');
+  const monthYearDisplay = document.getElementById('cal-month-year');
+  if (calGrid && monthYearDisplay) {
+    const year = window.currentCalendarDate.getFullYear();
+    const month = window.currentCalendarDate.getMonth();
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+    
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    let startDayOfWeek = firstDay.getDay() - 1;
+    if (startDayOfWeek === -1) startDayOfWeek = 6;
+    
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    
+    let html = '';
+    
+    const selY = window.selectedCalendarDate.getFullYear();
+    const selM = window.selectedCalendarDate.getMonth();
+    const selD = window.selectedCalendarDate.getDate();
+    
     const today = new Date();
-    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    // Generate last 7 days
-    for(let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      const ds = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      const isToday = i === 0;
+    
+    let dayCount = 1;
+    let nextMonthDay = 1;
+    
+    for (let i = 0; i < 42; i++) {
+      let isCurrentMonth = true;
+      let d = 0;
+      let m = month;
+      let y = year;
+      
+      if (i < startDayOfWeek) {
+        isCurrentMonth = false;
+        d = prevMonthLastDay - startDayOfWeek + i + 1;
+        m = month - 1;
+      } else if (dayCount > lastDay.getDate()) {
+        isCurrentMonth = false;
+        d = nextMonthDay++;
+        m = month + 1;
+      } else {
+        d = dayCount++;
+      }
+      
+      const realDate = new Date(y, m, d);
+      const isSelected = (realDate.getFullYear() === selY && realDate.getMonth() === selM && realDate.getDate() === selD);
+      const isToday = (realDate.getFullYear() === today.getFullYear() && realDate.getMonth() === today.getMonth() && realDate.getDate() === today.getDate());
+      
+      const ds = `${realDate.getFullYear()}-${String(realDate.getMonth() + 1).padStart(2, '0')}-${String(realDate.getDate()).padStart(2, '0')}`;
       
       const didAny = state.habits && state.habits.some(h => h.completedDates && h.completedDates.includes(ds));
+      const hasFood = state.history && state.history.some(r => r.date === ds && r.foods.length > 0);
       
-      calHTML += `
-        <div onclick="window.openDailySummary('${ds}')" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-          <span style="font-size: 11px; font-weight: 700; color: ${isToday ? 'var(--primary-dark)' : 'var(--text-light)'};">${days[d.getDay()]}</span>
-          <div style="width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; ${didAny ? 'background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;' : 'background: rgba(0,0,0,0.05); color: transparent;'}">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
+      let indicator = '';
+      if (didAny || hasFood) {
+        indicator = `<div style="width:4px; height:4px; border-radius:50%; background: ${isSelected ? 'white' : 'var(--primary)'}; margin-top:2px;"></div>`;
+      }
+      
+      html += `
+        <div onclick="window.selectCalendarDay(${realDate.getFullYear()}, ${realDate.getMonth()}, ${realDate.getDate()})" 
+             style="cursor: pointer; padding: 8px 0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+             ${!isCurrentMonth ? 'opacity: 0.3;' : ''}
+             ${isSelected ? 'background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 10px rgba(130,207,160,0.4);' : (isToday ? 'border: 1px solid var(--primary); color: var(--primary);' : 'background: rgba(255,255,255,0.4);')}
+             ">
+          <span style="font-weight: 600; font-size: 14px;">${d}</span>
+          ${indicator}
         </div>
       `;
     }
+    calGrid.innerHTML = html;
+  }
+  
+  const selDs = `${window.selectedCalendarDate.getFullYear()}-${String(window.selectedCalendarDate.getMonth() + 1).padStart(2, '0')}-${String(window.selectedCalendarDate.getDate()).padStart(2, '0')}`;
+  
+  const titleDisplay = document.getElementById('selected-day-title');
+  if (titleDisplay) {
+    const todayStr = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`;
+    if (selDs === todayStr) {
+      titleDisplay.textContent = "Today's Overview";
+    } else {
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      titleDisplay.textContent = window.selectedCalendarDate.toLocaleDateString(undefined, options);
+    }
+  }
+  
+  const macrosContainer = document.getElementById('selected-day-macros');
+  const foodsContainer = document.getElementById('selected-day-foods');
+  const habitsContainer = document.getElementById('selected-day-habits');
+  
+  if (macrosContainer && foodsContainer && habitsContainer) {
+    const record = state.history.find(r => r.date === selDs);
     
-    window.openDailySummary = function(dateStr) {
-      const state = getState();
-      const record = state.history.find(r => r.date === dateStr);
+    if (!record || record.foods.length === 0) {
+      macrosContainer.innerHTML = '<div style="grid-column: 1 / -1; color: #888; font-size: 14px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 12px; text-align: center;">No food logged.</div>';
+      foodsContainer.innerHTML = '<li><small style="color: #666;">No foods logged.</small></li>';
+    } else {
+      const totals = record.foods.reduce((acc, f) => {
+        acc.cal += f.calories || 0; acc.pro += f.protein || 0; acc.carb += f.carbs || 0; acc.fat += f.fat || 0; return acc;
+      }, { cal: 0, pro: 0, carb: 0, fat: 0 });
       
-      const modal = document.getElementById('daily-summary-modal');
-      const title = document.getElementById('daily-summary-title');
-      const macrosContainer = document.getElementById('daily-summary-macros');
-      const foodsContainer = document.getElementById('daily-summary-foods');
+      macrosContainer.innerHTML = `
+        <div style="background: rgba(130, 207, 160, 0.1); padding: 12px; border-radius: 12px; text-align: center;">
+          <strong style="font-size: 18px; color: var(--primary);">${Math.round(totals.cal)}</strong><br>
+          <span style="font-size: 11px; color: #666;">Calories</span>
+        </div>
+        <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+          <strong style="font-size: 18px;">${Math.round(totals.pro)}g</strong><br>
+          <span style="font-size: 11px; color: #666;">Protein</span>
+        </div>
+        <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+          <strong style="font-size: 18px;">${Math.round(totals.carb)}g</strong><br>
+          <span style="font-size: 11px; color: #666;">Carbs</span>
+        </div>
+        <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
+          <strong style="font-size: 18px;">${Math.round(totals.fat)}g</strong><br>
+          <span style="font-size: 11px; color: #666;">Fats</span>
+        </div>
+      `;
       
-      if (!modal) return;
-      
-      title.textContent = `Summary: ${dateStr}`;
-      
-      if (!record || record.foods.length === 0) {
-        macrosContainer.innerHTML = '<p style="grid-column: 1 / -1; color: #888; font-size: 14px;">No data logged for this date.</p>';
-        foodsContainer.innerHTML = '';
-      } else {
-        const totals = record.foods.reduce((acc, f) => {
-          acc.cal += f.calories || 0;
-          acc.pro += f.protein || 0;
-          acc.carb += f.carbs || 0;
-          acc.fat += f.fat || 0;
-          return acc;
-        }, { cal: 0, pro: 0, carb: 0, fat: 0 });
-        
-        macrosContainer.innerHTML = `
-          <div style="background: rgba(130, 207, 160, 0.1); padding: 12px; border-radius: 12px; text-align: center;">
-            <strong style="font-size: 18px; color: var(--primary);">${Math.round(totals.cal)}</strong><br>
-            <span style="font-size: 11px; color: #666;">Calories</span>
+      foodsContainer.innerHTML = record.foods.map(f => `
+        <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid rgba(0,0,0,0.02);">
+          <div style="display: flex; flex-direction: column;">
+            <strong style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);">${f.name}</strong>
+            <span style="font-size: 11px; color: #aaa;">${Math.round(f.protein||0)}g P · ${Math.round(f.carbs||0)}g C · ${Math.round(f.fat||0)}g F</span>
           </div>
-          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
-            <strong style="font-size: 18px;">${Math.round(totals.pro)}g</strong><br>
-            <span style="font-size: 11px; color: #666;">Protein</span>
+          <strong style="color: var(--primary); font-size: 14px;">${Math.round(f.calories)} kcal</strong>
+        </li>
+      `).join('');
+    }
+    
+    const completedHabits = (state.habits || []).filter(h => h.completedDates && h.completedDates.includes(selDs));
+    if (completedHabits.length === 0) {
+      habitsContainer.innerHTML = '<li><small style="color: #666;">No habits completed.</small></li>';
+    } else {
+      habitsContainer.innerHTML = completedHabits.map(h => `
+        <li style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid rgba(0,0,0,0.02);">
+          <div style="width: 20px; height: 20px; border-radius: 10px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
-          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
-            <strong style="font-size: 18px;">${Math.round(totals.carb)}g</strong><br>
-            <span style="font-size: 11px; color: #666;">Carbs</span>
-          </div>
-          <div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 12px; text-align: center;">
-            <strong style="font-size: 18px;">${Math.round(totals.fat)}g</strong><br>
-            <span style="font-size: 11px; color: #666;">Fats</span>
-          </div>
-        `;
-        
-        foodsContainer.innerHTML = record.foods.map(f => `
-          <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--card-border);">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
-              <div style="display: flex; flex-direction: column;">
-                <strong style="font-family: 'Outfit', sans-serif; font-size: 15px; color: var(--text);">${f.name}</strong>
-                ${f.count && f.count > 1 ? `<span style="font-size: 12px; color: #888; font-weight: 600;">${f.count}x Portions</span>` : ''}
-              </div>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-              <span style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 15px;">${Math.round(f.calories)} kcal</span>
-            </div>
-          </li>
-        `).join('');
-      }
-      
-      modal.style.display = 'flex';
-    };
-    weekCalendar.innerHTML = calHTML;
+          <span style="font-size: 13px; font-weight: 500;">${h.action}</span>
+        </li>
+      `).join('');
+    }
   }
 
   const todayStr = getTodayString();
+  if(!list) return;
 
   if(!state.habits || state.habits.length === 0) {
     list.innerHTML = '<li><small style="color: #666;">No habits added yet.</small></li>';
