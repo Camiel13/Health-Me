@@ -353,6 +353,63 @@ document.addEventListener('click', (e) => {
     }
   });
 
+  let currentReflectionHabitId = null;
+
+  window.openReflectionModal = function(id) {
+    currentReflectionHabitId = id;
+    const input = document.getElementById('reflection-input');
+    const countDisplay = document.getElementById('reflection-word-count');
+    const submitBtn = document.getElementById('submit-reflection-btn');
+    if(input) input.value = '';
+    if(countDisplay) countDisplay.textContent = '0 / 10 words';
+    if(submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.5';
+      submitBtn.style.cursor = 'not-allowed';
+    }
+    document.getElementById('habit-reflection-modal').style.display = 'flex';
+  };
+
+  document.getElementById('reflection-input')?.addEventListener('input', (e) => {
+    const text = e.target.value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    const countDisplay = document.getElementById('reflection-word-count');
+    const submitBtn = document.getElementById('submit-reflection-btn');
+    
+    countDisplay.textContent = `${words} / 10 words`;
+    
+    if (words >= 10) {
+      countDisplay.style.color = 'var(--primary)';
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
+      submitBtn.style.cursor = 'pointer';
+    } else {
+      countDisplay.style.color = '#888';
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.5';
+      submitBtn.style.cursor = 'not-allowed';
+    }
+  });
+
+  document.getElementById('submit-reflection-btn')?.addEventListener('click', () => {
+    if (currentReflectionHabitId) {
+      const text = document.getElementById('reflection-input').value.trim();
+      completeHabit(currentReflectionHabitId, text);
+      document.getElementById('habit-reflection-modal').style.display = 'none';
+      renderHabits();
+      renderScoreboard();
+      
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#82cfa0', '#5b9d74', '#FFD700', '#ffffff']
+        });
+      }
+    }
+  });
+
   document.getElementById('save-habit-btn')?.addEventListener('click', () => {
     const trigger = document.getElementById('habit-trigger').value.trim();
     const action = document.getElementById('habit-action').value.trim();
@@ -463,19 +520,7 @@ export function renderProfile() {
   }
 }
 
-window.completeHabitAction = function(id) {
-  completeHabit(id);
-  renderHabits();
-  renderScoreboard();
-  if (typeof confetti === 'function') {
-    confetti({
-      particleCount: 150,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: ['#82cfa0', '#5b9d74', '#FFD700', '#ffffff']
-    });
-  }
-};
+
 
 window.currentCalendarDate = window.currentCalendarDate || new Date();
 window.selectedCalendarDate = window.selectedCalendarDate || new Date();
@@ -644,14 +689,17 @@ export function renderHabits() {
     if (completedHabits.length === 0) {
       habitsContainer.innerHTML = '<li><small style="color: #666;">No habits completed.</small></li>';
     } else {
-      habitsContainer.innerHTML = completedHabits.map(h => `
-        <li style="display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid rgba(0,0,0,0.02);">
-          <div style="width: 20px; height: 20px; border-radius: 10px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      habitsContainer.innerHTML = completedHabits.map(h => {
+        const reflection = h.reflections && h.reflections[selDs] ? h.reflections[selDs] : '';
+        return `
+        <li style="display: flex; flex-direction: column; padding: 12px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid rgba(0,0,0,0.02); margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;">✓</div>
+            <strong style="font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text);">${h.action}</strong>
           </div>
-          <span style="font-size: 13px; font-weight: 500;">${h.action}</span>
+          ${reflection ? `<p style="margin: 8px 0 0 34px; font-size: 12px; color: var(--text-light); font-style: italic; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 8px;">"${reflection}"</p>` : ''}
         </li>
-      `).join('');
+      `}).join('');
     }
   }
 
@@ -678,7 +726,7 @@ export function renderHabits() {
           <span style="font-size: 11px; font-weight: 700; background: ${difficultyColor}20; color: ${difficultyColor}; padding: 4px 8px; border-radius: 12px; text-transform: uppercase;">${h.difficulty || 'Normal'}</span>
         </div>
       </div>
-      <button onclick="completeHabitAction(${h.id})" ${isCompletedToday ? 'disabled' : ''} style="padding: 8px 16px; background: ${isCompletedToday ? '#ccc' : 'linear-gradient(135deg, var(--primary), var(--primary-dark))'}; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: ${isCompletedToday ? 'default' : 'pointer'}; font-family: 'Inter', sans-serif; box-shadow: ${isCompletedToday ? 'none' : '0 4px 10px rgba(130,207,160,0.3)'}; transition: transform 0.2s; min-width: 80px;">
+      <button onclick="window.openReflectionModal(${h.id})" ${isCompletedToday ? 'disabled' : ''} style="padding: 8px 16px; background: ${isCompletedToday ? '#ccc' : 'linear-gradient(135deg, var(--primary), var(--primary-dark))'}; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: ${isCompletedToday ? 'default' : 'pointer'}; font-family: 'Inter', sans-serif; box-shadow: ${isCompletedToday ? 'none' : '0 4px 10px rgba(130,207,160,0.3)'}; transition: transform 0.2s; min-width: 80px;">
         ${isCompletedToday ? 'Done' : 'Complete'}
       </button>
     </li>
