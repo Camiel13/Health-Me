@@ -17,7 +17,12 @@ export async function searchFood(query, retries = 3) {
     }
     const data = await response.json();
     
-    let products = (data.products || []).filter(p => p.product_name);
+    let products = (data.products || []).filter(p => {
+      if (!p.product_name) return false;
+      if (!p.nutriments) return false;
+      const n = p.nutriments;
+      return (n['energy-kcal_100g'] > 0 || n['carbohydrates_100g'] > 0 || n['proteins_100g'] > 0 || n['fat_100g'] > 0);
+    });
     
     const queryWords = query.toLowerCase().split(/\s+/);
     products.sort((a, b) => {
