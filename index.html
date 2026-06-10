@@ -119,65 +119,22 @@
       </div>
       <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin-top: 10px;"></ul>
     </div>
-    <div id="view-habits" class="view" style="display: none; padding: 24px 20px; position: relative;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-        <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">Daily Routine Calendar</h2>
-        <button onclick="document.getElementById('habit-form-modal').style.display='block'" class="add-log-btn" style="width: 48px; height: 48px; position: static;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    <div id="view-routines" class="view" style="display: none; padding: 24px 20px; position: relative;">
+      <h2 style="margin-top: 0; font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">My Routines</h2>
+      
+      <div style="position: absolute; right: 20px; top: 24px;">
+        <button onclick="document.getElementById('habit-form-modal').style.display='block'" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(130, 207, 160, 0.4); cursor: pointer; transition: transform 0.2s;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
       </div>
 
-      <div id="never-miss-twice-banner" class="emergency-banner" style="display: none;">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-          <span style="font-size: 24px;">🚨</span>
-          <h3 style="margin: 0; color: #d32f2f; font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; text-transform: uppercase;">Never Miss Twice</h3>
-        </div>
-        <p style="margin: 0; font-size: 14px; color: #c62828; font-weight: 600; line-height: 1.4;">
-          You missed your routine yesterday! Apply the <strong>2-minute rule</strong> today: just do the bare minimum for each habit, but don't break the chain again!
-        </p>
+      <div class="glass-card" id="never-miss-twice-banner" style="display: none; background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.3); padding: 16px; border-radius: 16px; margin-bottom: 20px;">
+        <strong style="color: #d32f2f; display: block; margin-bottom: 4px;">⚠️ Never Miss Twice!</strong>
+        <span style="font-size: 13px; color: #b71c1c;">You missed some routines yesterday. Use the 2-minute rule today to bounce back!</span>
       </div>
 
-      <div class="calendar-split-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; align-items: start;">
-        
-        <!-- LEFT SIDE: CALENDAR -->
-        <div class="glass-card" style="padding: 20px; border-radius: 20px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <button onclick="window.changeCalendarMonth(-1)" style="background: none; border: none; cursor: pointer; color: var(--primary-dark); font-size: 20px;">◀</button>
-            <h3 id="cal-month-year" style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--text); text-align: center;">Month Year</h3>
-            <button onclick="window.changeCalendarMonth(1)" style="background: none; border: none; cursor: pointer; color: var(--primary-dark); font-size: 20px;">▶</button>
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-weight: 700; font-size: 12px; color: var(--text-light); margin-bottom: 8px;">
-            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-          </div>
-          <div id="full-month-calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 16px;">
-            <!-- Filled by JS -->
-          </div>
-          <div style="text-align: center;">
-            <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-light);">Current Streak: <span id="current-streak-display" style="color: var(--primary); font-size: 16px;">0</span> days 🔥</span>
-          </div>
-        </div>
-        
-        <!-- RIGHT SIDE: SUMMARY -->
-        <div class="glass-card" style="padding: 20px; border-radius: 20px; display: flex; flex-direction: column; overflow-y: auto;">
-          <h3 id="selected-day-title" style="margin: 0 0 16px 0; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--text);">Today's Overview</h3>
-          <div id="selected-day-macros" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-            <!-- Filled by JS -->
-          </div>
-          
-          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--text-light); display: flex; justify-content: space-between;">
-            Foods Logged 
-          </h4>
-          <ul id="selected-day-foods" style="list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 8px;">
-            <!-- Filled by JS -->
-          </ul>
-          
-          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--text-light); display: flex; justify-content: space-between;">
-            Routines & Habits
-          </h4>
-          <ul id="selected-day-habits" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
-            <!-- Filled by JS -->
-          </ul>
-        </div>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-light);">Current Streak: <span id="current-streak-display" style="color: var(--primary); font-size: 16px;">0</span> days 🔥</span>
       </div>
 
       <div id="habit-form-modal" class="glass-card" style="display: none; margin-bottom: 24px; padding: 24px; position: relative;">
@@ -212,13 +169,53 @@
           <button onclick="document.getElementById('habit-form-modal').style.display='none'" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.8); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text-light); transition: all 0.2s;">Cancel</button>
         </div>
       </div>
-      
-      <div class="section-title-wrap">
-        <h3>Your Habits</h3>
-      </div>
+
       <ul id="habits-list" style="list-style: none; padding: 0; margin: 0;">
         <!-- Filled by JS -->
       </ul>
+    </div>
+    <div id="view-habits" class="view" style="display: none; padding: 24px 20px; position: relative;">
+      <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 24px 0;">Calendar & Logbook</h2>
+
+      <div class="calendar-split-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; align-items: start;">
+        
+        <!-- LEFT SIDE: CALENDAR -->
+        <div class="glass-card" style="padding: 20px; border-radius: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <button onclick="window.changeCalendarMonth(-1)" style="background: none; border: none; cursor: pointer; color: var(--primary-dark); font-size: 20px;">◀</button>
+            <h3 id="cal-month-year" style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--text); text-align: center;">Month Year</h3>
+            <button onclick="window.changeCalendarMonth(1)" style="background: none; border: none; cursor: pointer; color: var(--primary-dark); font-size: 20px;">▶</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-weight: 700; font-size: 12px; color: var(--text-light); margin-bottom: 8px;">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+          <div id="full-month-calendar" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 16px;">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+        
+        <!-- RIGHT SIDE: SUMMARY -->
+        <div class="glass-card" style="padding: 20px; border-radius: 20px; display: flex; flex-direction: column; overflow-y: auto;">
+          <h3 id="selected-day-title" style="margin: 0 0 16px 0; font-family: 'Outfit', sans-serif; font-size: 18px; color: var(--text);">Today's Overview</h3>
+          <div id="selected-day-macros" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+            <!-- Filled by JS -->
+          </div>
+          
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--text-light); display: flex; justify-content: space-between;">
+            Foods Logged 
+          </h4>
+          <ul id="selected-day-foods" style="list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 8px;">
+            <!-- Filled by JS -->
+          </ul>
+          
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: var(--text-light); display: flex; justify-content: space-between;">
+            Routines & Habits
+          </h4>
+          <ul id="selected-day-habits" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+            <!-- Filled by JS -->
+          </ul>
+        </div>
+      </div>
     </div>
     <div id="view-privacy" class="view" style="display: none; padding: 24px 20px;">
       <div style="display: flex; align-items: center; margin-bottom: 24px;">
@@ -512,6 +509,23 @@
       </div>
     </div>
   </div>
+  <div id="habit-reflection-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="glass-card" style="width: 90%; max-width: 400px; padding: 24px; position: relative; background: white; margin: auto; border-radius: 20px;">
+      <h3 style="margin-top: 0; font-family: 'Outfit', sans-serif; color: var(--primary-dark);">Reflection Required</h3>
+      <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">How did it go? Describe what you did or how it felt (min 10 words).</p>
+      
+      <textarea id="reflection-input" placeholder="I ran for 20 minutes outside and it felt great..." style="width: 100%; height: 100px; padding: 12px; border-radius: 12px; border: 1px solid var(--card-border); font-family: 'Inter', sans-serif; resize: none; margin-bottom: 8px;"></textarea>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <span id="reflection-word-count" style="font-size: 12px; color: #888; font-weight: 600;">0 / 10 words</span>
+      </div>
+      
+      <div style="display: flex; gap: 10px;">
+        <button onclick="document.getElementById('habit-reflection-modal').style.display='none'" class="action-btn" style="flex: 1; background: #eee; color: #333; margin: 0;">Cancel</button>
+        <button id="submit-reflection-btn" class="action-btn" disabled style="flex: 1; margin: 0; opacity: 0.5; cursor: not-allowed;">Claim Reward</button>
+      </div>
+    </div>
+  </div>
   <div id="daily-summary-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div class="glass-card" style="width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; padding: 24px; position: relative; background: white; margin: auto; border-radius: 20px;">
       <button onclick="document.getElementById('daily-summary-modal').style.display='none'" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer;">×</button>
@@ -528,20 +542,19 @@
     </div>
   </div>
   <nav class="bottom-nav">
+    <button onclick="navigateTo('view-routines')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span class="nav-indicator"></span>
+    </button>
     <button onclick="navigateTo('view-habits')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
       <span class="nav-indicator"></span>
     </button>
-    <button onclick="navigateTo('view-scoreboard')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v6.5A5.5 5.5 0 0 1 11.5 16v0A5.5 5.5 0 0 1 6 10.5V4z"></path><path d="M7 6H4v3.5A3.5 3.5 0 0 0 7.5 13v0M17 6h3v3.5a3.5 3.5 0 0 1-3.5 3.5v0"></path></svg>
-      <span class="nav-indicator"></span>
-    </button>
-    <div class="nav-spacer"></div>
     <button class="nav-home-btn active" onclick="navigateTo('view-dashboard')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </button>
     <button onclick="navigateTo('view-environment')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
       <span class="nav-indicator"></span>
     </button>
     <button onclick="navigateTo('view-profile')">
