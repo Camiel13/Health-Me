@@ -596,9 +596,10 @@ export function renderHabits() {
   const habitsContainer = document.getElementById('selected-day-habits');
   
   if (macrosContainer && foodsContainer && habitsContainer) {
-    const record = state.history.find(r => r.date === selDs);
+    const history = state.history || [];
+    const record = history.find(r => r.date === selDs);
     
-    if (!record || record.foods.length === 0) {
+    if (!record || !record.foods || record.foods.length === 0) {
       macrosContainer.innerHTML = '<div style="grid-column: 1 / -1; color: #888; font-size: 14px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 12px; text-align: center;">No food logged.</div>';
       foodsContainer.innerHTML = '<li><small style="color: #666;">No foods logged.</small></li>';
     } else {
@@ -770,10 +771,11 @@ export function renderDashboard() {
   const todaysLists = document.querySelectorAll('.todays-foods-list-container');
   todaysLists.forEach(list => {
     const record = getTodayRecord();
-    if (record.foods.length === 0) {
+    const foods = record.foods || [];
+    if (foods.length === 0) {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
-      list.innerHTML = record.foods.map(f => `
+      list.innerHTML = foods.map(f => `
         <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.7); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);">
           <div style="display: flex; align-items: center; gap: 12px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}

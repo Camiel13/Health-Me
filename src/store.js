@@ -10,8 +10,8 @@ export function initStore() {
     };
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
   } else {
-    // Migrate old state
     const state = JSON.parse(localStorage.getItem('health_app_state'));
+    if (!state.history) state.history = [];
     if (!state.habits) state.habits = [];
     if (typeof state.score !== 'number') state.score = 0;
     if (!state.avatar) state.avatar = { hat: 'none', item: 'none' };
@@ -44,6 +44,7 @@ export function getTodayString() {
 export function getTodayRecord() {
   const state = getState();
   const today = getTodayString();
+  if (!state.history) state.history = [];
   let record = state.history.find(r => r.date === today);
   if (!record) {
     record = { date: today, foods: [], steps: 0 };
@@ -56,6 +57,7 @@ export function getTodayRecord() {
 export function addFood(food) {
   const state = getState();
   const today = getTodayString();
+  if (!state.history) state.history = [];
   let record = state.history.find(r => r.date === today);
   if (!record) {
     record = { date: today, foods: [], steps: 0 };
@@ -96,7 +98,8 @@ export function addFood(food) {
 
 export function getTodayTotals() {
   const record = getTodayRecord();
-  return record.foods.reduce((totals, food) => {
+  const foods = record.foods || [];
+  return foods.reduce((totals, food) => {
     totals.calories += (food.calories || 0);
     totals.carbs += (food.carbs || 0);
     totals.protein += (food.protein || 0);
@@ -148,7 +151,8 @@ export function checkNeverMissTwice() {
   yesterdayDate.setDate(yesterdayDate.getDate() - 1);
   const yesterday = `${yesterdayDate.getFullYear()}-${String(yesterdayDate.getMonth() + 1).padStart(2, '0')}-${String(yesterdayDate.getDate()).padStart(2, '0')}`;
   
-  const habitsYesterday = state.habits.filter(h => !h.createdDate || h.createdDate <= yesterday);
+  const habits = state.habits || [];
+  const habitsYesterday = habits.filter(h => !h.createdDate || h.createdDate <= yesterday);
   if (habitsYesterday.length === 0) return false;
   
   const completedYesterday = habitsYesterday.filter(h => h.completedDates && h.completedDates.includes(yesterday));
