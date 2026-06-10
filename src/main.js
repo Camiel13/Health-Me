@@ -491,6 +491,9 @@ window.selectCalendarDay = function(y, m, d) {
 };
 
 export function renderHabits() {
+  window.currentCalendarDate = window.currentCalendarDate || new Date();
+  window.selectedCalendarDate = window.selectedCalendarDate || new Date();
+  
   const state = getState();
   const list = document.getElementById('habits-list');
   
