@@ -9,7 +9,10 @@ export function initScanner() {
     scanBtn.addEventListener('click', () => {
       readerDiv.style.display = 'block';
       if(!html5QrcodeScanner) {
-        html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 300, height: 250} }, false);
+        html5QrcodeScanner = new Html5QrcodeScanner("reader", { 
+          fps: 10, 
+          qrbox: (vw, vh) => ({ width: Math.min(vw * 0.9, 450), height: Math.min(vh * 0.9, 450) }) 
+        }, false);
         html5QrcodeScanner.render(async (decodedText) => {
           html5QrcodeScanner.clear();
           readerDiv.style.display = 'none';
