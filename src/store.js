@@ -123,7 +123,7 @@ export function addHabit(habit) {
   saveState(state);
 }
 
-export function completeHabit(habitId) {
+export function completeHabit(habitId, reflectionText = "") {
   const state = getState();
   const today = getTodayString();
   const habit = state.habits.find(h => h.id === habitId);
@@ -132,6 +132,9 @@ export function completeHabit(habitId) {
     if (!habit.completedDates.includes(today)) {
       habit.completedDates.push(today);
       habit.completions++;
+      
+      if (!habit.reflections) habit.reflections = {};
+      habit.reflections[today] = reflectionText;
       
       let pts = 10;
       if (habit.difficulty === 'Easy') pts = 5;
