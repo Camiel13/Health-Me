@@ -658,27 +658,23 @@ export function renderDashboard() {
   // Diffs
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
+    const getMacroBox = (icon, label, value, max, color) => {
+      let pct = Math.min((value / max) * 100, 100);
+      if (isNaN(pct)) pct = 0;
+      return `
+      <div style="position: relative; border-radius: 14px; display: flex; flex-direction: column; align-items: center; text-align: center; background: rgba(255,255,255,0.8); padding: 8px 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+        <div style="position: absolute; inset: -2px; border-radius: 16px; padding: 2px; background: conic-gradient(${color} ${pct}%, rgba(0,0,0,0.05) ${pct}%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;"></div>
+        <span style="font-size: 16px; margin-bottom: 2px;">${icon}</span>
+        <strong style="font-size: 13px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(value)}g</strong>
+        <span style="font-size: 9px; font-weight: 700; color: #888; text-transform: uppercase;">${label}</span>
+      </div>`;
+    };
+    
     diffsContainer.innerHTML = `
-      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
-        <span style="font-size: 18px; margin-bottom: 4px;">🥩</span>
-        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.protein)}g</strong>
-        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Protein</span>
-      </div>
-      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
-        <span style="font-size: 18px; margin-bottom: 4px;">🌾</span>
-        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.carbs)}g</strong>
-        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Carbs</span>
-      </div>
-      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
-        <span style="font-size: 18px; margin-bottom: 4px;">🥑</span>
-        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.fat)}g</strong>
-        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Fats</span>
-      </div>
-      <div class="glass-card" style="padding: 12px 8px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; text-align: center;">
-        <span style="font-size: 18px; margin-bottom: 4px;">🥦</span>
-        <strong style="font-size: 15px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(totals.fiber)}g</strong>
-        <span style="font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase;">Fiber</span>
-      </div>
+      ${getMacroBox('🥩', 'Protein', totals.protein, goals.protein, '#ff7043')}
+      ${getMacroBox('🌾', 'Carbs', totals.carbs, goals.carbs, '#ffca28')}
+      ${getMacroBox('🥑', 'Fats', totals.fat, goals.fat, '#66bb6a')}
+      ${getMacroBox('🥦', 'Fiber', totals.fiber, goals.fiber, '#29b6f6')}
     `;
   }
   
@@ -706,7 +702,7 @@ export function renderDashboard() {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       list.innerHTML = record.foods.map(f => `
-        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--card-border);">
+        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.7); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);">
           <div style="display: flex; align-items: center; gap: 12px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
             <div style="display: flex; flex-direction: column;">

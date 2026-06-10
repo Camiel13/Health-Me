@@ -11,12 +11,19 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
-      <div class="dashboard-header">
-        <div>
-          <h2 class="dash-greeting">Hello!</h2>
-          <p class="dash-date">Today's Overview</p>
+      <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="flex-shrink: 0;">
+          <h2 class="dash-greeting" style="margin:0; font-size: 20px;">Hello!</h2>
+          <p class="dash-date" style="margin:0; font-size: 11px;">Today's Overview</p>
         </div>
-        <button class="add-log-btn" onclick="navigateTo('view-logging')">
+        
+        <div class="env-tips-card" onclick="navigateTo('view-environment')" style="flex: 1; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+          <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); line-height: 1.2; font-family: 'Outfit', sans-serif; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+            "Put your chips in the basement. Out of sight, out of mind."
+          </p>
+        </div>
+
+        <button class="add-log-btn" onclick="navigateTo('view-logging')" style="flex-shrink: 0;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
       </div>
@@ -32,11 +39,7 @@
         <div style="position: absolute; top: -30px; right: -30px; width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
       </div>
 
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="text-align: center; padding: 0 20px; cursor: pointer;">
-        <p id="env-tip-text" style="margin: 0; font-size: 15px; font-style: italic; color: var(--text-light); line-height: 1.5; font-family: 'Outfit', sans-serif; font-weight: 500;">
-          "Put your chips in the basement. Out of sight, out of mind."
-        </p>
-      </div>
+
 
       <div class="premium-wheel-card">
         <div class="premium-wheel-container">
@@ -90,7 +93,7 @@
         <div class="section-title-wrap" style="margin-bottom: 8px;">
           <h3 style="font-size: 14px; margin: 0; font-family: 'Outfit', sans-serif; color: var(--text);">Today's Log</h3>
         </div>
-        <ul class="todays-foods-list-container"></ul>
+        <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin: 0;"></ul>
       </div>
     </div>
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">
