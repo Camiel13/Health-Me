@@ -446,45 +446,6 @@
     <h2 id="analyzing-text" style="font-family: 'Outfit', sans-serif; font-size: 24px; color: var(--text); margin: 0; transition: opacity 0.3s ease;">Analyzing your macros...</h2>
   </div>
 
-    <!-- Environment & Groceries View -->
-    <div id="view-environment" class="view" style="display: none; padding: 24px 20px; position: relative;">
-      <h2 style="font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Priming & Groceries</h2>
-      <p style="color: var(--text-light); font-weight: 500; margin-bottom: 24px; line-height: 1.4;">Design your environment for success. Good habits start at the grocery store.</p>
-      
-      <div class="recipe-card glass-card" style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; padding: 20px;">
-        <div class="recipe-content">
-          <h3 style="margin: 0 0 4px 0; font-size: 14px; color: var(--primary);">Smart Meal Suggestion</h3>
-          <p id="smart-meal-name" style="margin: 0 0 4px 0; font-size: 18px; font-weight: 700;">Balanced Meal</p>
-          <p id="smart-meal-macros" style="font-size: 12px; color: rgba(255,255,255,0.7); margin: 0 0 12px 0; font-weight: 500;">Macros here</p>
-          <button class="recipe-btn" onclick="getSmartSuggestion()" style="padding: 8px 16px; font-size: 13px;">Suggest New</button>
-        </div>
-        <div id="smart-meal-icon" class="recipe-image-placeholder" style="font-size: 48px;">🥗</div>
-      </div>
-
-      <div class="glass-card" style="margin-bottom: 24px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: var(--text); border: none; box-shadow: 0 12px 24px rgba(132, 250, 176, 0.3);">
-        <h3 style="margin-top: 0; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px; font-size: 20px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          Smart Grocery List
-        </h3>
-        <p style="font-size: 14px; opacity: 0.9; margin-bottom: 16px; font-weight: 500;">Based on your macro goals, here is an automated list to keep your kitchen primed.</p>
-        <button id="generate-groceries-btn" class="action-btn" style="background: white; color: #1e362d; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">Generate Smart List</button>
-      </div>
-      
-      <div id="grocery-list-container" style="display: none; animation: fadeSlide 0.4s ease-out;">
-        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
-          <h4 style="margin: 0 0 12px 0; color: #1976d2; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🥩 Proteins</h4>
-          <ul id="grocery-proteins" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
-        </div>
-        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
-          <h4 style="margin: 0 0 12px 0; color: #e64a19; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🌾 Carbs & Fibers</h4>
-          <ul id="grocery-carbs" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
-        </div>
-        <div class="glass-card" style="padding: 16px; margin-bottom: 16px; background: rgba(255,255,255,0.8);">
-          <h4 style="margin: 0 0 12px 0; color: #f57f17; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; display: flex; align-items: center; gap: 6px;">🥑 Fats</h4>
-          <ul id="grocery-fats" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
-        </div>
-      </div>
-    </div>
 
   <div id="add-food-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div class="glass-card" style="width: 90%; max-width: 400px; padding: 24px; position: relative; background: white; margin: auto;">
@@ -553,8 +514,8 @@
     <button class="nav-home-btn active" onclick="navigateTo('view-dashboard')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </button>
-    <button onclick="navigateTo('view-environment')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="14" x2="15" y2="14"></line><line x1="9" y1="10" x2="15" y2="10"></line></svg>
+    <button onclick="navigateTo('view-scoreboard')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v6.5A5.5 5.5 0 0 1 11.5 16v0A5.5 5.5 0 0 1 6 10.5V4z"></path><path d="M7 6H4v3.5A3.5 3.5 0 0 0 7.5 13v0M17 6h3v3.5a3.5 3.5 0 0 1-3.5 3.5v0"></path></svg>
       <span class="nav-indicator"></span>
     </button>
     <button onclick="navigateTo('view-profile')">
