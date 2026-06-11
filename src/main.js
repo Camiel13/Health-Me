@@ -676,14 +676,14 @@ export function renderDashboard() {
   // Diffs
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
-    const getMacroBox = (icon, label, value, max, color) => {
+    const getMacroBox = (icon, label, value, max, color, unit = 'g') => {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
       <div style="position: relative; border-radius: 14px; display: flex; flex-direction: column; align-items: center; text-align: center; background: rgba(255,255,255,0.8); padding: 8px 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
         <div style="position: absolute; inset: -2px; border-radius: 16px; padding: 2px; background: conic-gradient(${color} ${pct}%, rgba(0,0,0,0.05) ${pct}%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;"></div>
         <span style="font-size: 16px; margin-bottom: 2px;">${icon}</span>
-        <strong style="font-size: 13px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(value)}g</strong>
+        <strong style="font-size: 13px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(value)}${unit}</strong>
         <span style="font-size: 9px; font-weight: 700; color: #888; text-transform: uppercase;">${label}</span>
       </div>`;
     };
@@ -693,6 +693,7 @@ export function renderDashboard() {
       ${getMacroBox('🌾', 'Carbs', totals.carbs, goals.carbs, '#ffca28')}
       ${getMacroBox('🥑', 'Fats', totals.fat, goals.fat, '#66bb6a')}
       ${getMacroBox('🥦', 'Fiber', totals.fiber, goals.fiber, '#29b6f6')}
+      ${getMacroBox('🧂', 'Sodium', totals.sodium, goals.sodium || 2300, '#ab47bc', 'mg')}
     `;
   }
   
@@ -804,4 +805,3 @@ function updateEnvTip() {
       };
     }
   }, 100);
-});
