@@ -31,23 +31,25 @@ body {
 
 .bottom-nav { 
   position: fixed; 
-  bottom: 20px; 
-  width: calc(100% - 40px); 
-  max-width: 450px; 
+  bottom: 24px; 
+  width: 92%; 
+  max-width: 500px; 
   margin: 0 auto; 
   left: 0; 
   right: 0; 
-  border-radius: 35px;
-  height: 70px; 
-  background: rgba(255, 255, 255, 0.7); 
-  backdrop-filter: blur(20px) saturate(150%); 
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: 45px;
+  height: 85px; 
+  background: rgba(255, 255, 255, 0.45); 
+  backdrop-filter: blur(30px) saturate(250%); 
+  -webkit-backdrop-filter: blur(30px) saturate(250%);
   display: flex; 
   justify-content: space-around; 
   align-items: center; 
-  box-shadow: 0 15px 35px rgba(30, 54, 45, 0.15); 
+  box-shadow: 0 24px 48px rgba(30, 54, 45, 0.15), inset 0 2px 10px rgba(255, 255, 255, 0.6); 
   z-index: 100; 
-  border: 1px solid rgba(255, 255, 255, 0.6); 
+  border: 1px solid rgba(255, 255, 255, 0.8); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0 12px;
 }
 .bottom-nav button { 
   background: none; 
@@ -57,12 +59,11 @@ body {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
   position: relative;
   flex: 1;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 .nav-label {
   font-family: 'Outfit', sans-serif;
@@ -72,54 +73,47 @@ body {
   transition: color 0.3s;
 }
 .bottom-nav button:hover { color: var(--primary); }
-.bottom-nav button.active { color: var(--primary-dark); }
-.bottom-nav button .nav-indicator {
-  position: absolute;
-  bottom: 8px;
-  width: 6px;
-  height: 6px;
-  background-color: var(--primary-dark);
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(0);
-  transition: all 0.3s ease;
+.bottom-nav button.active {
+  background: rgba(130, 207, 160, 0.2);
+  color: var(--primary-dark);
+  border-radius: 20px;
+  margin: 10px 4px;
 }
-.bottom-nav button.active .nav-indicator {
-  opacity: 1;
-  transform: scale(1);
+.bottom-nav button .nav-indicator {
+  display: none;
 }
 .bottom-nav button svg {
   transition: transform 0.3s ease;
   margin-bottom: 4px;
 }
 .bottom-nav button.active svg {
-  transform: translateY(-4px);
+  transform: none;
 }
 
 .bottom-nav .nav-home-btn {
-  width: 60px;
-  height: 60px;
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 10px 24px;
+  margin: 10px 8px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
-  border-radius: 50%;
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 12px 30px rgba(130, 207, 160, 0.6);
+  border-radius: 25px;
+  border: none;
+  box-shadow: 0 12px 24px rgba(130, 207, 160, 0.4), inset 0 2px 6px rgba(255, 255, 255, 0.4);
+  transform: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 4px solid var(--bg-color);
-  z-index: 101;
   flex: none;
 }
 .bottom-nav .nav-home-btn:hover {
   color: white;
-  transform: translateX(-50%) translateY(-5px);
-  box-shadow: 0 12px 28px rgba(130, 207, 160, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(130, 207, 160, 0.6), inset 0 2px 6px rgba(255, 255, 255, 0.4);
 }
 .bottom-nav .nav-home-btn.active {
+  background: linear-gradient(135deg, var(--primary-dark), #45825d);
   color: white;
 }
 .bottom-nav .nav-home-btn .nav-indicator {
@@ -129,7 +123,7 @@ body {
   margin-bottom: 0;
 }
 .bottom-nav .nav-home-btn.active svg {
-  transform: scale(1.1);
+  transform: none;
 }
 
 .bottom-nav .nav-spacer {
@@ -264,7 +258,7 @@ body {
   animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
   height: 100dvh;
   box-sizing: border-box;
-  padding-bottom: 110px;
+  padding-bottom: 120px;
   overflow-y: auto;
 }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
