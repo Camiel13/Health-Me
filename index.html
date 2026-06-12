@@ -11,21 +11,21 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
+      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="text-align: center; width: 100%; margin-bottom: 8px; opacity: 0.6; cursor: pointer;">
+        <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
+          "Put your chips in the basement. Out of sight, out of mind."
+        </p>
+      </div>
+
       <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
         <div style="flex-shrink: 0;">
-          <h2 class="dash-greeting" style="margin:0; font-size: 28px;">Hello!</h2>
+          <h2 class="dash-greeting" style="margin:0; font-size: 22px;">Hello!</h2>
           <p class="dash-date" style="margin:0; font-size: 13px;">Today's Overview</p>
         </div>
 
         <button class="add-log-btn" onclick="navigateTo('view-logging')" style="flex-shrink: 0;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
-      </div>
-      
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="width: 100%; text-align: center; cursor: pointer; opacity: 0.7; margin-bottom: 8px;">
-        <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
-          "Put your chips in the basement. Out of sight, out of mind."
-        </p>
       </div>
       
       <div id="inventory-premium-card" class="glass-card" style="display: none; background: linear-gradient(135deg, #2c3e50, #3498db); border: 2px solid #2980b9; margin-bottom: 12px; padding: 16px; color: white; position: relative; overflow: hidden; flex-shrink: 0; border-radius: 16px;">
@@ -41,49 +41,51 @@
 
 
 
-      <div class="premium-wheel-card">
-        <div class="premium-wheel-container">
-          <svg viewBox="0 0 36 36" class="circular-chart dash-pulse premium-chart">
-            <defs>
-              <linearGradient id="premiumWheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#82cfa0" />
-                <stop offset="50%" stop-color="#5b9d74" />
-                <stop offset="100%" stop-color="#82cfa0" />
-              </linearGradient>
-              <linearGradient id="premiumTrackGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="rgba(255,255,255,0.05)" />
-                <stop offset="100%" stop-color="rgba(0,0,0,0.1)" />
-              </linearGradient>
-              <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur1"/>
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2"/>
-                <feMerge>
-                  <feMergeNode in="blur2"/>
-                  <feMergeNode in="blur1"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            
-            <!-- Thick Track Background -->
-            <path class="premium-circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            
-            <!-- Outer & Inner Decorative Rings -->
-            <path d="M18 0.5 a 17.5 17.5 0 0 1 0 35 a 17.5 17.5 0 0 1 0 -35" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
-            <path d="M18 3.5 a 14.5 14.5 0 0 1 0 29 a 14.5 14.5 0 0 1 0 -29" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
-            
-            <!-- Glowing Progress Ring -->
-            <path class="premium-circle animated-circle" id="dash-wheel-svg" stroke-dasharray="0, 100" filter="url(#premiumGlow)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            
-            <text x="18" y="17" class="premium-percentage" id="dash-cal-display">0</text>
-            <text x="18" y="22.5" class="premium-subtext">KCAL</text>
-          </svg>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; width: 100%;">
+        <div class="premium-wheel-card">
+          <div class="premium-wheel-container">
+            <svg viewBox="0 0 36 36" class="circular-chart dash-pulse premium-chart">
+              <defs>
+                <linearGradient id="premiumWheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#82cfa0" />
+                  <stop offset="50%" stop-color="#5b9d74" />
+                  <stop offset="100%" stop-color="#82cfa0" />
+                </linearGradient>
+                <linearGradient id="premiumTrackGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="rgba(255,255,255,0.05)" />
+                  <stop offset="100%" stop-color="rgba(0,0,0,0.1)" />
+                </linearGradient>
+                <filter id="premiumGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur1"/>
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2"/>
+                  <feMerge>
+                    <feMergeNode in="blur2"/>
+                    <feMergeNode in="blur1"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              <!-- Thick Track Background -->
+              <path class="premium-circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              
+              <!-- Outer & Inner Decorative Rings -->
+              <path d="M18 0.5 a 17.5 17.5 0 0 1 0 35 a 17.5 17.5 0 0 1 0 -35" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
+              <path d="M18 3.5 a 14.5 14.5 0 0 1 0 29 a 14.5 14.5 0 0 1 0 -29" stroke="rgba(255,255,255,0.2)" stroke-width="0.2" fill="none" />
+              
+              <!-- Glowing Progress Ring -->
+              <path class="premium-circle animated-circle" id="dash-wheel-svg" stroke-dasharray="0, 100" filter="url(#premiumGlow)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              
+              <text x="18" y="17" class="premium-percentage" id="dash-cal-display">0</text>
+              <text x="18" y="22.5" class="premium-subtext">KCAL</text>
+            </svg>
+          </div>
         </div>
-      </div>
-      
-      <div class="dash-top-section">
-        <div id="dash-diffs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;">
-          <!-- Populated by JS -->
+        
+        <div class="dash-top-section" style="flex: 1;">
+          <div id="dash-diffs" style="flex: 1; display: flex; flex-direction: column; gap: 6px; width: 100%;">
+            <!-- Populated by JS -->
+          </div>
         </div>
       </div>
       

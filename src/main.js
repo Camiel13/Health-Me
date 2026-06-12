@@ -680,15 +680,13 @@ export function renderDashboard() {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
-  <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.4); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-    <div style="display: flex; flex-direction: column; text-align: left; width: 100%;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <span style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--text);">${icon} ${label}</span>
-        <span style="font-size: 10px; font-weight: 600; color: var(--text-light);">${Math.round(value)}/${Math.round(max)}${unit}</span>
-      </div>
-      <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
-        <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 3px; transition: width 1s ease-out;"></div>
-      </div>
+  <div style="display: flex; flex-direction: column; background: rgba(255,255,255,0.5); padding: 6px 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+      <span style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--text);">${icon} ${label}</span>
+      <span style="font-size: 9px; font-weight: 700; color: var(--text-light);">${Math.round(value)} / ${Math.round(max)}${unit}</span>
+    </div>
+    <div style="width: 100%; height: 4px; background: rgba(0,0,0,0.05); border-radius: 2px; overflow: hidden;">
+      <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 2px; transition: width 1s ease-out;"></div>
     </div>
   </div>`;
     };
@@ -727,7 +725,7 @@ export function renderDashboard() {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       list.innerHTML = foods.map(f => `
-        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8);">
+        <li style="flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 12px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
             <div style="display: flex; flex-direction: column;">

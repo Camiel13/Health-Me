@@ -153,10 +153,10 @@ body {
 .dash-top-section { display: flex; flex-direction: column; gap: 16px; height: auto; }
 
 .premium-wheel-card {
-  margin: 0 auto;
-  width: 130px;
-  height: 130px;
-  padding: 12px;
+  margin: 0;
+  width: 150px;
+  height: 150px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,6 +171,7 @@ body {
     8px 8px 16px rgba(0,0,0,0.06),
     inset 0 0 0 6px rgba(255,255,255,0.5);
   border: 1px solid rgba(255,255,255,0.8);
+  flex-shrink: 0;
 }
 .premium-wheel-card::before {
   content: '';
@@ -320,7 +321,7 @@ body {
   overflow: hidden !important; /* Force no scrolling on the view itself */
   display: flex;
   flex-direction: column;
-  padding-bottom: 120px !important;
+  padding-bottom: 110px !important;
   box-sizing: border-box;
 }
 
@@ -357,6 +358,7 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  padding: 16px;
   overflow: hidden;
 }
 
@@ -365,6 +367,7 @@ body {
   overflow-y: auto; /* Only the list scrolls */
   margin: 0;
   padding: 0;
+  padding-right: 4px;
 }
 
 #todays-foods-list li {
