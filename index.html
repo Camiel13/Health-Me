@@ -22,8 +22,8 @@
         </button>
       </div>
       
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="width: 100%; box-sizing: border-box; background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3)); backdrop-filter: blur(20px); border-radius: 20px; padding: 16px; border: 1px solid rgba(255,255,255,0.8); text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);">
-        <p id="env-tip-text" style="margin: 0; font-size: 13px; font-style: italic; color: var(--text); line-height: 1.4; font-family: 'Outfit', sans-serif; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="width: 100%; text-align: center; cursor: pointer; opacity: 0.7; margin-bottom: 8px;">
+        <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
           "Put your chips in the basement. Out of sight, out of mind."
         </p>
       </div>
@@ -46,9 +46,9 @@
           <svg viewBox="0 0 36 36" class="circular-chart dash-pulse premium-chart">
             <defs>
               <linearGradient id="premiumWheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#00f2fe" />
-                <stop offset="50%" stop-color="#2196f3" />
-                <stop offset="100%" stop-color="#4facfe" />
+                <stop offset="0%" stop-color="#82cfa0" />
+                <stop offset="50%" stop-color="#5b9d74" />
+                <stop offset="100%" stop-color="#82cfa0" />
               </linearGradient>
               <linearGradient id="premiumTrackGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="rgba(255,255,255,0.05)" />
@@ -82,7 +82,7 @@
       </div>
       
       <div class="dash-top-section">
-        <div id="dash-diffs" style="display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%;">
+        <div id="dash-diffs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;">
           <!-- Populated by JS -->
         </div>
       </div>

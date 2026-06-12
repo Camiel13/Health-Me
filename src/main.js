@@ -680,18 +680,17 @@ export function renderDashboard() {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
-      <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.4); padding: 12px 16px; border-radius: 16px; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid rgba(255,255,255,0.6);">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <span style="font-size: 20px;">${icon}</span>
-          <div style="display: flex; flex-direction: column; text-align: left;">
-            <span style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: var(--text);">${label}</span>
-            <span style="font-size: 11px; font-weight: 600; color: var(--text-light);">${Math.round(value)} / ${Math.round(max)}${unit}</span>
-          </div>
-        </div>
-        <div style="width: 80px; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
-          <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 4px; transition: width 1s ease-out;"></div>
-        </div>
-      </div>`;
+  <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.4); padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+    <div style="display: flex; flex-direction: column; text-align: left; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <span style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--text);">${icon} ${label}</span>
+        <span style="font-size: 10px; font-weight: 600; color: var(--text-light);">${Math.round(value)}/${Math.round(max)}${unit}</span>
+      </div>
+      <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.05); border-radius: 3px; overflow: hidden;">
+        <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 3px; transition: width 1s ease-out;"></div>
+      </div>
+    </div>
+  </div>`;
     };
     
     diffsContainer.innerHTML = `

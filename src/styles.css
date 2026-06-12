@@ -154,9 +154,9 @@ body {
 
 .premium-wheel-card {
   margin: 0 auto;
-  width: 220px;
-  height: 220px;
-  padding: 24px;
+  width: 130px;
+  height: 130px;
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -316,10 +316,12 @@ body {
 
 /* Dashboard Compact Native Layout */
 .dashboard-view {
+  height: 100dvh;
+  overflow: hidden !important; /* Force no scrolling on the view itself */
   display: flex;
   flex-direction: column;
-  padding: 16px 20px 10px 20px !important;
-  gap: 20px;
+  padding-bottom: 120px !important;
+  box-sizing: border-box;
 }
 
 .dash-top-section {
@@ -352,17 +354,17 @@ body {
 
 .dash-log-section {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Important for flex child scrolling */
+  overflow: hidden;
 }
 
-#todays-foods-list {
+.todays-foods-list-container {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: auto; /* Only the list scrolls */
   margin: 0;
   padding: 0;
-  list-style: none;
 }
 
 #todays-foods-list li {
