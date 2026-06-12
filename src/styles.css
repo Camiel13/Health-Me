@@ -31,17 +31,23 @@ body {
 
 .bottom-nav { 
   position: fixed; 
-  bottom: 0; 
-  width: 100%; 
-  height: 60px; 
-  background: rgba(255,255,255,0.95); 
-  backdrop-filter: blur(10px); 
+  bottom: 20px; 
+  width: calc(100% - 40px); 
+  max-width: 450px; 
+  margin: 0 auto; 
+  left: 0; 
+  right: 0; 
+  border-radius: 35px;
+  height: 70px; 
+  background: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(20px) saturate(150%); 
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   display: flex; 
   justify-content: space-around; 
   align-items: center; 
-  box-shadow: 0 -2px 20px rgba(0,0,0,0.05); 
+  box-shadow: 0 15px 35px rgba(30, 54, 45, 0.15); 
   z-index: 100; 
-  border-top: 1px solid rgba(0,0,0,0.05); 
+  border: 1px solid rgba(255, 255, 255, 0.6); 
 }
 .bottom-nav button { 
   background: none; 
@@ -56,6 +62,14 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 4px;
+}
+.nav-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+  transition: color 0.3s;
 }
 .bottom-nav button:hover { color: var(--primary); }
 .bottom-nav button.active { color: var(--primary-dark); }
@@ -89,10 +103,10 @@ body {
   color: white;
   border-radius: 50%;
   position: absolute;
-  top: -20px;
+  top: -25px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 8px 24px rgba(130, 207, 160, 0.5);
+  box-shadow: 0 12px 30px rgba(130, 207, 160, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -250,7 +264,7 @@ body {
   animation: fadeSlide 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
   height: 100dvh;
   box-sizing: border-box;
-  padding-bottom: 60px;
+  padding-bottom: 110px;
   overflow-y: auto;
 }
 @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
