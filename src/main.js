@@ -680,11 +680,17 @@ export function renderDashboard() {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
-      <div style="position: relative; border-radius: 14px; display: flex; flex-direction: column; align-items: center; text-align: center; background: rgba(255,255,255,0.8); padding: 8px 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
-        <div style="position: absolute; inset: -2px; border-radius: 16px; padding: 2px; background: conic-gradient(${color} ${pct}%, rgba(0,0,0,0.05) ${pct}%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;"></div>
-        <span style="font-size: 16px; margin-bottom: 2px;">${icon}</span>
-        <strong style="font-size: 13px; color: var(--text); font-family: 'Outfit', sans-serif;">${Math.round(value)}${unit}</strong>
-        <span style="font-size: 9px; font-weight: 700; color: #888; text-transform: uppercase;">${label}</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.4); padding: 12px 16px; border-radius: 16px; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid rgba(255,255,255,0.6);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 20px;">${icon}</span>
+          <div style="display: flex; flex-direction: column; text-align: left;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: var(--text);">${label}</span>
+            <span style="font-size: 11px; font-weight: 600; color: var(--text-light);">${Math.round(value)} / ${Math.round(max)}${unit}</span>
+          </div>
+        </div>
+        <div style="width: 80px; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+          <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 4px; transition: width 1s ease-out;"></div>
+        </div>
       </div>`;
     };
     
@@ -722,7 +728,7 @@ export function renderDashboard() {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
       list.innerHTML = foods.map(f => `
-        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.7); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02);">
+        <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 12px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
             <div style="display: flex; flex-direction: column;">
