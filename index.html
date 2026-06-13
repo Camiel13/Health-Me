@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="text-align: center; width: 100%; margin-bottom: 8px; opacity: 0.6; cursor: pointer;">
+      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 12px; left: 0; right: 0; text-align: center; width: 100%; opacity: 0.6; cursor: pointer; z-index: 10;">
         <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
           "Put your chips in the basement. Out of sight, out of mind."
         </p>
@@ -19,7 +19,7 @@
 
       <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
         <div style="flex-shrink: 0;">
-          <h2 class="dash-greeting" style="margin:0; font-size: 22px;">Hello!</h2>
+          <h2 class="dash-greeting" style="margin:0; font-size: 24px;">Hello!</h2>
           <p class="dash-date" style="margin:0; font-size: 13px;">Today's Overview</p>
         </div>
 
@@ -41,8 +41,7 @@
 
 
 
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; width: 100%;">
-        <div class="premium-wheel-card">
+      <div class="premium-wheel-card">
           <div class="premium-wheel-container">
             <svg viewBox="0 0 36 36" class="circular-chart dash-pulse premium-chart">
               <defs>
@@ -82,20 +81,19 @@
           </div>
         </div>
         
-        <div class="dash-top-section" style="flex: 1;">
-          <div id="dash-diffs" style="flex: 1; display: flex; flex-direction: column; gap: 6px; width: 100%;">
-            <!-- Populated by JS -->
-          </div>
+      <div class="dash-top-section" style="width: 100%; overflow: hidden;">
+        <div id="dash-diffs" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; width: 100%; scrollbar-width: none;">
+          <!-- Populated by JS -->
         </div>
       </div>
       
 
       
-      <div class="dash-log-section" style="background: rgba(255,255,255,0.3); backdrop-filter: blur(24px); border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);">
+      <div class="dash-log-section" style="flex: 1; min-height: 0; background: rgba(255,255,255,0.3); backdrop-filter: blur(24px); border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05); overflow: hidden; display: flex; flex-direction: column;">
         <div class="section-title-wrap" style="margin-bottom: 12px;">
           <h3 style="font-size: 16px; margin: 0; font-family: 'Outfit', sans-serif; color: var(--text);">Today's Log</h3>
         </div>
-        <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin: 0;"></ul>
+        <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto;"></ul>
       </div>
     </div>
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">

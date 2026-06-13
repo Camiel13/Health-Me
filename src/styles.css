@@ -153,10 +153,10 @@ body {
 .dash-top-section { display: flex; flex-direction: column; gap: 16px; height: auto; }
 
 .premium-wheel-card {
-  margin: 0;
-  width: 150px;
-  height: 150px;
-  padding: 0;
+  margin: 0 auto 16px auto;
+  width: 200px;
+  height: 200px;
+  padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,6 +323,8 @@ body {
   flex-direction: column;
   padding-bottom: 110px !important;
   box-sizing: border-box;
+  position: relative;
+  padding-top: 36px !important;
 }
 
 .dash-top-section {

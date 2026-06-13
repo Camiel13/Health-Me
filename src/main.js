@@ -680,14 +680,10 @@ export function renderDashboard() {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
-  <div style="display: flex; flex-direction: column; background: rgba(255,255,255,0.5); padding: 6px 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-      <span style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: var(--text);">${icon} ${label}</span>
-      <span style="font-size: 9px; font-weight: 700; color: var(--text-light);">${Math.round(value)} / ${Math.round(max)}${unit}</span>
-    </div>
-    <div style="width: 100%; height: 4px; background: rgba(0,0,0,0.05); border-radius: 2px; overflow: hidden;">
-      <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 2px; transition: width 1s ease-out;"></div>
-    </div>
+  <div style="flex-shrink: 0; width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); padding: 10px 4px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+    <span style="font-size: 18px; margin-bottom: 4px;">${icon}</span>
+    <span style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: var(--text);">${Math.round(value)}</span>
+    <span style="font-size: 9px; font-weight: 700; color: var(--text-light); text-transform: uppercase;">${label}</span>
   </div>`;
     };
     
