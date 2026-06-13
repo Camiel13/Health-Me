@@ -39,11 +39,11 @@
         <div class="inventory-bg-glow"></div>
         <div style="position: relative; z-index: 1;">
           <h3>
-            <span>✨</span> Inventarisatie Actief
+            <span>✨</span> Baseline Tracking Active
           </h3>
-          <p>Blijf vandaag je normale maaltijden invoeren. Zodra je klaar bent, berekenen we jouw gepersonaliseerde macro's en caloriedoelen!</p>
+          <p>Keep logging your normal meals today. Once you're done, we'll calculate your custom macros and calorie targets!</p>
           <button onclick="startAnalyzing()" class="finish-inventory-btn">
-            Afronden & Analyseren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            Finish & Analyze <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
         </div>
       </div>
@@ -345,12 +345,12 @@
   <div id="goals-modal" class="premium-modal">
     <div class="premium-modal-wrapper">
       <div class="premium-modal-header">
-        <h2>Jouw Nieuwe Plan! 🎉</h2>
-        <p>We hebben je optimale macro's berekend.</p>
+        <h2>Your New Plan! 🎉</h2>
+        <p>We've calculated your optimal nutrition targets.</p>
       </div>
       <div class="premium-modal-body">
         <div id="goals-summary-content"></div>
-        <button onclick="closeGoalsModal()" class="premium-modal-btn">Super, aan de slag!</button>
+        <button onclick="closeGoalsModal()" class="premium-modal-btn">Awesome, let's go!</button>
       </div>
     </div>
   </div>
@@ -430,34 +430,34 @@
   <!-- Inventory Onboarding Modal -->
   <div id="inventory-onboarding-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-gradient); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; font-family: 'Outfit', sans-serif; opacity: 0; transition: opacity 0.3s ease;">
     <div class="glass-card" style="width: 100%; max-width: 380px; padding: 32px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-radius: 32px; box-shadow: 0 24px 60px rgba(30, 54, 45, 0.15); border: 1px solid rgba(255, 255, 255, 0.6);">
-      <h1 style="font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 12px 0; line-height: 1.2;">Welkom bij de Inventarisatie</h1>
-      <p style="font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif; margin: 0 0 32px 0; max-width: 300px; line-height: 1.5;">Voordat we je persoonlijke doelen kunnen instellen, moeten we je huidige basispatroon begrijpen.</p>
+      <h1 style="font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 12px 0; line-height: 1.2;">Welcome to Inventory Day</h1>
+      <p style="font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif; margin: 0 0 32px 0; max-width: 300px; line-height: 1.5;">Before we can set your personalized targets, we need to understand your current baseline diet.</p>
       
       <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 36px; width: 100%; text-align: left;">
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">1</div>
           <div>
-            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Voer je maaltijden in</h3>
-            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Eet vandaag zoals je normaal ook zou doen.</p>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Log your normal meals</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Eat normally and log everything today.</p>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">2</div>
           <div>
-            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">We analyseren je basis</h3>
-            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Ons algoritme berekent je huidige inname.</p>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">We'll analyze your baseline</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Our algorithm calculates your current intake.</p>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">3</div>
           <div>
-            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Ontvang jouw plan</h3>
-            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Krijg doelen die perfect bij jou passen.</p>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Get your custom plan</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Receive personalized targets tailored just for you.</p>
           </div>
         </div>
       </div>
       
-      <button onclick="dismissInventoryOnboarding()" class="premium-modal-btn">Start met Meten</button>
+      <button onclick="dismissInventoryOnboarding()" class="premium-modal-btn">Start Tracking</button>
     </div>
   </div>
 
