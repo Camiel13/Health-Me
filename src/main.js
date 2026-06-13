@@ -785,7 +785,8 @@ export function renderDashboard() {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('reveal-active');
-          observer.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove('reveal-active');
         }
       });
     }, {
