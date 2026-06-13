@@ -11,6 +11,7 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
+      <div class="dash-hero">
       <div class="dashboard-header" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px;">
         
         <!-- Left: Greeting -->
@@ -90,14 +91,24 @@
           <!-- Populated by JS -->
         </div>
       </div>
+      </div>
       
 
       
-      <div class="dash-log-section" style="flex: 1; min-height: 0; background: rgba(255,255,255,0.3); backdrop-filter: blur(24px); border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05); overflow: hidden; display: flex; flex-direction: column;">
-        <div class="section-title-wrap" style="margin-bottom: 12px;">
+      <div class="dash-log-section">
+        <div class="section-title-wrap" style="margin-bottom: 16px;">
+          <h3 style="font-size: 16px; margin: 0; font-family: 'Outfit', sans-serif; color: var(--text);">This Week</h3>
+        </div>
+        
+        <!-- Mini Calendar Container -->
+        <div id="mini-calendar-container" class="reveal-item"></div>
+
+        <div class="section-title-wrap" style="margin-bottom: 12px; margin-top: 24px;">
           <h3 style="font-size: 16px; margin: 0; font-family: 'Outfit', sans-serif; color: var(--text);">Today's Log</h3>
         </div>
-        <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto;"></ul>
+        
+        <!-- Remove flex: 1; overflow-y: auto; from the ul. We want the whole page to scroll now. -->
+        <ul class="todays-foods-list-container" style="list-style: none; padding: 0; margin: 0; overflow: visible;"></ul>
       </div>
     </div>
     <div id="view-logging" class="view" style="display: none; padding: 24px 20px;">
