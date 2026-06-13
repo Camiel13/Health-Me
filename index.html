@@ -11,19 +11,23 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 24px; left: 50%; transform: translateX(-50%); text-align: center; width: 50%; opacity: 0.6; cursor: pointer; z-index: 10;">
-        <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
-          "Put your chips in the basement. Out of sight, out of mind."
-        </p>
-      </div>
-
-      <div class="dashboard-header" style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-        <div style="flex-shrink: 0;">
-          <h2 class="dash-greeting" style="margin:0; font-size: 24px;">Hello!</h2>
-          <p class="dash-date" style="margin:0; font-size: 13px;">Today's Overview</p>
+      <div class="dashboard-header" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px;">
+        
+        <!-- Left: Greeting -->
+        <div style="flex-shrink: 0; z-index: 2;">
+          <h2 class="dash-greeting" style="margin:0; font-size: 24px; line-height: 1.1;">Hello!</h2>
+          <p class="dash-date" style="margin:0; font-size: 11px;">Today's Overview</p>
         </div>
 
-        <button class="add-log-btn" onclick="navigateTo('view-logging')" style="flex-shrink: 0;">
+        <!-- Center: Absolute Quote -->
+        <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 45%; opacity: 0.6; cursor: pointer; z-index: 1;">
+          <p id="env-tip-text" style="margin: 0; font-size: 10px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
+            "Put your chips in the basement. Out of sight, out of mind."
+          </p>
+        </div>
+
+        <!-- Right: Add Button -->
+        <button class="add-log-btn" onclick="navigateTo('view-logging')" style="flex-shrink: 0; z-index: 2;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
       </div>

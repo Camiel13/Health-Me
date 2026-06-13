@@ -682,8 +682,8 @@ export function renderDashboard() {
       return `
   <div style="flex-shrink: 0; width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); padding: 10px 4px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
     <span style="font-size: 18px; margin-bottom: 4px;">${icon}</span>
-    <span style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: var(--text);">${Math.round(value)}</span>
-    <span style="font-size: 9px; font-weight: 700; color: var(--text-light); text-transform: uppercase;">${label}</span>
+    <span style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--text);">${Math.round(value)}<span style="font-size: 9px; color: var(--text-light); font-weight: 600;">/${Math.round(max)}</span></span>
+    <span style="font-size: 9px; font-weight: 700; color: var(--text-light); text-transform: uppercase; margin-top: 2px;">${label}</span>
   </div>`;
     };
     
