@@ -35,15 +35,17 @@
         </div>
       </div>
       
-      <div id="inventory-premium-card" class="glass-card" style="display: none; background: linear-gradient(135deg, #2c3e50, #3498db); border: 2px solid #2980b9; margin-bottom: 12px; padding: 16px; color: white; position: relative; overflow: hidden; flex-shrink: 0; border-radius: 16px;">
+      <div id="inventory-premium-card" style="display: none;">
+        <div class="inventory-bg-glow"></div>
         <div style="position: relative; z-index: 1;">
-          <h3 style="margin: 0 0 4px 0; font-family: 'Outfit', sans-serif; font-size: 16px; display: flex; align-items: center; gap: 8px;">
-            <span>✨</span> Inventory Day Active
+          <h3>
+            <span>✨</span> Inventarisatie Actief
           </h3>
-          <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: 500; opacity: 0.9; line-height: 1.2;">Keep logging your normal diet. We'll build your plan soon.</p>
-          <button onclick="startAnalyzing()" class="action-btn" style="background: white; color: #2980b9; margin: 0; padding: 8px 12px; font-size: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">Finish</button>
+          <p>Blijf vandaag je normale maaltijden invoeren. Zodra je klaar bent, berekenen we jouw gepersonaliseerde macro's en caloriedoelen!</p>
+          <button onclick="startAnalyzing()" class="finish-inventory-btn">
+            Afronden & Analyseren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
         </div>
-        <div style="position: absolute; top: -30px; right: -30px; width: 80px; height: 80px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
       </div>
 
 
@@ -340,15 +342,15 @@
   </main>
 
   <!-- Goals Modal & Backdrop -->
-  <div id="goals-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; opacity: 0; transition: opacity 0.3s ease;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; background: var(--bg-color); border-radius: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); border: 1px solid var(--card-border); overflow: hidden; font-family: 'Inter', sans-serif;">
-      <div style="padding: 24px; text-align: center; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
-        <h2 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 24px;">Your New Plan! 🎉</h2>
-        <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">We've calculated optimal goals for you.</p>
+  <div id="goals-modal" class="premium-modal">
+    <div class="premium-modal-wrapper">
+      <div class="premium-modal-header">
+        <h2>Jouw Nieuwe Plan! 🎉</h2>
+        <p>We hebben je optimale macro's berekend.</p>
       </div>
-      <div style="padding: 24px;">
+      <div class="premium-modal-body">
         <div id="goals-summary-content"></div>
-        <button onclick="closeGoalsModal()" class="action-btn" style="width: 100%; padding: 12px; border-radius: 12px;">Awesome, let's go!</button>
+        <button onclick="closeGoalsModal()" class="premium-modal-btn">Super, aan de slag!</button>
       </div>
     </div>
   </div>
@@ -426,41 +428,48 @@
   </div>
 
   <!-- Inventory Onboarding Modal -->
-  <div id="inventory-onboarding-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-gradient); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; font-family: 'Outfit', sans-serif;">
-    <h1 style="font-size: 36px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; line-height: 1.2;">Welcome to Inventory Day</h1>
-    <p style="font-size: 16px; color: var(--text-light); font-family: 'Inter', sans-serif; margin-bottom: 40px; max-width: 300px; line-height: 1.5;">Before we give you goals, we need to know your baseline. Here is how it works:</p>
-    
-    <div style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; width: 100%; max-width: 320px; text-align: left;">
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">1</div>
-        <div>
-          <h3 style="margin: 0; font-size: 18px; color: var(--text);">Log your meals today</h3>
-          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Eat like you normally would.</p>
+  <div id="inventory-onboarding-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-gradient); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; font-family: 'Outfit', sans-serif; opacity: 0; transition: opacity 0.3s ease;">
+    <div class="glass-card" style="width: 100%; max-width: 380px; padding: 32px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-radius: 32px; box-shadow: 0 24px 60px rgba(30, 54, 45, 0.15); border: 1px solid rgba(255, 255, 255, 0.6);">
+      <h1 style="font-size: 28px; font-weight: 800; background: -webkit-linear-gradient(45deg, var(--primary-dark), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 12px 0; line-height: 1.2;">Welkom bij de Inventarisatie</h1>
+      <p style="font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif; margin: 0 0 32px 0; max-width: 300px; line-height: 1.5;">Voordat we je persoonlijke doelen kunnen instellen, moeten we je huidige basispatroon begrijpen.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 36px; width: 100%; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">1</div>
+          <div>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Voer je maaltijden in</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Eet vandaag zoals je normaal ook zou doen.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">2</div>
+          <div>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">We analyseren je basis</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Ons algoritme berekent je huidige inname.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">3</div>
+          <div>
+            <h3 style="margin: 0; font-size: 16px; color: var(--text); font-weight: 700;">Ontvang jouw plan</h3>
+            <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-light); font-family: 'Inter', sans-serif; line-height: 1.3;">Krijg doelen die perfect bij jou passen.</p>
+          </div>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">2</div>
-        <div>
-          <h3 style="margin: 0; font-size: 18px; color: var(--text);">We analyze your baseline</h3>
-          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Our algorithm calculates your macros.</p>
-        </div>
-      </div>
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <div style="width: 48px; height: 48px; min-width: 48px; border-radius: 24px; background: rgba(130, 207, 160, 0.2); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800;">3</div>
-        <div>
-          <h3 style="margin: 0; font-size: 18px; color: var(--text);">We generate your personalized plan</h3>
-          <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--text-light); font-family: 'Inter', sans-serif;">Get optimal targets tailored for you.</p>
-        </div>
-      </div>
+      
+      <button onclick="dismissInventoryOnboarding()" class="premium-modal-btn">Start met Meten</button>
     </div>
-    
-    <button onclick="dismissInventoryOnboarding()" class="action-btn" style="width: 100%; max-width: 320px; padding: 16px; font-size: 18px; border-radius: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 8px 24px rgba(130, 207, 160, 0.4);">Start Tracking</button>
   </div>
 
   <!-- Analyzing Modal -->
-  <div id="analyzing-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 248, 245, 0.95); backdrop-filter: blur(10px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; transition: opacity 0.3s ease;">
-    <div class="analyzing-spinner"></div>
-    <h2 id="analyzing-text" style="font-family: 'Outfit', sans-serif; font-size: 24px; color: var(--text); margin: 0; transition: opacity 0.3s ease;">Analyzing your macros...</h2>
+  <div id="analyzing-modal" class="analyzing-overlay">
+    <div class="analyzing-spinner-wrapper">
+      <div class="spinner-ring-1"></div>
+      <div class="spinner-ring-2"></div>
+      <div class="spinner-ring-3"></div>
+      <div class="spinner-center"></div>
+    </div>
+    <h2 id="analyzing-text" style="font-family: 'Outfit', sans-serif; font-size: 24px; color: var(--text); margin: 0; transition: opacity 0.3s ease; font-weight: 800; max-width: 280px; line-height: 1.3;">Analyzing your macros...</h2>
   </div>
 
 

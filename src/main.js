@@ -86,6 +86,23 @@ window.closeShopModal = function() {
   setTimeout(() => backdrop.style.display = 'none', 300);
 };
 
+function animateValue(id, start, end, duration, suffix = '') {
+  const obj = document.getElementById(id);
+  if (!obj) return;
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      obj.innerHTML = end + suffix;
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
 window.finishInventoryDay = function() {
   const newGoals = finishInventory();
   renderDashboard();
@@ -94,27 +111,38 @@ window.finishInventoryDay = function() {
   const goalsContent = document.getElementById('goals-summary-content');
   if (modal && goalsContent) {
     goalsContent.innerHTML = `
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-        <div class="glass-card" style="padding: 16px; text-align: center;">
-          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Calories</h4>
-          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.calories}</span>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+        <div class="glass-card macro-reveal-card" style="padding: 16px; text-align: center; background: rgba(255,255,255,0.65); border: 1px solid rgba(130,207,160,0.25); animation-delay: 0.1s; display: flex; flex-direction: column; align-items: center; gap: 4px; box-shadow: 0 8px 20px rgba(30, 54, 45, 0.04);">
+          <span style="font-size: 24px;">🔥</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Calories</span>
+          <span id="reveal-calories" style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--text);">0</span>
         </div>
-        <div class="glass-card" style="padding: 16px; text-align: center;">
-          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Protein</h4>
-          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.protein}g</span>
+        <div class="glass-card macro-reveal-card" style="padding: 16px; text-align: center; background: rgba(255,255,255,0.65); border: 1px solid rgba(130,207,160,0.25); animation-delay: 0.25s; display: flex; flex-direction: column; align-items: center; gap: 4px; box-shadow: 0 8px 20px rgba(30, 54, 45, 0.04);">
+          <span style="font-size: 24px;">🥩</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Protein</span>
+          <span id="reveal-protein" style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--text);">0g</span>
         </div>
-        <div class="glass-card" style="padding: 16px; text-align: center;">
-          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Carbs</h4>
-          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.carbs}g</span>
+        <div class="glass-card macro-reveal-card" style="padding: 16px; text-align: center; background: rgba(255,255,255,0.65); border: 1px solid rgba(130,207,160,0.25); animation-delay: 0.4s; display: flex; flex-direction: column; align-items: center; gap: 4px; box-shadow: 0 8px 20px rgba(30, 54, 45, 0.04);">
+          <span style="font-size: 24px;">🌾</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Carbs</span>
+          <span id="reveal-carbs" style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--text);">0g</span>
         </div>
-        <div class="glass-card" style="padding: 16px; text-align: center;">
-          <h4 style="margin: 0 0 8px 0; color: var(--text-light);">Fat</h4>
-          <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: var(--text);">${newGoals.fat}g</span>
+        <div class="glass-card macro-reveal-card" style="padding: 16px; text-align: center; background: rgba(255,255,255,0.65); border: 1px solid rgba(130,207,160,0.25); animation-delay: 0.55s; display: flex; flex-direction: column; align-items: center; gap: 4px; box-shadow: 0 8px 20px rgba(30, 54, 45, 0.04);">
+          <span style="font-size: 24px;">🥑</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Fat</span>
+          <span id="reveal-fat" style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: var(--text);">0g</span>
         </div>
       </div>
     `;
     modal.style.display = 'block';
-    setTimeout(() => modal.style.opacity = '1', 10);
+    setTimeout(() => {
+      modal.style.opacity = '1';
+      modal.classList.add('reveal-active');
+      setTimeout(() => animateValue('reveal-calories', 0, newGoals.calories, 1000), 100);
+      setTimeout(() => animateValue('reveal-protein', 0, newGoals.protein, 1000, 'g'), 250);
+      setTimeout(() => animateValue('reveal-carbs', 0, newGoals.carbs, 1000, 'g'), 400);
+      setTimeout(() => animateValue('reveal-fat', 0, newGoals.fat, 1000, 'g'), 550);
+    }, 10);
   } else {
     alert("Plan Generated!");
   }
@@ -122,15 +150,17 @@ window.finishInventoryDay = function() {
 
 window.closeGoalsModal = function() {
   const modal = document.getElementById('goals-modal');
-  modal.style.opacity = '0';
-  setTimeout(() => modal.style.display = 'none', 300);
+  if (modal) {
+    modal.classList.remove('reveal-active');
+    modal.style.opacity = '0';
+    setTimeout(() => modal.style.display = 'none', 300);
+  }
 };
 
 window.dismissInventoryOnboarding = function() {
   const modal = document.getElementById('inventory-onboarding-modal');
   if (modal) {
     modal.style.opacity = '0';
-    modal.style.transition = 'opacity 0.3s ease';
     setTimeout(() => modal.style.display = 'none', 300);
   }
 };
@@ -718,11 +748,11 @@ export function renderDashboard() {
   // Diffs
   const diffsContainer = document.getElementById('dash-diffs');
   if (diffsContainer) {
-    const getMacroBox = (icon, label, value, max, color, unit = 'g') => {
+    const getMacroBox = (icon, label, value, max, color, unit = 'g', delayIndex = 0) => {
       let pct = Math.min((value / max) * 100, 100);
       if (isNaN(pct)) pct = 0;
       return `
-  <div style="flex-shrink: 0; width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); padding: 10px 4px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+  <div class="macro-box-animated" style="flex-shrink: 0; width: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); padding: 10px 4px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); animation-delay: ${delayIndex * 0.08}s;">
     <span style="font-size: 18px; margin-bottom: 4px;">${icon}</span>
     <span style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--text);">${Math.round(value)}<span style="font-size: 9px; color: var(--text-light); font-weight: 600;">/${Math.round(max)}</span></span>
     <span style="font-size: 9px; font-weight: 700; color: var(--text-light); text-transform: uppercase; margin-top: 2px;">${label}</span>
@@ -730,11 +760,11 @@ export function renderDashboard() {
     };
     
     diffsContainer.innerHTML = `
-      ${getMacroBox('🥩', 'Protein', totals.protein, goals.protein, '#ff7043')}
-      ${getMacroBox('🌾', 'Carbs', totals.carbs, goals.carbs, '#ffca28')}
-      ${getMacroBox('🥑', 'Fats', totals.fat, goals.fat, '#66bb6a')}
-      ${getMacroBox('🥦', 'Fiber', totals.fiber, goals.fiber, '#29b6f6')}
-      ${getMacroBox('🧂', 'Sodium', totals.sodium, goals.sodium || 2300, '#ab47bc', 'mg')}
+      ${getMacroBox('🥩', 'Protein', totals.protein, goals.protein, '#ff7043', 'g', 0)}
+      ${getMacroBox('🌾', 'Carbs', totals.carbs, goals.carbs, '#ffca28', 'g', 1)}
+      ${getMacroBox('🥑', 'Fats', totals.fat, goals.fat, '#66bb6a', 'g', 2)}
+      ${getMacroBox('🥦', 'Fiber', totals.fiber, goals.fiber, '#29b6f6', 'g', 3)}
+      ${getMacroBox('🧂', 'Sodium', totals.sodium, goals.sodium || 2300, '#ab47bc', 'mg', 4)}
     `;
   }
   
@@ -747,6 +777,10 @@ export function renderDashboard() {
     
     if (onboardingModal && !window.inventoryOnboardingSeen) {
       onboardingModal.style.display = 'flex';
+      setTimeout(() => {
+        onboardingModal.style.opacity = '1';
+        onboardingModal.style.transition = 'opacity 0.3s ease';
+      }, 50);
       window.inventoryOnboardingSeen = true;
     }
   } else {
