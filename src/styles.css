@@ -388,15 +388,15 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
-  padding: 24px 20px 0 20px;
+  padding: 12px 20px 0 20px;
   box-sizing: border-box;
 }
 
 /* Reveal Animation Classes */
 .reveal-item {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px) scale(0.9);
+  transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: opacity, transform;
 }
 
