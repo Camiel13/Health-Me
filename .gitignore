@@ -1,0 +1,5 @@
+node_modules/
+.superpowers/
+diff.patch
+.DS_Store
+*.log
