@@ -12,25 +12,27 @@
 <body>
     <div id="view-dashboard" class="view dashboard-view">
       <div class="dash-hero">
-      <div class="dashboard-header" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px;">
+      <div class="dashboard-header" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin-bottom: 64px;">
         
         <!-- Left: Greeting -->
-        <div style="flex-shrink: 0; z-index: 2;">
+        <div style="z-index: 2;">
           <h2 class="dash-greeting" style="margin:0; font-size: 24px; line-height: 1.1;">Hello!</h2>
           <p class="dash-date" style="margin:0; font-size: 11px;">Today's Overview</p>
         </div>
 
-        <!-- Center: Absolute Quote -->
-        <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 45%; opacity: 0.6; cursor: pointer; z-index: 1;">
-          <p id="env-tip-text" style="margin: 0; font-size: 10px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
+        <!-- Center: Quote -->
+        <div class="env-tips-card" onclick="navigateTo('view-environment')" style="text-align: center; opacity: 0.8; cursor: pointer; z-index: 1; max-width: 45vw; justify-self: center; overflow: hidden;">
+          <p id="env-tip-text" style="margin: 0; font-size: 14px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif; transition: opacity 0.5s ease-in-out; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             "Put your chips in the basement. Out of sight, out of mind."
           </p>
         </div>
 
         <!-- Right: Add Button -->
-        <button class="add-log-btn" onclick="navigateTo('view-logging')" style="flex-shrink: 0; z-index: 2;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        </button>
+        <div style="display: flex; justify-content: flex-end; z-index: 2;">
+          <button class="add-log-btn" onclick="navigateTo('view-logging')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+        </div>
       </div>
       
       <div id="inventory-premium-card" class="glass-card" style="display: none; background: linear-gradient(135deg, #2c3e50, #3498db); border: 2px solid #2980b9; margin-bottom: 12px; padding: 16px; color: white; position: relative; overflow: hidden; flex-shrink: 0; border-radius: 16px;">
