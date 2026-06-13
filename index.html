@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="view-dashboard" class="view dashboard-view">
-      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 12px; left: 0; right: 0; text-align: center; width: 100%; opacity: 0.6; cursor: pointer; z-index: 10;">
+      <div class="env-tips-card" onclick="navigateTo('view-environment')" style="position: absolute; top: 24px; left: 50%; transform: translateX(-50%); text-align: center; width: 50%; opacity: 0.6; cursor: pointer; z-index: 10;">
         <p id="env-tip-text" style="margin: 0; font-size: 11px; font-style: italic; color: var(--text-light); font-family: 'Inter', sans-serif;">
           "Put your chips in the basement. Out of sight, out of mind."
         </p>
@@ -82,7 +82,7 @@
         </div>
         
       <div class="dash-top-section" style="width: 100%; overflow: hidden;">
-        <div id="dash-diffs" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; width: 100%; scrollbar-width: none;">
+        <div id="dash-diffs" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; width: 100%; scrollbar-width: none; justify-content: center;">
           <!-- Populated by JS -->
         </div>
       </div>

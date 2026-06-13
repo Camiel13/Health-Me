@@ -324,7 +324,9 @@ body {
   padding-bottom: 110px !important;
   box-sizing: border-box;
   position: relative;
-  padding-top: 36px !important;
+  padding-top: 24px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 .dash-top-section {
