@@ -317,16 +317,13 @@ body {
 
 /* Dashboard Compact Native Layout */
 .dashboard-view {
-  height: 100dvh;
-  overflow: hidden !important; /* Force no scrolling on the view itself */
+  min-height: 100dvh;
+  overflow-y: auto !important;
   display: flex;
   flex-direction: column;
   padding-bottom: 110px !important;
   box-sizing: border-box;
   position: relative;
-  padding-top: 24px !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
 }
 
 .dash-top-section {
@@ -378,4 +375,91 @@ body {
   padding: 10px 16px !important;
   margin-bottom: 8px !important;
   border-radius: 12px !important;
+}
+
+/* Add new hero wrapper class */
+.dash-hero {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 24px 20px 0 20px;
+  box-sizing: border-box;
+}
+
+/* Reveal Animation Classes */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-item.reveal-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Mini Calendar Styles */
+.mini-calendar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+
+.mini-calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mini-calendar-day .day-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+.mini-calendar-day .day-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.6);
+  position: relative;
+}
+
+.mini-calendar-day.active .day-bubble {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(130, 207, 160, 0.4);
+}
+
+.mini-calendar-day .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  position: absolute;
+  bottom: -8px;
+  opacity: 0;
+}
+
+.mini-calendar-day.logged .dot {
+  opacity: 1;
+}
+
+.mini-calendar-day.active.logged .dot {
+  background: var(--primary-dark);
 }
