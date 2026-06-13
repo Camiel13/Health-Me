@@ -627,6 +627,46 @@ export function renderHabits() {
   `}).join('');
 }
 
+export function renderMiniCalendar() {
+  const container = document.getElementById('mini-calendar-container');
+  if (!container) return;
+  
+  const today = new Date();
+  const currentDay = today.getDay(); // 0 is Sunday, 1 is Monday
+  
+  // Calculate start of week (Monday)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+  
+  const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  let html = '<div class="mini-calendar">';
+  
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const dateStr = d.toISOString().split('T')[0];
+    
+    // Check if this date has any history in store
+    const state = getState();
+    const isLogged = state.history && state.history.some(h => h.date === dateStr && h.foods && h.foods.length > 0);
+    
+    const isToday = d.toDateString() === today.toDateString();
+    
+    html += `
+      <div class="mini-calendar-day ${isToday ? 'active' : ''} ${isLogged ? 'logged' : ''}">
+        <span class="day-label">${days[i]}</span>
+        <div class="day-bubble">
+          ${d.getDate()}
+          <div class="dot"></div>
+        </div>
+      </div>
+    `;
+  }
+  
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 export function renderScoreboard() {
   const scoreDisplay = document.getElementById('user-score-display');
   const nameDisplaySb = document.getElementById('user-name-display-sb');
@@ -661,6 +701,8 @@ export function renderDashboard() {
   const state = getState();
   const goals = state.goals || { calories: 2000, carbs: 250, protein: 50, fat: 70, fiber: 28, sodium: 2300 };
   
+  renderMiniCalendar();
+
   // Update UI Elements if they exist
   const calDisplay = document.getElementById('dash-cal-display');
   if (calDisplay) calDisplay.textContent = `${Math.round(totals.calories)}`;
@@ -720,8 +762,8 @@ export function renderDashboard() {
     if (foods.length === 0) {
       list.innerHTML = '<li><small style="color: #666;">No foods logged today.</small></li>';
     } else {
-      list.innerHTML = foods.map(f => `
-        <li style="flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8);">
+      list.innerHTML = foods.map((f, index) => `
+        <li class="reveal-item" style="transition-delay: ${index * 0.05}s; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 8px; background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.8);">
           <div style="display: flex; align-items: center; gap: 12px;">
             ${f.healthScore ? `<span class="health-score-badge score-${f.healthScore}" style="font-size: 14px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">${f.healthScore}</span>` : ''}
             <div style="display: flex; flex-direction: column;">
@@ -737,6 +779,25 @@ export function renderDashboard() {
       `).join('');
     }
   });
+
+  setTimeout(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: "0px 0px -20px 0px"
+    });
+  
+    document.querySelectorAll('.reveal-item').forEach(item => {
+      observer.observe(item);
+    });
+  }, 100);
 }
 window.renderDashboard = renderDashboard;
 
