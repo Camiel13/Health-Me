@@ -1,7 +1,7 @@
 import { searchFood } from './api.js';
 import { initScanner } from './scanner.js';
 import { exportData, importData } from './privacy.js';
-import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory, checkNeverMissTwice, getHabitStreak, getTodayString } from './store.js';
+import { addFood, getTodayTotals, getTodayRecord, addHabit, completeHabit, getState, initStore, updateProfile, buyHat, finishInventory, checkNeverMissTwice, getHabitStreak, getTodayString, cleanData, resetProgress } from './store.js';
 
 window.promptAndAddFood = function(food) {
   const modal = document.getElementById('add-food-modal');
@@ -837,12 +837,19 @@ export function renderDashboard() {
 window.renderDashboard = renderDashboard;
 
 window.resetProgress = function() {
-  if (confirm("Are you sure you want to completely reset all your progress, history, and settings? This cannot be undone.")) {
-    localStorage.removeItem('health_app_state');
+  if (confirm("Are you sure you want to completely reset all your progress back to the showcase data?")) {
+    resetProgress();
     window.location.reload();
   }
 };
-console.log("🛠️ Dev Tools: Type 'resetProgress()' to completely wipe all data and start over.");
+
+window.cleanData = function() {
+  if (confirm("Are you sure you want to delete all showcase data and start with a completely empty database?")) {
+    cleanData();
+    window.location.reload();
+  }
+};
+console.log("🛠️ Dev Tools: Type 'resetProgress()' to reload showcase data, or 'cleanData()' to start completely clean.");
 
 // Environment Priming Tips
 const envTips = [
