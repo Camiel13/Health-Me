@@ -1,13 +1,148 @@
+export function getDummyState() {
+  const dates = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    dates.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+  }
+  const [today, yesterday, day2, day3, day4] = dates;
+
+  return {
+    history: [
+      {
+        date: day4,
+        steps: 8432,
+        foods: [
+          { name: 'Oatmeal with Banana', calories: 350, carbs: 60, protein: 10, fat: 5, fiber: 8, sodium: 50, healthScore: 'A', timestamp: Date.now() - 4 * 24 * 3600 * 1000, count: 1 },
+          { name: 'Grilled Chicken Salad', calories: 480, carbs: 15, protein: 35, fat: 18, fiber: 5, sodium: 620, healthScore: 'A', timestamp: Date.now() - 4 * 24 * 3600 * 1000 + 4 * 3600 * 1000, count: 1 },
+          { name: 'Greek Yogurt', calories: 150, carbs: 10, protein: 15, fat: 3, fiber: 0, sodium: 60, healthScore: 'B', timestamp: Date.now() - 4 * 24 * 3600 * 1000 + 8 * 3600 * 1000, count: 1 }
+        ]
+      },
+      {
+        date: day3,
+        steps: 10543,
+        foods: [
+          { name: 'Whole Wheat Toast with Avocado', calories: 280, carbs: 24, protein: 8, fat: 14, fiber: 7, sodium: 320, healthScore: 'A', timestamp: Date.now() - 3 * 24 * 3600 * 1000, count: 1 },
+          { name: 'Apple', calories: 95, carbs: 25, protein: 0, fat: 0, fiber: 4, sodium: 2, healthScore: 'A', timestamp: Date.now() - 3 * 24 * 3600 * 1000 + 3 * 3600 * 1000, count: 1 },
+          { name: 'Salmon with Broccoli', calories: 550, carbs: 12, protein: 42, fat: 28, fiber: 6, sodium: 450, healthScore: 'A', timestamp: Date.now() - 3 * 24 * 3600 * 1000 + 8 * 3600 * 1000, count: 1 }
+        ]
+      },
+      {
+        date: day2,
+        steps: 7210,
+        foods: [
+          { name: 'Oatmeal with Banana', calories: 350, carbs: 60, protein: 10, fat: 5, fiber: 8, sodium: 50, healthScore: 'A', timestamp: Date.now() - 2 * 24 * 3600 * 1000, count: 1 },
+          { name: 'Mixed Berries', calories: 80, carbs: 18, protein: 1, fat: 0, fiber: 5, sodium: 1, healthScore: 'A', timestamp: Date.now() - 2 * 24 * 3600 * 1000 + 4 * 3600 * 1000, count: 1 },
+          { name: 'Pasta Carbonara', calories: 720, carbs: 80, protein: 22, fat: 34, fiber: 3, sodium: 980, healthScore: 'C', timestamp: Date.now() - 2 * 24 * 3600 * 1000 + 8 * 3600 * 1000, count: 1 }
+        ]
+      },
+      {
+        date: yesterday,
+        steps: 12430,
+        foods: [
+          { name: 'Greek Yogurt', calories: 150, carbs: 10, protein: 15, fat: 3, fiber: 0, sodium: 60, healthScore: 'B', timestamp: Date.now() - 24 * 3600 * 1000, count: 1 },
+          { name: 'Grilled Chicken Salad', calories: 480, carbs: 15, protein: 35, fat: 18, fiber: 5, sodium: 620, healthScore: 'A', timestamp: Date.now() - 24 * 3600 * 1000 + 4 * 3600 * 1000, count: 1 },
+          { name: 'Dark Chocolate', calories: 170, carbs: 15, protein: 2, fat: 12, fiber: 2, sodium: 10, healthScore: 'C', timestamp: Date.now() - 24 * 3600 * 1000 + 8 * 3600 * 1000, count: 1 }
+        ]
+      },
+      {
+        date: today,
+        steps: 4210,
+        foods: [
+          { name: 'Whole Wheat Toast with Avocado', calories: 280, carbs: 24, protein: 8, fat: 14, fiber: 7, sodium: 320, healthScore: 'A', timestamp: Date.now(), count: 1 }
+        ]
+      }
+    ],
+    habits: [
+      {
+        id: 1001,
+        trigger: 'When I wake up',
+        action: 'Drink 500ml water',
+        time: '08:00',
+        frequency: 'Daily',
+        difficulty: 'Easy',
+        slot: 'Morning',
+        completions: 5,
+        completedDates: [today, yesterday, day2, day3, day4],
+        createdDate: day4,
+        reflections: {
+          [today]: 'Felt very refreshing first thing in the morning.',
+          [yesterday]: 'A bit hard to finish the whole glass, but did it.',
+          [day2]: 'Felt energized.',
+          [day3]: 'Good routine starting to form.',
+          [day4]: 'Easy start.'
+        }
+      },
+      {
+        id: 1002,
+        trigger: 'After lunch',
+        action: 'Go for a 15-minute walk',
+        time: '13:00',
+        frequency: 'Daily',
+        difficulty: 'Normal',
+        slot: 'Afternoon',
+        completions: 2,
+        completedDates: [yesterday, day3],
+        createdDate: day4,
+        reflections: {
+          [yesterday]: 'Nice sunny weather outside.',
+          [day3]: 'Good break from studying.'
+        }
+      },
+      {
+        id: 1003,
+        trigger: 'Before going to bed',
+        action: 'Write down 3 things I\'m grateful for',
+        time: '22:00',
+        frequency: 'Daily',
+        difficulty: 'Normal',
+        slot: 'Evening',
+        completions: 3,
+        completedDates: [yesterday, day2, day4],
+        createdDate: day4,
+        reflections: {
+          [yesterday]: 'Grateful for good food, a nice walk, and sleep.',
+          [day2]: 'Grateful for code working on the first try.',
+          [day4]: 'Grateful for completing my goals.'
+        }
+      }
+    ],
+    score: 120,
+    avatar: { hat: 'cap', item: 'none' },
+    unlockedHats: ['none', 'cap', 'glasses'],
+    isInventoryMode: false,
+    goals: {
+      calories: 2000,
+      protein: 130,
+      fat: 60,
+      carbs: 220,
+      fiber: 30,
+      sodium: 2300
+    }
+  };
+}
+
+export function cleanData() {
+  const cleanState = { 
+    history: [], 
+    habits: [], 
+    score: 0,
+    avatar: { hat: 'none', item: 'none' },
+    unlockedHats: ['none'],
+    isInventoryMode: true,
+    goals: null
+  };
+  saveState(cleanState);
+}
+
+export function resetProgress() {
+  const dummyState = getDummyState();
+  saveState(dummyState);
+}
+
 export function initStore() {
   if (!localStorage.getItem('health_app_state')) {
-    const defaultState = { 
-      history: [], // Array of { date: 'YYYY-MM-DD', foods: [], steps: 0 }
-      habits: [], // Array of { id, trigger, action, time, frequency, completions: 0 }
-      score: 0,
-      avatar: { hat: 'none', item: 'none' },
-      isInventoryMode: true,
-      goals: null
-    };
+    const defaultState = getDummyState();
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
   } else {
     const state = JSON.parse(localStorage.getItem('health_app_state'));
