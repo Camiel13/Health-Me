@@ -849,7 +849,21 @@ window.cleanData = function() {
     window.location.reload();
   }
 };
-console.log("🛠️ Dev Tools: Type 'resetProgress()' to reload showcase data, or 'cleanData()' to start completely clean.");
+
+window.addEventListener('keydown', (e) => {
+  if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+    return;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
+    e.preventDefault();
+    if (confirm("Showcase Modus: Wil je de demo-dummydata inladen?")) {
+      resetProgress();
+      window.location.reload();
+    }
+  }
+});
+
+console.log("🛠️ Dev Tools: Press Ctrl+Shift+D (or type 'resetProgress()') to load showcase data, or type 'cleanData()' to start completely clean.");
 
 // Environment Priming Tips
 const envTips = [

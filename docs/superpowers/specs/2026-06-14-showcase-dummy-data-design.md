@@ -1,11 +1,12 @@
 # Showcase Dummy Data Spec
 
-This spec outlines the changes required to pre-load the application with rich showcase dummy data on first startup, configure `resetProgress()` to reload this showcase data, and introduce a new `cleanData()` function to start with a blank database.
+This spec outlines the changes required to pre-load the application with a clean state on first startup, configure `resetProgress()` to reload the rich showcase dummy data, introduce a new `cleanData()` function to start with a blank database, and add a keybind (`Ctrl + Shift + D`) to trigger the showcase data loading at any time.
 
 ## 1. Goals & Requirements
-- **Showcase First Impression**: When a user (e.g., the Big History teacher) opens the app for the first time, it should not be empty. It should display a pre-loaded history, streaks, points, and items to showcase the app's features immediately.
-- **`resetProgress()`**: This existing developer/user function should reset the state back to the showcase dummy data.
-- **`cleanData()`**: A new developer/user function to completely wipe all progress and settings, returning the app to a clean, empty state with onboarding active.
+- **First Startup**: When the user opens the app for the first time, it should start in a clean state with the onboarding/inventory active so they can demonstrate the setup.
+- **Keybind (`Ctrl + Shift + D`)**: Pressing `Ctrl + Shift + D` at any time will trigger a confirmation dialog to populate the app with the rich showcase dummy data.
+- **`resetProgress()`**: This developer/user function should reset the state back to the showcase dummy data.
+- **`cleanData()`**: A developer/user function to completely wipe all progress and settings, returning the app to a clean, empty state with onboarding active.
 
 ## 2. Showcase Dummy Data Structure
 The dummy state will contain:
@@ -28,8 +29,8 @@ The dummy state will contain:
 
 ## 3. Implementation Plan
 ### Step 1: Update `src/store.js`
-- Define `getDummyState()` to dynamically generate the state object using relative dates (today, yesterday, etc.) to ensure the streak remains active regardless of when the app is run.
-- Update `initStore()` to set the showcase dummy state as the default when `localStorage.getItem('health_app_state')` is empty.
+- Define `getDummyState()` to dynamically generate the state object using relative dates (today, yesterday, etc.) to ensure the streak remains active.
+- Update `initStore()` to initialize with a clean/empty default state when `localStorage.getItem('health_app_state')` is empty.
 - Add and export `resetProgress()` to restore the dummy state.
 - Add and export `cleanData()` to write a clean state (empty history/habits, `isInventoryMode: true`).
 
@@ -38,9 +39,11 @@ The dummy state will contain:
   ```javascript
   window.cleanData = function() { ... }
   ```
-- Update `window.resetProgress` to call the store's `resetProgress()` helper rather than removing the localStorage item.
-- Update console instructions.
+- Update `window.resetProgress` to call the store's `resetProgress()` helper.
+- Add window event listener for `Ctrl + Shift + D` keybind to call `resetProgress()` with a confirmation prompt.
+- Update console instructions to document both options and the keybind.
 
 ### Step 3: Update `tests/store.test.js`
-- Update the initialization test to verify that the store initializes with the showcase dummy data (e.g., history length is greater than 0, habits length is greater than 0, score is 120, etc.).
+- Update the initialization test to verify that the store initializes with a clean default state (empty history/habits, onboarding active).
+- Add a new test to verify `resetProgress()` successfully loads the showcase dummy state.
 - Add a new test to verify `cleanData()` returns the store to a truly clean slate (empty history/habits, `isInventoryMode: true`, etc.).

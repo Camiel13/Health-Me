@@ -142,7 +142,15 @@ export function resetProgress() {
 
 export function initStore() {
   if (!localStorage.getItem('health_app_state')) {
-    const defaultState = getDummyState();
+    const defaultState = { 
+      history: [], 
+      habits: [], 
+      score: 0,
+      avatar: { hat: 'none', item: 'none' },
+      unlockedHats: ['none'],
+      isInventoryMode: true,
+      goals: null
+    };
     localStorage.setItem('health_app_state', JSON.stringify(defaultState));
   } else {
     const state = JSON.parse(localStorage.getItem('health_app_state'));

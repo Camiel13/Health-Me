@@ -1,12 +1,24 @@
 import { expect, test, beforeEach } from 'vitest';
-import { initStore, getState, addHabit, completeHabit, cleanData } from '../src/store.js';
+import { initStore, getState, addHabit, completeHabit, cleanData, resetProgress } from '../src/store.js';
 
 beforeEach(() => {
   localStorage.clear();
 });
 
-test('Store initializes with showcase dummy state', () => {
+test('Store initializes with clean default state', () => {
   initStore();
+  const state = getState();
+  expect(state.history).toEqual([]);
+  expect(state.habits).toEqual([]);
+  expect(state.score).toBe(0);
+  expect(state.avatar.hat).toBe('none');
+  expect(state.isInventoryMode).toBe(true);
+  expect(state.goals).toBeNull();
+});
+
+test('resetProgress loads showcase dummy state', () => {
+  initStore();
+  resetProgress();
   const state = getState();
   // history should contain the 5 days of dummy food/step logs
   expect(state.history.length).toBe(5);
@@ -39,6 +51,7 @@ test('completeHabit stores reflection text', () => {
 
 test('cleanData clears all data to empty slate', () => {
   initStore();
+  resetProgress(); // load dummy state first
   cleanData();
   const state = getState();
   expect(state.history).toEqual([]);
