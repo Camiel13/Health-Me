@@ -4,8 +4,8 @@ This spec outlines the changes required to pre-load the application with a clean
 
 ## 1. Goals & Requirements
 - **First Startup**: When the user opens the app for the first time, it should start in a clean state with the onboarding/inventory active so they can demonstrate the setup.
-- **Keybind (`Alt + Shift + D`)**: Pressing `Alt + Shift + D` at any time will trigger a confirmation dialog to populate the app with the rich showcase dummy data.
-- **Keybind (`Alt + Shift + C`)**: Pressing `Alt + Shift + C` at any time will trigger a confirmation dialog to completely clear all data to 0 (clean start).
+- **Keybind (`Alt + Shift + D`)**: Pressing `Alt + Shift + D` at any time will instantly populate the app with the rich showcase dummy data (no confirmation dialog, for a seamless demo).
+- **Keybind (`Alt + Shift + C`)**: Pressing `Alt + Shift + C` at any time will instantly clear all data to 0 (no confirmation dialog).
 - **`resetProgress()`**: This developer/user function should reset the state back to the showcase dummy data.
 - **`cleanData()`**: A developer/user function to completely wipe all progress and settings, returning the app to a clean, empty state with onboarding active.
 
@@ -41,7 +41,7 @@ The dummy state will contain:
   window.cleanData = function() { ... }
   ```
 - Update `window.resetProgress` to call the store's `resetProgress()` helper.
-- Add window event listener for `Alt + Shift + D` and `Alt + Shift + C` keybinds to call `resetProgress()` and `cleanData()` with confirmation prompts.
+- Add window event listener for `Alt + Shift + D` and `Alt + Shift + C` keybinds to call `resetProgress()` and `cleanData()` instantly (without confirmation prompts).
 - Update console instructions to document both options and their keybinds.
 
 ### Step 3: Update `tests/store.test.js`

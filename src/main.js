@@ -858,16 +858,12 @@ window.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
     if (key === 'd') {
       e.preventDefault();
-      if (confirm("Showcase Modus: Wil je de demo-dummydata inladen?")) {
-        resetProgress();
-        window.location.reload();
-      }
+      resetProgress();
+      window.location.reload();
     } else if (key === 'c') {
       e.preventDefault();
-      if (confirm("Showcase Modus: Wil je alle data wissen en met een lege app starten?")) {
-        cleanData();
-        window.location.reload();
-      }
+      cleanData();
+      window.location.reload();
     }
   }
 });
