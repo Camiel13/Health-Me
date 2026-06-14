@@ -854,7 +854,7 @@ window.addEventListener('keydown', (e) => {
   if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
     return;
   }
-  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
+  if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
     e.preventDefault();
     if (confirm("Showcase Modus: Wil je de demo-dummydata inladen?")) {
       resetProgress();
@@ -863,7 +863,7 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-console.log("🛠️ Dev Tools: Press Ctrl+Shift+D (or type 'resetProgress()') to load showcase data, or type 'cleanData()' to start completely clean.");
+console.log("🛠️ Dev Tools: Press Alt+Shift+D (or type 'resetProgress()') to load showcase data, or type 'cleanData()' to start completely clean.");
 
 // Environment Priming Tips
 const envTips = [
