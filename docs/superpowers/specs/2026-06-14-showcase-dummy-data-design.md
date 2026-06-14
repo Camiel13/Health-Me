@@ -1,10 +1,11 @@
 # Showcase Dummy Data Spec
 
-This spec outlines the changes required to pre-load the application with a clean state on first startup, configure `resetProgress()` to reload the rich showcase dummy data, introduce a new `cleanData()` function to start with a blank database, and add a keybind (`Alt + Shift + D`) to trigger the showcase data loading at any time.
+This spec outlines the changes required to pre-load the application with a clean state on first startup, configure `resetProgress()` to reload the rich showcase dummy data, introduce a new `cleanData()` function to start with a blank database, and add keybinds (`Alt + Shift + D` for showcase data, `Alt + Shift + C` for clean database) to trigger these actions at any time.
 
 ## 1. Goals & Requirements
 - **First Startup**: When the user opens the app for the first time, it should start in a clean state with the onboarding/inventory active so they can demonstrate the setup.
 - **Keybind (`Alt + Shift + D`)**: Pressing `Alt + Shift + D` at any time will trigger a confirmation dialog to populate the app with the rich showcase dummy data.
+- **Keybind (`Alt + Shift + C`)**: Pressing `Alt + Shift + C` at any time will trigger a confirmation dialog to completely clear all data to 0 (clean start).
 - **`resetProgress()`**: This developer/user function should reset the state back to the showcase dummy data.
 - **`cleanData()`**: A developer/user function to completely wipe all progress and settings, returning the app to a clean, empty state with onboarding active.
 
@@ -40,8 +41,8 @@ The dummy state will contain:
   window.cleanData = function() { ... }
   ```
 - Update `window.resetProgress` to call the store's `resetProgress()` helper.
-- Add window event listener for `Alt + Shift + D` keybind to call `resetProgress()` with a confirmation prompt.
-- Update console instructions to document both options and the keybind.
+- Add window event listener for `Alt + Shift + D` and `Alt + Shift + C` keybinds to call `resetProgress()` and `cleanData()` with confirmation prompts.
+- Update console instructions to document both options and their keybinds.
 
 ### Step 3: Update `tests/store.test.js`
 - Update the initialization test to verify that the store initializes with a clean default state (empty history/habits, onboarding active).

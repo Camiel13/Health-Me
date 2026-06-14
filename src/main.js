@@ -854,16 +854,25 @@ window.addEventListener('keydown', (e) => {
   if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
     return;
   }
-  if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
-    e.preventDefault();
-    if (confirm("Showcase Modus: Wil je de demo-dummydata inladen?")) {
-      resetProgress();
-      window.location.reload();
+  if (e.altKey && e.shiftKey) {
+    const key = e.key.toLowerCase();
+    if (key === 'd') {
+      e.preventDefault();
+      if (confirm("Showcase Modus: Wil je de demo-dummydata inladen?")) {
+        resetProgress();
+        window.location.reload();
+      }
+    } else if (key === 'c') {
+      e.preventDefault();
+      if (confirm("Showcase Modus: Wil je alle data wissen en met een lege app starten?")) {
+        cleanData();
+        window.location.reload();
+      }
     }
   }
 });
 
-console.log("🛠️ Dev Tools: Press Alt+Shift+D (or type 'resetProgress()') to load showcase data, or type 'cleanData()' to start completely clean.");
+console.log("🛠️ Dev Tools: Press Alt+Shift+D to load showcase data, or Alt+Shift+C to start completely clean.");
 
 // Environment Priming Tips
 const envTips = [
