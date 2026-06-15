@@ -872,11 +872,11 @@ function showShowcaseAnimation() {
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-  }, 1200);
+  }, 950);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1700);
+  }, 1350);
 }
 
 function showCleanAnimation() {
@@ -901,11 +901,11 @@ function showCleanAnimation() {
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-  }, 1200);
+  }, 950);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1700);
+  }, 1350);
 }
 
 
