@@ -850,6 +850,66 @@ window.cleanData = function() {
   }
 };
 
+function showShowcaseAnimation() {
+  const overlay = document.createElement('div');
+  overlay.className = 'showcase-load-overlay';
+  overlay.innerHTML = `
+    <div class="showcase-load-content">
+      <div class="showcase-icon-pulse">⚡</div>
+      <div class="showcase-title">SHOWCASE MODUS ACTIEF</div>
+      <div class="showcase-subtitle">Simuleren van 5 dagen voortgang...</div>
+      <div class="showcase-progress-bar-container">
+        <div class="showcase-progress-bar-fill"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  setTimeout(() => {
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#5b9d74', '#ffd700', '#ff4500', '#60a5fa']
+      });
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          spread: 80,
+          origin: { y: 0.65 },
+          colors: ['#a3f7bf', '#fff', '#5b9d74']
+        });
+      }, 250);
+    }
+  }, 150);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+}
+
+function showCleanAnimation() {
+  const overlay = document.createElement('div');
+  overlay.className = 'clean-load-overlay';
+  overlay.innerHTML = `
+    <div class="clean-scan-line"></div>
+    <div class="showcase-load-content">
+      <div class="clean-icon-spin">🔄</div>
+      <div class="clean-title">DATABASE GEWIST</div>
+      <div class="clean-subtitle">Lege app aan het voorbereiden...</div>
+      <div class="showcase-progress-bar-container">
+        <div class="showcase-progress-bar-fill" style="background: #3b82f6;"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+}
+
 window.addEventListener('keydown', (e) => {
   if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
     return;
@@ -859,11 +919,11 @@ window.addEventListener('keydown', (e) => {
     if (key === 'd') {
       e.preventDefault();
       resetProgress();
-      window.location.reload();
+      showShowcaseAnimation();
     } else if (key === 'c') {
       e.preventDefault();
       cleanData();
-      window.location.reload();
+      showCleanAnimation();
     }
   }
 });
