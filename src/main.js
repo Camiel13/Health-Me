@@ -855,7 +855,13 @@ function showShowcaseAnimation() {
   overlay.className = 'keybind-overlay showcase-load-overlay';
   overlay.innerHTML = `
     <div class="keybind-icon showcase-icon-card">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#showcaseGrad)" stroke="var(--primary-dark)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <defs>
+          <linearGradient id="showcaseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#82cfa0" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#5b9d74" stop-opacity="1" />
+          </linearGradient>
+        </defs>
         <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.5S2 11.5 2 13.5s1.75 3.75 1.75 3.75"/>
       </svg>
     </div>
@@ -863,8 +869,13 @@ function showShowcaseAnimation() {
   document.body.appendChild(overlay);
 
   setTimeout(() => {
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.4s ease';
+  }, 1400);
+
+  setTimeout(() => {
     window.location.reload();
-  }, 900);
+  }, 1800);
 }
 
 function showCleanAnimation() {
@@ -873,7 +884,13 @@ function showCleanAnimation() {
   overlay.innerHTML = `
     <div class="clean-wipe-line"></div>
     <div class="keybind-icon clean-icon-card">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#cleanGrad)" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <defs>
+          <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#cbd5e1" stop-opacity="1" />
+          </linearGradient>
+        </defs>
         <path d="M12 3l1.912 5.813a2 2 0 0 0 1.272 1.278L21 12l-5.816 1.91a2 2 0 0 0-1.275 1.278L12 21l-1.91-5.812a2 2 0 0 0-1.277-1.278L3 12l5.813-1.91a2 2 0 0 0 1.278-1.277L12 3z"/>
       </svg>
     </div>
@@ -881,8 +898,13 @@ function showCleanAnimation() {
   document.body.appendChild(overlay);
 
   setTimeout(() => {
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.4s ease';
+  }, 1400);
+
+  setTimeout(() => {
     window.location.reload();
-  }, 900);
+  }, 1800);
 }
 
 
