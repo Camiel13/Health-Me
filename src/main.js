@@ -856,11 +856,6 @@ function showShowcaseAnimation() {
   overlay.innerHTML = `
     <div class="showcase-load-content">
       <div class="showcase-icon-pulse">⚡</div>
-      <div class="showcase-title">SHOWCASE MODUS ACTIEF</div>
-      <div class="showcase-subtitle">Simuleren van 5 dagen voortgang...</div>
-      <div class="showcase-progress-bar-container">
-        <div class="showcase-progress-bar-fill"></div>
-      </div>
     </div>
   `;
   document.body.appendChild(overlay);
@@ -896,11 +891,6 @@ function showCleanAnimation() {
     <div class="clean-scan-line"></div>
     <div class="showcase-load-content">
       <div class="clean-icon-spin">🔄</div>
-      <div class="clean-title">DATABASE GEWIST</div>
-      <div class="clean-subtitle">Lege app aan het voorbereiden...</div>
-      <div class="showcase-progress-bar-container">
-        <div class="showcase-progress-bar-fill" style="background: #3b82f6;"></div>
-      </div>
     </div>
   `;
   document.body.appendChild(overlay);
