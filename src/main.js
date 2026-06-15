@@ -852,53 +852,39 @@ window.cleanData = function() {
 
 function showShowcaseAnimation() {
   const overlay = document.createElement('div');
-  overlay.className = 'showcase-load-overlay';
+  overlay.className = 'keybind-overlay showcase-load-overlay';
   overlay.innerHTML = `
-    <div class="showcase-load-content">
-      <div class="showcase-icon-pulse">⚡</div>
+    <div class="keybind-icon showcase-icon-card">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.5S2 11.5 2 13.5s1.75 3.75 1.75 3.75"/>
+      </svg>
     </div>
   `;
   document.body.appendChild(overlay);
 
   setTimeout(() => {
-    if (typeof confetti === 'function') {
-      confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: ['#5b9d74', '#ffd700', '#ff4500', '#60a5fa']
-      });
-      setTimeout(() => {
-        confetti({
-          particleCount: 50,
-          spread: 80,
-          origin: { y: 0.65 },
-          colors: ['#a3f7bf', '#fff', '#5b9d74']
-        });
-      }, 250);
-    }
-  }, 150);
-
-  setTimeout(() => {
     window.location.reload();
-  }, 1000);
+  }, 900);
 }
 
 function showCleanAnimation() {
   const overlay = document.createElement('div');
-  overlay.className = 'clean-load-overlay';
+  overlay.className = 'keybind-overlay clean-load-overlay';
   overlay.innerHTML = `
-    <div class="clean-scan-line"></div>
-    <div class="showcase-load-content">
-      <div class="clean-icon-spin">🔄</div>
+    <div class="clean-wipe-line"></div>
+    <div class="keybind-icon clean-icon-card">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3l1.912 5.813a2 2 0 0 0 1.272 1.278L21 12l-5.816 1.91a2 2 0 0 0-1.275 1.278L12 21l-1.91-5.812a2 2 0 0 0-1.277-1.278L3 12l5.813-1.91a2 2 0 0 0 1.278-1.277L12 3z"/>
+      </svg>
     </div>
   `;
   document.body.appendChild(overlay);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1000);
+  }, 900);
 }
+
 
 window.addEventListener('keydown', (e) => {
   if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
