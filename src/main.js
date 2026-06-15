@@ -852,13 +852,14 @@ window.cleanData = function() {
 
 function showShowcaseAnimation() {
   const overlay = document.createElement('div');
-  overlay.className = 'keybind-overlay showcase-load-overlay';
+  overlay.className = 'liquid-overlay-wrapper';
   overlay.innerHTML = `
-    <div class="keybind-icon showcase-icon-card">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#showcaseGrad)" stroke="var(--primary-dark)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="liquid-wave wave-showcase"></div>
+    <div class="liquid-icon icon-showcase">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#showcaseGrad)" stroke="var(--primary-dark)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
         <defs>
           <linearGradient id="showcaseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#82cfa0" stop-opacity="0.8" />
+            <stop offset="0%" stop-color="#82cfa0" stop-opacity="0.9" />
             <stop offset="100%" stop-color="#5b9d74" stop-opacity="1" />
           </linearGradient>
         </defs>
@@ -870,21 +871,20 @@ function showShowcaseAnimation() {
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-    overlay.style.transition = 'opacity 0.4s ease';
-  }, 1400);
+  }, 900);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1800);
+  }, 1200);
 }
 
 function showCleanAnimation() {
   const overlay = document.createElement('div');
-  overlay.className = 'keybind-overlay clean-load-overlay';
+  overlay.className = 'liquid-overlay-wrapper';
   overlay.innerHTML = `
-    <div class="clean-wipe-line"></div>
-    <div class="keybind-icon clean-icon-card">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#cleanGrad)" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="liquid-wave wave-clean"></div>
+    <div class="liquid-icon icon-clean">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#cleanGrad)" stroke="#64748b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
         <defs>
           <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
@@ -899,12 +899,11 @@ function showCleanAnimation() {
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-    overlay.style.transition = 'opacity 0.4s ease';
-  }, 1400);
+  }, 900);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1800);
+  }, 1200);
 }
 
 

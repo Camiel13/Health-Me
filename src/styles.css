@@ -769,143 +769,81 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Keybind Transition Overlays
+   Liquid Glass Keybind Animations
    ═══════════════════════════════════════════════════════════════ */
 
-/* Shared overlay base */
-.keybind-overlay {
+.liquid-overlay-wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
   height: 100vh;
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+/* The fluid wave that sweeps up from the bottom */
+.liquid-wave {
+  position: absolute;
+  top: 100%;
+  left: -75vw;
+  width: 250vw;
+  height: 250vw;
+  border-radius: 42%;
+  animation: waveRise 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.wave-showcase {
+  background: rgba(244, 248, 245, 0.55);
+  backdrop-filter: blur(28px) saturate(220%);
+  -webkit-backdrop-filter: blur(28px) saturate(220%);
+  box-shadow: 0 -20px 60px rgba(130, 207, 160, 0.3), inset 0 10px 20px rgba(255, 255, 255, 0.8);
+}
+
+.wave-clean {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(28px) saturate(220%);
+  -webkit-backdrop-filter: blur(28px) saturate(220%);
+  box-shadow: 0 -20px 60px rgba(148, 163, 184, 0.15), inset 0 10px 20px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes waveRise {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-110%) rotate(135deg); }
+}
+
+/* Freestanding icon, no borders or outlines */
+.liquid-icon {
+  position: relative;
+  z-index: 2;
+  width: 100px;
+  height: 100px;
   opacity: 0;
-  animation: keybindOverlayIn 0.6s ease-out forwards;
+  animation: liquidIconSpring 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
 }
 
-@keyframes keybindOverlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Shared icon container */
-.keybind-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.keybind-icon svg {
-  width: 36px;
-  height: 36px;
-}
-
-/* ── Alt+Shift+D: Showcase ────────────────────────────────── */
-.showcase-load-overlay {
-  background: radial-gradient(ellipse at center, rgba(130, 207, 160, 0.25) 0%, rgba(244, 248, 245, 0.92) 60%);
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
-}
-
-.showcase-icon-card {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(130, 207, 160, 0.4);
-  box-shadow:
-    0 8px 32px rgba(91, 157, 116, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-  animation: showcaseIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.showcase-icon-card svg {
-  color: var(--primary-dark, #5b9d74);
-  animation: showcaseLeafGrow 0.8s ease-out forwards;
-}
-
-@keyframes showcaseIconPop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes showcaseLeafGrow {
-  0% { transform: scale(0.6) rotate(-20deg); opacity: 0.4; }
-  60% { transform: scale(1.15) rotate(5deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-/* Soft expanding ring */
-.showcase-load-overlay::after {
-  content: '';
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  border: 2px solid rgba(130, 207, 160, 0.5);
-  animation: showcaseRing 0.8s ease-out forwards;
-  pointer-events: none;
-}
-
-@keyframes showcaseRing {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(2.2); opacity: 0; border-radius: 50%; }
-}
-
-/* ── Alt+Shift+C: Clean ───────────────────────────────────── */
-.clean-load-overlay {
-  background: radial-gradient(ellipse at center, rgba(200, 220, 240, 0.3) 0%, rgba(244, 248, 245, 0.92) 60%);
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
-}
-
-.clean-icon-card {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  box-shadow:
-    0 8px 32px rgba(100, 116, 139, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-  animation: cleanIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.clean-icon-card svg {
-  color: #64748b;
-  animation: cleanSweep 0.8s ease-in-out forwards;
-}
-
-@keyframes cleanIconPop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes cleanSweep {
-  0% { transform: rotate(0deg) scale(0.7); opacity: 0.4; }
-  50% { transform: rotate(180deg) scale(1.1); opacity: 1; }
-  100% { transform: rotate(360deg) scale(1); opacity: 1; }
-}
-
-/* Soft wipe line */
-.clean-wipe-line {
-  position: absolute;
-  top: 0;
-  left: 0;
+.liquid-icon svg {
   width: 100%;
-  height: 3px;
-  background: linear-gradient(to right, transparent 0%, rgba(148, 163, 184, 0.5) 40%, rgba(100, 116, 139, 0.6) 50%, rgba(148, 163, 184, 0.5) 60%, transparent 100%);
-  animation: cleanWipeMove 0.9s ease-in-out forwards;
-  pointer-events: none;
+  height: 100%;
 }
 
-@keyframes cleanWipeMove {
-  0% { top: 0%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 0.6; }
-  100% { top: 100%; opacity: 0; }
+.icon-showcase svg {
+  filter: drop-shadow(0 12px 24px rgba(91, 157, 116, 0.35));
+}
+
+.icon-clean svg {
+  filter: drop-shadow(0 12px 24px rgba(100, 116, 139, 0.25));
+}
+
+@keyframes liquidIconSpring {
+  0% { opacity: 0; transform: scale(0.3) translateY(80px); }
+  60% { opacity: 1; transform: scale(1.1) translateY(-10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
