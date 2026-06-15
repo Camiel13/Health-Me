@@ -854,56 +854,58 @@ function showShowcaseAnimation() {
   const overlay = document.createElement('div');
   overlay.className = 'liquid-overlay-wrapper';
   overlay.innerHTML = `
-    <div class="liquid-wave wave-showcase"></div>
-    <div class="liquid-icon icon-showcase">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#showcaseGrad)" stroke="var(--primary-dark)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-        <defs>
-          <linearGradient id="showcaseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#82cfa0" stop-opacity="0.9" />
-            <stop offset="100%" stop-color="#5b9d74" stop-opacity="1" />
-          </linearGradient>
-        </defs>
-        <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.5S2 11.5 2 13.5s1.75 3.75 1.75 3.75"/>
-      </svg>
+    <div class="liquid-circle circle-showcase">
+      <div class="liquid-icon icon-showcase">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#showcaseGrad)" stroke="var(--primary-dark)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <defs>
+            <linearGradient id="showcaseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#82cfa0" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#5b9d74" stop-opacity="1" />
+            </linearGradient>
+          </defs>
+          <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.5S2 11.5 2 13.5s1.75 3.75 1.75 3.75"/>
+        </svg>
+      </div>
     </div>
   `;
   document.body.appendChild(overlay);
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-  }, 900);
+  }, 1200);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1200);
+  }, 1700);
 }
 
 function showCleanAnimation() {
   const overlay = document.createElement('div');
   overlay.className = 'liquid-overlay-wrapper';
   overlay.innerHTML = `
-    <div class="liquid-wave wave-clean"></div>
-    <div class="liquid-icon icon-clean">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#cleanGrad)" stroke="#64748b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-        <defs>
-          <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
-            <stop offset="100%" stop-color="#cbd5e1" stop-opacity="1" />
-          </linearGradient>
-        </defs>
-        <path d="M12 3l1.912 5.813a2 2 0 0 0 1.272 1.278L21 12l-5.816 1.91a2 2 0 0 0-1.275 1.278L12 21l-1.91-5.812a2 2 0 0 0-1.277-1.278L3 12l5.813-1.91a2 2 0 0 0 1.278-1.277L12 3z"/>
-      </svg>
+    <div class="liquid-circle circle-clean">
+      <div class="liquid-icon icon-clean">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="url(#cleanGrad)" stroke="#64748b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <defs>
+            <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#cbd5e1" stop-opacity="1" />
+            </linearGradient>
+          </defs>
+          <path d="M12 3l1.912 5.813a2 2 0 0 0 1.272 1.278L21 12l-5.816 1.91a2 2 0 0 0-1.275 1.278L12 21l-1.91-5.812a2 2 0 0 0-1.277-1.278L3 12l5.813-1.91a2 2 0 0 0 1.278-1.277L12 3z"/>
+        </svg>
+      </div>
     </div>
   `;
   document.body.appendChild(overlay);
 
   setTimeout(() => {
     overlay.style.opacity = '0';
-  }, 900);
+  }, 1200);
 
   setTimeout(() => {
     window.location.reload();
-  }, 1200);
+  }, 1700);
 }
 
 

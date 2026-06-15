@@ -769,7 +769,7 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Liquid Glass Keybind Animations
+   Liquid Glass Centered Keybind Animations
    ═══════════════════════════════════════════════════════════════ */
 
 .liquid-overlay-wrapper {
@@ -782,50 +782,56 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.25s ease-in-out;
-}
-
-/* The fluid wave that sweeps up from the bottom */
-.liquid-wave {
-  position: absolute;
-  top: 100%;
-  left: -75vw;
-  width: 250vw;
-  height: 250vw;
-  border-radius: 42%;
-  animation: waveRise 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.wave-showcase {
-  background: rgba(244, 248, 245, 0.55);
-  backdrop-filter: blur(28px) saturate(220%);
-  -webkit-backdrop-filter: blur(28px) saturate(220%);
-  box-shadow: 0 -20px 60px rgba(130, 207, 160, 0.3), inset 0 10px 20px rgba(255, 255, 255, 0.8);
-}
-
-.wave-clean {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(28px) saturate(220%);
-  -webkit-backdrop-filter: blur(28px) saturate(220%);
-  box-shadow: 0 -20px 60px rgba(148, 163, 184, 0.15), inset 0 10px 20px rgba(255, 255, 255, 0.9);
-}
-
-@keyframes waveRise {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(-110%) rotate(135deg); }
-}
-
-/* Freestanding icon, no borders or outlines */
-.liquid-icon {
-  position: relative;
-  z-index: 2;
-  width: 100px;
-  height: 100px;
+  background: rgba(244, 248, 245, 0.85); /* Soft pastel background */
+  backdrop-filter: blur(8px); /* Lighter blur for the whole screen to prevent lag */
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
-  animation: liquidIconSpring 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
+  animation: wrapperFadeIn 0.4s ease-out forwards;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@keyframes wrapperFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* The centered glass circle that comes from the outside */
+.liquid-circle {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  animation: circleZoomIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.circle-showcase {
+  background: rgba(130, 207, 160, 0.25);
+  box-shadow: 0 16px 40px rgba(130, 207, 160, 0.25), inset 0 4px 16px rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.circle-clean {
+  background: rgba(200, 220, 240, 0.35);
+  box-shadow: 0 16px 40px rgba(148, 163, 184, 0.2), inset 0 4px 16px rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+@keyframes circleZoomIn {
+  0% { transform: scale(6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* The icon inside the circle */
+.liquid-icon {
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  animation: liquidIconSpring 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s forwards;
 }
 
 .liquid-icon svg {
@@ -834,16 +840,16 @@ body {
 }
 
 .icon-showcase svg {
-  filter: drop-shadow(0 12px 24px rgba(91, 157, 116, 0.35));
+  filter: drop-shadow(0 8px 16px rgba(91, 157, 116, 0.4));
 }
 
 .icon-clean svg {
-  filter: drop-shadow(0 12px 24px rgba(100, 116, 139, 0.25));
+  filter: drop-shadow(0 8px 16px rgba(100, 116, 139, 0.3));
 }
 
 @keyframes liquidIconSpring {
-  0% { opacity: 0; transform: scale(0.3) translateY(80px); }
-  60% { opacity: 1; transform: scale(1.1) translateY(-10px); }
+  0% { opacity: 0; transform: scale(0.3) translateY(40px); }
+  60% { opacity: 1; transform: scale(1.1) translateY(-5px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
